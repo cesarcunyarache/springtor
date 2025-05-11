@@ -1,5 +1,5 @@
 "use client";
-import { Mail, Lock, ArrowRight, Loader } from "lucide-react";
+import { Mail, Lock, ArrowRight, Loader, Bird } from "lucide-react";
 import { Input } from "@/components/ui/input"
 import { InputPassword } from "@/components/ui/input-passoword"
 import { Button } from "@/components/ui/button"
@@ -21,13 +21,14 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
-/* import { signIn } from "next-auth/react" */
+import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useTransition } from "react"
 
 /* import { HttpStatusCode } from "@/core/common/http/HttpStatusCode"
 import { DostmenLogoNegro } from "@/components/icons/DostmenLogo" */
 import { signInSchema } from "@/features/auth/domain/schema/SignInSchema"
+import { Github } from "../icons/SocialIcons";
 
 
 
@@ -51,7 +52,7 @@ const SignInForm = () => {
         startTransition(async () => {
 
             try {
-                /* const res = await signIn("credentials", {
+                const res = await signIn("credentials", {
                     email: formData.email,
                     password: formData.password,
                     redirect: false,
@@ -59,14 +60,16 @@ const SignInForm = () => {
 
                 if (res?.error) {
                     toast.error(res.error);
-                } */
+                }
+
+                toast.success("Sesión iniciada con éxito")
 
                 /* if (res?.status === HttpStatusCode.OK) {
                     router.push("/dashboard")
                 } */
 
             } catch {
-               
+
             }
         })
 
@@ -76,16 +79,20 @@ const SignInForm = () => {
         <div className={cn("flex flex-col gap-6")}>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-                    <div className="flex flex-col items-center gap-2">
+                    <div className="flex flex-col items-start gap-2">
                         <a href="#" className="flex flex-col items-center gap-2 font-medium">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-md">
-                              {/*  <DostmenLogoNegro className="size-6" /> */}
+                            <div className="flex items-center justify-center rounded-md">
+                                {/*  <DostmenLogoNegro className="size-6" /> */}
+                                <Bird className="size-12 text-primary" />
                             </div>
                         </a>
-                        <h1 className="text-xl font-bold">Bienvenido a Allen Dostmen S.A.C</h1>
-                        <div className="text-center text-sm">
+                        <h1 className="text-2xl font-bold">
+                            Inicia sesión en{" "}
+                            <span className="font-extrabold text-primary">Learcrum </span>
+                        </h1>
+                        {/* <div className="text-center text-sm">
                             Ingresa tus credenciales para acceder a tu cuenta
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="flex flex-col gap-6">
@@ -113,7 +120,16 @@ const SignInForm = () => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel required>Contraseña</FormLabel>
+                                    <div className="flex items-center">
+                                        <FormLabel required>Contraseña</FormLabel>
+                                        <a
+                                            href="#"
+                                            className="ml-auto text-sm underline-offset-2 hover:underline text-primary"
+                                        >
+                                        ¿Has olvidado tu contraseña?
+                                        </a>
+                                    </div>
+
                                     <FormControl>
                                         <div className="relative">
                                             <InputPassword className="peer ps-9" placeholder="Contraseña" {...field} disabled={isPending} />
@@ -132,19 +148,45 @@ const SignInForm = () => {
                                 <Loader className="animate-spin" />
                             ) : (
                                 <span className="flex items-center gap-2">
-                                    Login
+                                    Continuar
                                     <ArrowRight size={16} />
                                 </span>
                             )}
                         </Button>
+
+                        <div className="after:border-slate-200 relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t dark:after:border-slate-800">
+                            <span className="bg-white text-slate-500 relative z-10 px-2 dark:bg-slate-950 dark:text-slate-400">
+                                O continua con
+                            </span>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                            <Button variant="outline" type="button" className="w-full">
+                                <Github />
+                                {/*  <span className="sr-only">Login with Apple</span> */}
+                            </Button>
+                            <Button variant="outline" type="button" className="w-full">
+                                <Github />
+                                {/*   <span className="sr-only">Login with Google</span> */}
+                            </Button>
+                            <Button variant="outline" type="button" className="w-full">
+                                <Github />
+                                {/*   <span className="sr-only">Login with Meta</span> */}
+                            </Button>
+                        </div>
+                        <div className="text-center text-sm">
+                            ¿Aún no tienes una cuenta?{" "}
+                            <a href="#" className="underline underline-offset-4 text-primary">
+                                Regístrate
+                            </a>
+                        </div>
 
 
                     </div>
                 </form>
             </Form>
             <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-                Al hacer clic en continuar, aceptas nuestros <a href="#">Términos de Servicio</a> y nuestra{" "}
-                <a href="#">Política de Privacidad</a>.
+                Al hacer clic en continuar, aceptas nuestros <a href="#" className="text-primary">Términos de Servicio</a> y nuestra{" "}
+                <a href="#" className="text-primary">Política de Privacidad</a>.
             </div>
 
         </div>
