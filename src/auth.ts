@@ -4,13 +4,18 @@ import { encode as defaultEncode } from "next-auth/jwt";
 import { v4 as uuid } from "uuid";
 import Credentials from "next-auth/providers/credentials";
 import { createClient } from "@supabase/supabase-js";
+import {
+  AuthError,
+  AuthenticationError,
+  ValidationError,
+} from "./features/auth/domain/errors/AuthError";
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-export  const authConfig: NextAuthConfig = {
+export const authConfig: NextAuthConfig = {
   providers: [
     Credentials({
       credentials: {
@@ -18,32 +23,49 @@ export  const authConfig: NextAuthConfig = {
         password: {},
       },
       async authorize(credentials) {
-        const { email, password } = credentials;
+        /* try { */
+          const { email, password } = credentials;
 
+          if (!email || !password) {
+           
+            throw new Error("Correo electrónico y contraseña son requeridos");
+            /* throw new ValidationError(
+              "Correo electrónico y contraseña son requeridos"
+            ); */
+          }
 
-        console.log(email, password)
-        const { data: user, error } = await supabase
-        .schema('next_auth')
-        .from("users")
-        .select()
-        .eq("email", credentials.email)
-        .single();
-        
+          const {
+            data: user,
+            error,
+          } = await supabase
+            .schema("next_auth")
+            .from("users")
+            .select()
+            .eq("email", credentials.email)
+            .single();
 
-          console.log(user)
-        if (error || !user) {
-          
-          return null;
-        }
-        return {
-          id: user.id,
-          email: user.email,
-        };
-       
-        if (credentials.password === user.password) {
-        } else {
-          return null;
-        }
+          if (!user) {
+            console.log("No se encontró el usuario");
+            throw new Error("Email o contraseña incorrectos");
+            throw new AuthenticationError("Email o contraseña incorrectos");
+          }
+          return {
+            id: user.id,
+            email: user.email,
+          };
+
+          if (credentials.password === user.password) {
+          } else {
+            return null;
+          }
+       /*  } catch (error) {
+          if (error instanceof AuthError) {
+            throw new Error(error.message);
+          }
+          throw new Error(
+            "Parece que algo salió mal. Estamos trabajando en ello, por favor intenta nuevamente más tarde."
+          );
+        } */
       },
     }),
   ],
@@ -69,7 +91,7 @@ export  const authConfig: NextAuthConfig = {
         }
 
         const createdSession = await supabase
-          .schema('next_auth')
+          .schema("next_auth")
           .from("sessions")
           .insert?.({
             sessionToken: sessionToken,
@@ -90,6 +112,5 @@ export  const authConfig: NextAuthConfig = {
   experimental: { enableWebAuthn: true },
 };
 
-
-export const { handlers, signIn, signOut, auth } = NextAuth(authConfig)
-export default authConfig
+export const { handlers, signIn, signOut, auth } = NextAuth(authConfig);
+export default authConfig;

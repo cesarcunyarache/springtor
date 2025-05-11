@@ -28,7 +28,10 @@ import { useTransition } from "react"
 /* import { HttpStatusCode } from "@/core/common/http/HttpStatusCode"
 import { DostmenLogoNegro } from "@/components/icons/DostmenLogo" */
 import { signInSchema } from "@/features/auth/domain/schema/SignInSchema"
-import { Github } from "../icons/SocialIcons";
+import { Github, Google, OpenAI } from "../icons/SocialIcons";
+import { HttpStatusCode } from "@/core/common/http/HttpStatusCode";
+import { AuthError } from "next-auth";
+import { loginAction } from "@/actions/auth-action";
 
 
 
@@ -52,24 +55,37 @@ const SignInForm = () => {
         startTransition(async () => {
 
             try {
-                const res = await signIn("credentials", {
+
+
+                const response = await loginAction(formData);
+                if (response.error) {
+                    toast.error(response.error);
+                } else {
+                    router.push("/dashboard");
+                }
+
+               /*  const res = await signIn("credentials", {
                     email: formData.email,
                     password: formData.password,
                     redirect: false,
                 })
 
                 if (res?.error) {
+                    
+                    console.log(res)
+                    toast.error("Error al iniciar sesión");
                     toast.error(res.error);
                 }
 
-                toast.success("Sesión iniciada con éxito")
 
-                /* if (res?.status === HttpStatusCode.OK) {
+                if (res?.status === HttpStatusCode.OK) {
                     router.push("/dashboard")
                 } */
 
-            } catch {
-
+            } catch (error) {
+                if (error instanceof AuthError) {
+                    toast.error(error.cause?.err?.message);
+                }
             }
         })
 
@@ -126,7 +142,7 @@ const SignInForm = () => {
                                             href="#"
                                             className="ml-auto text-sm underline-offset-2 hover:underline text-primary"
                                         >
-                                        ¿Has olvidado tu contraseña?
+                                            ¿Has olvidado tu contraseña?
                                         </a>
                                     </div>
 
@@ -161,7 +177,7 @@ const SignInForm = () => {
                         </div>
                         <div className="grid grid-cols-3 gap-4">
                             <Button variant="outline" type="button" className="w-full">
-                                <Github />
+                                <Google />
                                 {/*  <span className="sr-only">Login with Apple</span> */}
                             </Button>
                             <Button variant="outline" type="button" className="w-full">
@@ -169,7 +185,7 @@ const SignInForm = () => {
                                 {/*   <span className="sr-only">Login with Google</span> */}
                             </Button>
                             <Button variant="outline" type="button" className="w-full">
-                                <Github />
+                                <OpenAI />
                                 {/*   <span className="sr-only">Login with Meta</span> */}
                             </Button>
                         </div>
