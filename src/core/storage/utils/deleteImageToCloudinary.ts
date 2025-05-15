@@ -1,4 +1,4 @@
-import cloudinary from "../config/cloudinary";
+/* import cloudinary from "../config/cloudinary";
 
 
 export async function deleteImage(publicId: string): Promise<void> {
@@ -8,4 +8,4 @@ export async function deleteImage(publicId: string): Promise<void> {
    
       throw error;
     }
-  }
+  } */

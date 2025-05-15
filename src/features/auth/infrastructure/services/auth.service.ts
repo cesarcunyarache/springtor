@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+/* import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import type { AuthResponse } from "../../domain/models/User";
 import { SignInDto } from "../../domain/dto/AuthDto";
@@ -89,3 +89,4 @@ export const {
   useUpdatePasswordMutation,
   useProfileQuery,
 } = authApi;
+ */

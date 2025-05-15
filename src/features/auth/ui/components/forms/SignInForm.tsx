@@ -29,9 +29,9 @@ import { useTransition } from "react"
 import { DostmenLogoNegro } from "@/components/icons/DostmenLogo" */
 import { signInSchema } from "@/features/auth/domain/schema/SignInSchema"
 import { Github, Google, OpenAI } from "../icons/SocialIcons";
-import { HttpStatusCode } from "@/core/common/http/HttpStatusCode";
+/* import { HttpStatusCode } from "@/core/common/http/HttpStatusCode"; */
 import { AuthError } from "next-auth";
-import { loginAction } from "@/actions/auth-action";
+import { loginAction, /* signInGoogle */ } from "@/actions/auth-action";
 
 
 
@@ -64,23 +64,23 @@ const SignInForm = () => {
                     router.push("/dashboard");
                 }
 
-               /*  const res = await signIn("credentials", {
-                    email: formData.email,
-                    password: formData.password,
-                    redirect: false,
-                })
-
-                if (res?.error) {
-                    
-                    console.log(res)
-                    toast.error("Error al iniciar sesión");
-                    toast.error(res.error);
-                }
-
-
-                if (res?.status === HttpStatusCode.OK) {
-                    router.push("/dashboard")
-                } */
+                /*  const res = await signIn("credentials", {
+                     email: formData.email,
+                     password: formData.password,
+                     redirect: false,
+                 })
+ 
+                 if (res?.error) {
+                     
+                     console.log(res)
+                     toast.error("Error al iniciar sesión");
+                     toast.error(res.error);
+                 }
+ 
+ 
+                 if (res?.status === HttpStatusCode.OK) {
+                     router.push("/dashboard")
+                 } */
 
             } catch (error) {
                 if (error instanceof AuthError) {
@@ -104,7 +104,7 @@ const SignInForm = () => {
                         </a>
                         <h1 className="text-2xl font-bold">
                             Inicia sesión en{" "}
-                            <span className="font-extrabold text-primary">Learcrum </span>
+                            <span className="font-extrabold text-primary">Springtor </span>
                         </h1>
                         {/* <div className="text-center text-sm">
                             Ingresa tus credenciales para acceder a tu cuenta
@@ -176,11 +176,18 @@ const SignInForm = () => {
                             </span>
                         </div>
                         <div className="grid grid-cols-3 gap-4">
-                            <Button variant="outline" type="button" className="w-full">
+                            <Button variant="outline" type="button" className="w-full" onClick={async () => {
+                                await signIn("google")
+                            }}>
                                 <Google />
                                 {/*  <span className="sr-only">Login with Apple</span> */}
                             </Button>
-                            <Button variant="outline" type="button" className="w-full">
+                            <Button variant="outline" type="button" className="w-full"
+                                onClick={async () => {
+                                    await signIn("github")
+                                }}
+
+                            >
                                 <Github />
                                 {/*   <span className="sr-only">Login with Google</span> */}
                             </Button>

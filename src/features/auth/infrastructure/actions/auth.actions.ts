@@ -1,4 +1,4 @@
-"use server";
+/* "use server";
 
 import { prisma } from "@/prisma";
 
@@ -19,3 +19,4 @@ export async function getUserFromDb(email: string) {
     return null;
   }
 }
+ */

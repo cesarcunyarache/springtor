@@ -1,4 +1,4 @@
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+/* import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 export interface ApiError {
   message: string | string[];
@@ -49,3 +49,4 @@ export class ErrorHandler {
     return typeof error === 'object' && error != null && 'status' in error;
   }
 }
+ */

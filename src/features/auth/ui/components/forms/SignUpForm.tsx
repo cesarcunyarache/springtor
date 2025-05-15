@@ -21,17 +21,17 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
-import { signIn } from "next-auth/react"
+/* import { signIn } from "next-auth/react" */
 import { useRouter } from "next/navigation"
 import { useMemo, useTransition } from "react"
 
 /* import { HttpStatusCode } from "@/core/common/http/HttpStatusCode"
 import { DostmenLogoNegro } from "@/components/icons/DostmenLogo" */
-import { signInSchema } from "@/features/auth/domain/schema/SignInSchema"
+/* import { signInSchema } from "@/features/auth/domain/schema/SignInSchema" */
 import { Github, Google, OpenAI } from "../icons/SocialIcons";
-import { HttpStatusCode } from "@/core/common/http/HttpStatusCode";
+/* import { HttpStatusCode } from "@/core/common/http/HttpStatusCode"; */
 import { AuthError } from "next-auth";
-import { loginAction } from "@/actions/auth-action";
+import { registerAction } from "@/actions/auth-action";
 import { signUpSchema } from "@/features/auth/domain/schema/SignUpSchema";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -74,11 +74,11 @@ const SignUpForm = () => {
             try {
 
 
-                const response = await loginAction(formData);
+                const response = await registerAction(formData);
                 if (response.error) {
                     toast.error(response.error);
                 } else {
-                    router.push("/dashboard");
+                    router.push("/sign-in");
                 }
 
                 /*  const res = await signIn("credentials", {
@@ -130,7 +130,7 @@ const SignUpForm = () => {
                             </div>
                         </a>
                         <h1 className="text-2xl font-bold">
-                            Crea tu cuenta en{" "}
+                            Crea tu cuenta{" "}
                             {/* <span className="font-extrabold text-primary">Learcrum </span> */}
                         </h1>
                         {/* <div className="text-center text-sm">

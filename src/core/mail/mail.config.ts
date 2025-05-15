@@ -1,4 +1,4 @@
-import { createTransport } from 'nodemailer';
+/* import { createTransport } from 'nodemailer';
 
 export const emailConfig = {
   host: process.env.MAIL_SERVER_HOST,
@@ -12,4 +12,4 @@ export const emailConfig = {
 
 export const transporter = createTransport({
   ...emailConfig
-});
+}); */

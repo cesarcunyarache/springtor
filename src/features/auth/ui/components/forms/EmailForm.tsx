@@ -1,4 +1,4 @@
-
+/* 
 
 "use client"
 import { Button } from '@/components/ui/button'
@@ -116,3 +116,4 @@ const EmailForm = ({ email }: { email: string }) => {
 }
 
 export default EmailForm;
+ */

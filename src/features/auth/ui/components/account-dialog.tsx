@@ -1,27 +1,27 @@
 "use client"
 
-import useDialogAccount from '../hooks/use-dialog-account';
+/* import useDialogAccount from '../hooks/use-dialog-account';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import AccountForm from './forms/AccountForm';
 
 import { useProfileQuery } from '../../infrastructure/services/auth.service';
 
-import {  useEffect } from 'react';
+import {  useEffect } from 'react'; */
 
 
 export const AccountDialog = () => {
 
-    const { isOpen, onClose } = useDialogAccount();
+   /*  const { isOpen, onClose } = useDialogAccount();
 
-    const { data, /* isLoading */ refetch } = useProfileQuery({});
+    const { data, /* isLoading refetch } = useProfileQuery({});
 
 
     useEffect(() => {
         refetch();
-    }, [isOpen]);
+    }, [isOpen]); */
     
     return (
-        <Dialog open={isOpen} onOpenChange={onClose} >
+        {/* <Dialog open={isOpen} onOpenChange={onClose} >
             <DialogContent className="max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Cuenta</DialogTitle>
@@ -36,6 +36,6 @@ export const AccountDialog = () => {
                 </div>
 
             </DialogContent>
-        </Dialog>
+        </Dialog> */}
     );
 }

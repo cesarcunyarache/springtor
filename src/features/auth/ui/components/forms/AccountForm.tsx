@@ -1,4 +1,4 @@
-"use client"
+/* "use client"
 
 import type React from "react"
 
@@ -38,7 +38,7 @@ export default function AccountForm({ account = defaultAccount }: { account?: Ac
     /* const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]
         
-    } */
+    } 
 
     return (
         <div className="flex flex-col gap-8">
@@ -59,7 +59,7 @@ export default function AccountForm({ account = defaultAccount }: { account?: Ac
                             type="file"
                             className="hidden"
                             accept="image/*"
-                           /*  onChange={handleImageUpload} */
+                           onChange={handleImageUpload} 
                         />
                     </label>
                 </div>
@@ -88,3 +88,4 @@ export default function AccountForm({ account = defaultAccount }: { account?: Ac
     )
 }
 
+ */

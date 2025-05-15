@@ -1,4 +1,4 @@
-"use server";
+/* "use server";
 
 import { StorageResponse } from "../types/StorageTypes";
 import { UploadApiResponse } from "cloudinary";
@@ -136,3 +136,4 @@ const fileToBase64 = async (file: File): Promise<string> => {
   const mimeType = file.type;
   return `data:${mimeType};base64,${base64}`;
 };
+ */

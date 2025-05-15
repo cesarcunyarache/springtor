@@ -2,6 +2,9 @@
 
 import { signIn } from "@/auth";
 import { signInSchema } from "@/features/auth/domain/schema/SignInSchema";
+import { signUpSchema } from "@/features/auth/domain/schema/SignUpSchema";
+import { createClient } from "@supabase/supabase-js";
+import bcrypt from "bcryptjs";
 
 /* import { loginSchema, registerSchema } from "@/lib/zod";
 import bcrypt from "bcryptjs"; */
@@ -24,56 +27,76 @@ export const loginAction = async (values: z.infer<typeof signInSchema
     return { error: "error 500" };
   }
 };
-/* 
-export const registerAction = async (
-  values: z.infer<typeof registerSchema>
-) => {
+
+export const signInGoogle = async () => {
+try {
+
+  console.log("signInGoogle")
+  await signIn("google");
+ 
+} catch (error) {
+  if (error instanceof AuthError) {
+    return { error: error.cause?.err?.message };
+  }
+  return { error: "error 500" };
+}
+};
+
+export const registerAction = async (values: z.infer<typeof signUpSchema>) => {
   try {
-    const { data, success } = registerSchema.safeParse(values);
+    const { data, success } = signUpSchema.safeParse(values);
     if (!success) {
       return {
-        error: "Invalid data",
+        error: "Datos inválidos",
       };
     }
 
-    // verificar si el usuario ya existe
-    const user = await db.user.findUnique({
-      where: {
-        email: data.email,
-      },
-      include: {
-        accounts: true, // Incluir las cuentas asociadas
-      },
-    });
-
-    if (user) {
-      // Verificar si tiene cuentas OAuth vinculadas
-      const oauthAccounts = user.accounts.filter(
-        (account) => account.type === "oauth"
-      );
-      if (oauthAccounts.length > 0) {
-        return {
-          error:
-            "To confirm your identity, sign in with the same account you used originally.",
-        };
-      }
+    if (data.password !== data.confirmPassword) {
       return {
-        error: "User already exists",
+        error: "Las contraseñas no coinciden",
       };
     }
 
-    // hash de la contraseña
-    const passwordHash = await bcrypt.hash(data.password, 10);
+    const supabase = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
 
-    // crear el usuario
-    await db.user.create({
-      data: {
+    // Verificar si el usuario ya existe
+    const { data: existingUser } = await supabase
+      .schema("next_auth")
+      .from("users")
+      .select()
+      .eq("email", data.email)
+      .single();
+
+    if (existingUser) {
+      return {
+        error: "El usuario ya existe",
+      };
+    }
+
+    // Hash de la contraseña
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+
+    // Crear el usuario
+    const { data: newUser, error: createError } = await supabase
+      .schema("next_auth")
+      .from("users")
+      .insert({
         email: data.email,
-        name: data.name,
-        password: passwordHash,
-      },
-    });
+        password: hashedPassword,
+      })
+      .select()
+      .single();
 
+    if (createError || !newUser) {
+      return {
+        error: "Error al crear el usuario",
+      };
+    }
+
+    // Iniciar sesión automáticamente
     await signIn("credentials", {
       email: data.email,
       password: data.password,
@@ -85,6 +108,9 @@ export const registerAction = async (
     if (error instanceof AuthError) {
       return { error: error.cause?.err?.message };
     }
-    return { error: "error 500" };
+    return { error: "Error interno del servidor" };
   }
-}; */
+};
+
+
+

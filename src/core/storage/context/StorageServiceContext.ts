@@ -1,4 +1,4 @@
-import { IStorageService } from "../interfaces/IStorageServices";
+/* import { IStorageService } from "../interfaces/IStorageServices";
 import { CloudinaryStorageService } from "../services/CloudinaryStorageService";
 import { StorageResponse } from "../types/StorageTypes";
 
@@ -21,3 +21,4 @@ export class StorageServiceContext {
     return this.storageService.deleteImage(publicId);
   }
 }
+ */

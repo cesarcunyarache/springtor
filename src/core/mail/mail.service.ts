@@ -1,4 +1,4 @@
-"use server";
+/* "use server";
 
 import { transporter } from "./mail.config";
 
@@ -32,3 +32,4 @@ export async function sendMail({
     return { success: false, error };
   }
 }
+ */

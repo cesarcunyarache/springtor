@@ -4,11 +4,15 @@ import { encode as defaultEncode } from "next-auth/jwt";
 import { v4 as uuid } from "uuid";
 import Credentials from "next-auth/providers/credentials";
 import { createClient } from "@supabase/supabase-js";
-import {
+/* import {
   AuthError,
   AuthenticationError,
   ValidationError,
-} from "./features/auth/domain/errors/AuthError";
+} from "./features/auth/domain/errors/AuthError"; */
+import bcryptjs from "bcryptjs";
+import Google from "next-auth/providers/google"
+import GitHub from "next-auth/providers/github"
+import Notion from "next-auth/providers/notion"
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -17,6 +21,9 @@ const supabase = createClient(
 
 export const authConfig: NextAuthConfig = {
   providers: [
+    Google,
+    GitHub,
+    Notion,
     Credentials({
       credentials: {
         email: {},
@@ -44,11 +51,24 @@ export const authConfig: NextAuthConfig = {
             .eq("email", credentials.email)
             .single();
 
-          if (!user) {
-            console.log("No se encontró el usuario");
-            throw new Error("Email o contraseña incorrectos");
-            throw new AuthenticationError("Email o contraseña incorrectos");
+          if (error) {
+            throw new Error("Algo salió mal");
           }
+
+          if (!user) {
+           
+            throw new Error("Email o contraseña incorrectos");
+          }
+
+          const isPasswordMatches = await bcryptjs.compare(
+            password as string,
+            user.password
+          )
+      
+          if (!isPasswordMatches) {
+            throw new Error("Email o contraseña incorrectos");
+          }
+
           return {
             id: user.id,
             email: user.email,
@@ -74,7 +94,7 @@ export const authConfig: NextAuthConfig = {
     secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
   }),
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, account }) {
       if (account?.provider === "credentials") {
         token.credentials = true;
       }
@@ -110,6 +130,12 @@ export const authConfig: NextAuthConfig = {
   },
   secret: process.env.AUTH_SECRET!,
   experimental: { enableWebAuthn: true },
+  pages: {
+    signIn: "/sign-in",
+    signOut: "/sign-out",
+    newUser: "/sign-up",
+    error: "/sign-in/"
+  },
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth(authConfig);

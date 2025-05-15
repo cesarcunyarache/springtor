@@ -1,5 +1,4 @@
 import SignInForm from "@/features/auth/ui/components/forms/SignInForm";
-import Image from "next/image";
 
 export default function Home() {
   return (

@@ -1,4 +1,4 @@
-import { v2 as cloudinary } from "cloudinary";
+/* import { v2 as cloudinary } from "cloudinary";
 import { IStorageService } from "../interfaces/IStorageServices";
 import { StorageResponse } from "../types/StorageTypes";
 
@@ -38,3 +38,4 @@ export class CloudinaryStorageService implements IStorageService {
     }
   }
 }
+ */

@@ -1,4 +1,4 @@
-"use client"
+/* "use client"
 
 import { useMountedState } from "react-use";
 import { AccountDialog } from "../components/account-dialog";
@@ -25,4 +25,4 @@ export const DialogProvider = () => {
             
         </>
     )
-}   
+}    */

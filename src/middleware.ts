@@ -12,7 +12,7 @@ export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
-  console.log({ isLoggedIn, path: nextUrl.pathname });
+  /* console.log({ isLoggedIn, path: nextUrl.pathname }); */
 
   // Permitir todas las rutas de API de autenticación
   if (nextUrl.pathname.startsWith(apiAuthPrefix)) {
@@ -35,7 +35,7 @@ export default auth((req) => {
     !authRoutes.includes(nextUrl.pathname) &&
     !publicRoutes.includes(nextUrl.pathname)
   ) {
-    return NextResponse.redirect(new URL("/login", nextUrl));
+    return NextResponse.redirect(new URL("/sign-in", nextUrl));
   }
 
   return NextResponse.next();

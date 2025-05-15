@@ -1,10 +1,10 @@
-import { Body, Button, Container, Head, Html, Img, Preview, Section, Text } from '@react-email/components';
+/* import { Body, Button, Container, Head, Html, Img, Preview, Section, Text } from '@react-email/components'; */
 
 
-const baseUrl = process.env.VERCEL_URL
+/* const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : '';
-
+ */
 
 interface EmailConfirmProps {
     userName?: string;
@@ -12,11 +12,12 @@ interface EmailConfirmProps {
 }
 
 export default function EmailConfirmationTemplate ({
-    userName,
-    confirmLink,
+ /*    userName,
+    confirmLink, */
 }: EmailConfirmProps) {
     return (
-        <Html>
+        <h1></h1>
+       /*  <Html>
             <Head />
             <Body style={main}>
                 <Preview>Confirmación de correo - AllenDostmen S.A.C</Preview>
@@ -50,7 +51,7 @@ export default function EmailConfirmationTemplate ({
                     </Section>
                 </Container>
             </Body>
-        </Html>
+        </Html> */
     );
 }
 
@@ -61,7 +62,7 @@ export default function EmailConfirmationTemplate ({
  */
 // export default EmailConfirmation;
 
-
+/* 
 const main = {
     backgroundColor: '#f6f9fc',
     padding: '20px 0',
@@ -100,7 +101,7 @@ const button = {
     padding: '12px 20px',
     margin: '24px auto',
 };
-
+ */
 /* const anchor = {
     color: '#0f172a',
     textDecoration: 'underline',

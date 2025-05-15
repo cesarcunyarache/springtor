@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader, Lock } from 'lucide-react';
@@ -129,3 +129,4 @@ const PasswordForm = () => {
 };
 
 export default PasswordForm;
+ */
