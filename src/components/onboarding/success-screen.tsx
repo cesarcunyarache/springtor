@@ -109,7 +109,7 @@ export default function SuccessScreen({ data }: SuccessScreenProps) {
           >
             <h1 className="text-4xl font-bold text-center mb-2">¡Gracias por tu interés!</h1>
             <p className="text-xl text-center text-blue-100 mb-8">
-              Hemos registrado tus preferencias para ScrumMaster AI
+              Hemos registrado tus preferencias para Springtor
             </p>
           </motion.div>
 
@@ -179,7 +179,7 @@ export default function SuccessScreen({ data }: SuccessScreenProps) {
             <div className="bg-primary/50 p-4 rounded-xl mb-6 flex items-center">
               <Bell className="text-blue-200 mr-3 flex-shrink-0" />
               <p className="text-blue-100 text-sm">
-                Te notificaremos cuando ScrumMaster AI esté listo para su lanzamiento. ¡Serás de los primeros en
+                Te notificaremos cuando Springtor esté listo para su lanzamiento. ¡Serás de los primeros en
                 probarlo!
               </p>
             </div>

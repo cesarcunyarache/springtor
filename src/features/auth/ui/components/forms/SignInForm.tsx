@@ -63,7 +63,7 @@ const SignInForm = () => {
                 if (response.error) {
                     toast.error(response.error);
                 } else {
-                    router.push("/dashboard");
+                    router.push("/");
                 }
 
                 /*  const res = await signIn("credentials", {
