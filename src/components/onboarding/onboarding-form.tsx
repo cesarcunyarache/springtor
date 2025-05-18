@@ -79,15 +79,12 @@ export default function OnboardingForm() {
   }
 
   return (
-    <div className="space-y-6">
-      <Card className="p-6 shadow-lg bg-background overflow-hidden rounded-xl border-0 w-full h-[90vh]">
-        {/* Barra de progreso superior */}
+      <Card className="shadow-none py-0 bg-background overflow-hidden gap-0 rounded-xl border-0 w-full h-[100vh]">
         <div className="m-6">
           <div className="flex justify-center items-center mb-2">
             <span className="text-sm font-medium text-primary bg-primary-foreground p-2 rounded-xl">
               Pregunta {step}/{totalSteps}
             </span>
-          {/*   <span className="text-sm text-primary">{Math.round((step / totalSteps) * 100)}% completado</span> */} 
           </div>
           <div className="w-full h-2 bg-primary-foreground rounded-full overflow-hidden">
             <motion.div
@@ -159,7 +156,7 @@ export default function OnboardingForm() {
 
 
 
-        <div className="flex justify-between  pt-4 m-6">
+        <div className="flex justify-between pt-2 mx-6 mb-4">
           <Button
             variant="ghost"
             onClick={prevStep}
@@ -179,6 +176,5 @@ export default function OnboardingForm() {
         </div>
 
       </Card>
-    </div>
   )
 }

@@ -75,7 +75,7 @@ export default function SuccessScreen({ data }: SuccessScreenProps) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
-      className="space-y-6"
+      className="space-y-6 m-4"
     >
       <Card className="p-8 shadow-xl bg-gradient-to-br from-blue-600 to-blue-800 overflow-hidden rounded-xl border-0 text-white relative">
         <div className="absolute inset-0 bg-blue-600 opacity-20">

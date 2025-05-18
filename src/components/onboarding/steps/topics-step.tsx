@@ -83,7 +83,7 @@ export default function TopicsStep({ form }: TopicsStepProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="bg-primary-foreground p-6 rounded-xl mb-4 m-5"
+        className="bg-primary-foreground p-6 rounded-xl mb-4 mx-5"
       >
         <h2 className="text-2xl font-bold text-primary mb-2">¿Qué aspectos de Scrum deseas aprender o mejorar?</h2>
         <p className="text-primary font-light mb-0">Selecciona todos los temas que te interesen</p>

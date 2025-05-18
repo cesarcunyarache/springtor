@@ -66,7 +66,7 @@ export default function ExperienceStep({ form }: ExperienceStepProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="bg-primary-foreground p-6 rounded-xl mb-4 m-5"
+        className="bg-primary-foreground p-6 rounded-xl mb-4 mx-5"
       >
         <h2 className="text-2xl font-bold text-primary mb-2">¿Cuál es tu nivel de experiencia con Scrum?</h2>
         <p className="text-primary font-light mb-0">Selecciona la opción que mejor describa tu conocimiento actual</p>
