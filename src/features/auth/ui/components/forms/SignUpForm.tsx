@@ -116,12 +116,6 @@ const SignUpForm = () => {
         [form.watch("password")]
     )
 
-    const progressVariants = {
-        hidden: { scaleX: 0, opacity: 0 },
-        visible: { scaleX: 1, opacity: 1 },
-        exit: { scaleX: 0, opacity: 0 },
-      };
-      
     const strengthScore = useMemo(() =>
         strength.filter((req) => req.met).length,
         [strength]
