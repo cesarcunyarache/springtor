@@ -52,13 +52,13 @@ export function SidebarUserNav({ user }: { user: User }) {
                 data-testid="user-nav-button"
                 className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-10"
               >
-               {/*  <Image
-                  src={user?.image!}
+                <img
+                  src={user?.image ?? "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg?semt=ais_hybrid&w=740"}
                   alt={user.email ?? 'User Avatar'}
                   width={24}
                   height={24}
                   className="rounded-full"
-                /> */}
+                />
                 <span data-testid="user-email" className="truncate">
                   {isGuest ? 'Guest' : user?.email}
                 </span>
