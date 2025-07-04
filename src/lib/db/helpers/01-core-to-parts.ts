@@ -1,4 +1,4 @@
-import { config } from 'dotenv';
+/* import { config } from 'dotenv';
 import postgres from 'postgres';
 import {
   chat,
@@ -249,3 +249,4 @@ migrateMessages()
     console.error('Script failed:', error);
     process.exit(1);
   });
+ */

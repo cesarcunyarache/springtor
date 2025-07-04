@@ -7,14 +7,16 @@ import { DataStreamHandler } from '@/components/data-stream-handler';
 /* import { auth } from '../(auth)/auth'; */
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
+import { CircleGauge } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 export default async function Page() {
   const session = await auth();
 
   if (!session) {
-    redirect('/api/auth/guest');
+    redirect('/sign-in');
   }
-
+  
   const id = generateUUID();
 
   const cookieStore = await cookies();

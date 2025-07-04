@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import * as React from "react"
 
 interface ButtonSocialProps extends React.ComponentProps<"button"> {
@@ -11,13 +12,18 @@ interface ButtonSocialProps extends React.ComponentProps<"button"> {
 }
 
 const ButtonSocial = ({ children, provider, ...props }: ButtonSocialProps) => {
+
+    const router = useRouter();
     const [isLoading, setIsLoading] = React.useState(false);
 
     const handleClick = async () => {
         try {
             setIsLoading(true);
             await signIn(provider);
-        } catch {
+/* 
+            router.push("/"); */
+        } catch (error) {
+            console.log(error);
         } finally {
             setIsLoading(false);
         }

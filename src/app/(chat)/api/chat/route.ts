@@ -105,7 +105,7 @@ export async function POST(request: Request) {
 
       await saveChat({
         id,
-        userId: session.user.id!,
+        userId: session.user.id,
         title,
         visibility: selectedVisibilityType,
       });
@@ -147,6 +147,8 @@ export async function POST(request: Request) {
 
     const streamId = generateUUID();
     await createStreamId({ streamId, chatId: id });
+
+
 
     const stream = createDataStream({
       execute: (dataStream) => {
@@ -238,6 +240,7 @@ export async function POST(request: Request) {
       return new Response(stream);
     }
   } catch (error) {
+    console.log(error);
     if (error instanceof ChatSDKError) {
       return error.toResponse();
     }

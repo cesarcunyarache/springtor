@@ -1,40 +1,22 @@
-import { DefaultSession } from "next-auth";
-import "next-auth/jwt";
-
-
-
-interface Permission {
-  id: number | string;
-  name: string;
-}
-
-// Define el tipo para un rol con sus permisos (ahora con id como número o string)
-interface Role {
-  id: number | string;
-  name: string;
-  permissions: Permission[];
-}
+import NextAuth, { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
+    accessToken?: string;
     user: {
-      id?: string;
-      roles?: Role[];
+      id: string;
     } & DefaultSession["user"];
   }
 
   interface User {
     id?: string;
-    roles?: Role[];
+    email?: string | null;
+    image?: string | null;
   }
 }
 
-declare module "next-auth/jwt" {
-  interface JWT {
-    id?: string;
-    sessionId?: string;
-    roles?: Role[]; 
-    expires?: string;
-
+declare module 'next-auth/jwt' {
+  interface JWT extends DefaultJWT {
+    id: string;
   }
 }

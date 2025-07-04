@@ -63,9 +63,10 @@ const SignInForm = () => {
                 if (response.error) {
                     toast.error(response.error);
                 } else {
-                    router.push("/");
+                   /*  router.push("/"); */
                 }
 
+               /*  router.push("/"); */
                 /*  const res = await signIn("credentials", {
                      email: formData.email,
                      password: formData.password,

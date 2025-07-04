@@ -1,5 +1,5 @@
 import 'server-only';
-
+export const runtime = 'nodejs'; 
 import {
   and,
   asc,
@@ -16,9 +16,9 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
 import {
-  user,
+  users,
   chat,
-  type User,
+
   document,
   type Suggestion,
   suggestion,
@@ -33,6 +33,7 @@ import { generateUUID } from '../utils';
 import { generateHashedPassword } from './utils';
 import type { VisibilityType } from '@/components/visibility-selector';
 import { ChatSDKError } from '../errors';
+import { User } from 'next-auth';
 
 // Optionally, if not using email/pass login, you can
 // use the Drizzle adapter for Auth.js / NextAuth
@@ -44,7 +45,7 @@ const db = drizzle(client);
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
-    return await db.select().from(user).where(eq(user.email, email));
+    return await db.select().from(users).where(eq(users.email, email));
   } catch (error) {
     throw new ChatSDKError(
       'bad_request:database',
@@ -57,7 +58,7 @@ export async function createUser(email: string, password: string) {
   const hashedPassword = generateHashedPassword(password);
 
   try {
-    return await db.insert(user).values({ email, password: hashedPassword });
+    return await db.insert(users).values({ email, password: hashedPassword });
   } catch (error) {
     throw new ChatSDKError('bad_request:database', 'Failed to create user');
   }
@@ -68,9 +69,9 @@ export async function createGuestUser() {
   const password = generateHashedPassword(generateUUID());
 
   try {
-    return await db.insert(user).values({ email, password }).returning({
-      id: user.id,
-      email: user.email,
+    return await db.insert(users).values({ email, password }).returning({
+      id: users.id,
+      email: users.email,
     });
   } catch (error) {
     throw new ChatSDKError(

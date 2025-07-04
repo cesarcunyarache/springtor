@@ -37,6 +37,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import ButtonSocial from "../botton-social";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import { register } from "@/actions/user-action";
 
 
 export function checkStrength(pass: string) {
@@ -77,12 +78,12 @@ const SignUpForm = () => {
             try {
 
 
-                const response = await registerAction(formData);
-                if (response.error) {
+                const response = await register(formData);
+               /*  if (response.error) {
                     toast.error(response.error);
                 } else {
                     router.push("/sign-in");
-                }
+                } */
 
                 /*  const res = await signIn("credentials", {
                      email: formData.email,

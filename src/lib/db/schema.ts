@@ -9,23 +9,101 @@ import {
   primaryKey,
   foreignKey,
   boolean,
+  integer,
 } from 'drizzle-orm/pg-core';
+import type { AdapterAccountType } from "next-auth/adapters"
 
-export const user = pgTable('User', {
-  id: uuid('id').primaryKey().notNull().defaultRandom(),
-  email: varchar('email', { length: 64 }).notNull(),
-  password: varchar('password', { length: 64 }),
-});
+export const users = pgTable("user", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text("name"),
+  password: text("password"),
+  email: text("email").unique(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  image: text("image"),
+})
+ 
+export const accounts = pgTable(
+  "account",
+  {
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: text("type").$type<AdapterAccountType>().notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: integer("expires_at"),
+    token_type: text("token_type"),
+    scope: text("scope"),
+    id_token: text("id_token"),
+    session_state: text("session_state"),
+  },
+  (account) => [
+    {
+      compoundKey: primaryKey({
+        columns: [account.provider, account.providerAccountId],
+      }),
+    },
+  ]
+)
+ 
+export const sessions = pgTable("session", {
+  sessionToken: text("sessionToken").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+})
+ 
+export const verificationTokens = pgTable(
+  "verificationToken",
+  {
+    identifier: text("identifier").notNull(),
+    token: text("token").notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (verificationToken) => [
+    {
+      compositePk: primaryKey({
+        columns: [verificationToken.identifier, verificationToken.token],
+      }),
+    },
+  ]
+)
+ 
+export const authenticators = pgTable(
+  "authenticator",
+  {
+    credentialID: text("credentialID").notNull().unique(),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    providerAccountId: text("providerAccountId").notNull(),
+    credentialPublicKey: text("credentialPublicKey").notNull(),
+    counter: integer("counter").notNull(),
+    credentialDeviceType: text("credentialDeviceType").notNull(),
+    credentialBackedUp: boolean("credentialBackedUp").notNull(),
+    transports: text("transports"),
+  },
+  (authenticator) => [
+    {
+      compositePK: primaryKey({
+        columns: [authenticator.userId, authenticator.credentialID],
+      }),
+    },
+  ]
+)
 
-export type User = InferSelectModel<typeof user>;
-
-export const chat = pgTable('Chat', {
+export const chat = pgTable('chat', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
   createdAt: timestamp('createdAt').notNull(),
   title: text('title').notNull(),
-  userId: uuid('userId')
+  userId: text('userId')
     .notNull()
-    .references(() => user.id),
+    .references(() => users.id),
   visibility: varchar('visibility', { enum: ['public', 'private'] })
     .notNull()
     .default('private'),
@@ -33,9 +111,7 @@ export const chat = pgTable('Chat', {
 
 export type Chat = InferSelectModel<typeof chat>;
 
-// DEPRECATED: The following schema is deprecated and will be removed in the future.
-// Read the migration guide at https://chat-sdk.dev/docs/migration-guides/message-parts
-export const messageDeprecated = pgTable('Message', {
+/* export const messageDeprecated = pgTable('Message', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
   chatId: uuid('chatId')
     .notNull()
@@ -45,9 +121,9 @@ export const messageDeprecated = pgTable('Message', {
   createdAt: timestamp('createdAt').notNull(),
 });
 
-export type MessageDeprecated = InferSelectModel<typeof messageDeprecated>;
+export type MessageDeprecated = InferSelectModel<typeof messageDeprecated>; */
 
-export const message = pgTable('Message_v2', {
+export const message = pgTable('message', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
   chatId: uuid('chatId')
     .notNull()
@@ -62,7 +138,7 @@ export type DBMessage = InferSelectModel<typeof message>;
 
 // DEPRECATED: The following schema is deprecated and will be removed in the future.
 // Read the migration guide at https://chat-sdk.dev/docs/migration-guides/message-parts
-export const voteDeprecated = pgTable(
+/* export const voteDeprecated = pgTable(
   'Vote',
   {
     chatId: uuid('chatId')
@@ -80,10 +156,10 @@ export const voteDeprecated = pgTable(
   },
 );
 
-export type VoteDeprecated = InferSelectModel<typeof voteDeprecated>;
+export type VoteDeprecated = InferSelectModel<typeof voteDeprecated>; */
 
 export const vote = pgTable(
-  'Vote_v2',
+  'vote',
   {
     chatId: uuid('chatId')
       .notNull()
@@ -103,7 +179,7 @@ export const vote = pgTable(
 export type Vote = InferSelectModel<typeof vote>;
 
 export const document = pgTable(
-  'Document',
+  'document',
   {
     id: uuid('id').notNull().defaultRandom(),
     createdAt: timestamp('createdAt').notNull(),
@@ -112,9 +188,9 @@ export const document = pgTable(
     kind: varchar('text', { enum: ['text', 'code', 'image', 'sheet'] })
       .notNull()
       .default('text'),
-    userId: uuid('userId')
+    userId: text('userId')
       .notNull()
-      .references(() => user.id),
+      .references(() => users.id),
   },
   (table) => {
     return {
@@ -126,7 +202,7 @@ export const document = pgTable(
 export type Document = InferSelectModel<typeof document>;
 
 export const suggestion = pgTable(
-  'Suggestion',
+  'suggestion',
   {
     id: uuid('id').notNull().defaultRandom(),
     documentId: uuid('documentId').notNull(),
@@ -135,9 +211,9 @@ export const suggestion = pgTable(
     suggestedText: text('suggestedText').notNull(),
     description: text('description'),
     isResolved: boolean('isResolved').notNull().default(false),
-    userId: uuid('userId')
+    userId: text('userId')
       .notNull()
-      .references(() => user.id),
+      .references(() => users.id),
     createdAt: timestamp('createdAt').notNull(),
   },
   (table) => ({
@@ -152,7 +228,7 @@ export const suggestion = pgTable(
 export type Suggestion = InferSelectModel<typeof suggestion>;
 
 export const stream = pgTable(
-  'Stream',
+  'stream',
   {
     id: uuid('id').notNull().defaultRandom(),
     chatId: uuid('chatId').notNull(),

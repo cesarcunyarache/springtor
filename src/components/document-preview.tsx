@@ -101,11 +101,11 @@ export function DocumentPreview({
 
   return (
     <div className="relative w-full cursor-pointer">
-      <HitboxLayer
-        hitboxRef={hitboxRef}
+      {/* <HitboxLayer
+        hitboxRef={hitboxRef ?? null}
         result={result}
         setArtifact={setArtifact}
-      />
+      /> */}
       <DocumentHeader
         title={document.title}
         kind={document.kind}

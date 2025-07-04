@@ -3,8 +3,12 @@
 import { signIn } from "@/auth";
 import { signInSchema } from "@/features/auth/domain/schema/SignInSchema";
 import { signUpSchema } from "@/features/auth/domain/schema/SignUpSchema";
-import { createClient } from "@supabase/supabase-js";
+import { db } from "@/lib/db";
+import { users } from "@/lib/db/schema";
+
+
 import bcrypt from "bcryptjs";
+import { eq } from "drizzle-orm";
 
 /* import { loginSchema, registerSchema } from "@/lib/zod";
 import bcrypt from "bcryptjs"; */
@@ -31,7 +35,6 @@ export const loginAction = async (values: z.infer<typeof signInSchema
 export const signInGoogle = async () => {
 try {
 
-  console.log("signInGoogle")
   await signIn("google");
  
 } catch (error) {
@@ -42,61 +45,48 @@ try {
 }
 };
 
+
 export const registerAction = async (values: z.infer<typeof signUpSchema>) => {
   try {
     const { data, success } = signUpSchema.safeParse(values);
     if (!success) {
-      return {
-        error: "Datos inválidos",
-      };
+      return { error: "Datos inválidos" };
     }
 
     if (data.password !== data.confirmPassword) {
-      return {
-        error: "Las contraseñas no coinciden",
-      };
+      return { error: "Las contraseñas no coinciden" };
     }
 
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-
-    // Verificar si el usuario ya existe
-    const { data: existingUser } = await supabase
-      .schema("next_auth")
-      .from("users")
+    // Check if user already exists by email using Drizzle ORM
+    const existingUser = await db
       .select()
-      .eq("email", data.email)
-      .single();
+      .from(users)
+      .where(eq(users.email, data.email))
+      .limit(1);
 
-    if (existingUser) {
-      return {
-        error: "El usuario ya existe",
-      };
+    if (existingUser.length > 0) {
+      return { error: "El usuario ya existe" };
     }
 
-    // Hash de la contraseña
+    // Hash password
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    // Crear el usuario
-    const { data: newUser, error: createError } = await supabase
-      .schema("next_auth")
-      .from("users")
-      .insert({
+    // Insert new user using Drizzle ORM
+    const [newUser] = await db
+      .insert(users)
+      .values({
         email: data.email,
         password: hashedPassword,
+     /*    name: data.. || null, // i */
+        // other fields if required
       })
-      .select()
-      .single();
+      .returning();
 
-    if (createError || !newUser) {
-      return {
-        error: "Error al crear el usuario",
-      };
+    if (!newUser) {
+      return { error: "Error al crear el usuario" };
     }
 
-    // Iniciar sesión automáticamente
+    // Automatically sign in the user after registration
     await signIn("credentials", {
       email: data.email,
       password: data.password,
