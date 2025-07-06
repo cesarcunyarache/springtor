@@ -1,19 +1,12 @@
 /* export { auth as middleware } from "./auth"; */
 
-import { NextResponse, type NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
-import { guestRegex, isDevelopmentEnvironment } from './lib/constants';
-
+import { NextResponse, type NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
+import { guestRegex, isDevelopmentEnvironment } from "./lib/constants";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  /*
-   * Playwright starts the dev server and requires a 200 status to
-   * begin the tests, so this ensures that the tests can start
-   */
-  
-
-  if (pathname.startsWith('/api/auth')) {
+  if (pathname.startsWith("/api/auth")) {
     return NextResponse.next();
   }
 
@@ -23,22 +16,31 @@ export async function middleware(request: NextRequest) {
     secureCookie: !isDevelopmentEnvironment,
   });
 
-  if (!token) {
-    const redirectUrl = encodeURIComponent(request.url);
+  // ⚠️ Evitar redirección infinita en /sign-in o /sign-up
+  const isAuthPage = ["/sign-in", "/sign-up"].includes(pathname);
 
-    return NextResponse.redirect(
-      new URL(`/sign-in?redirectUrl=${redirectUrl}`, request.url),
-    );
+  if (!token) {
+    if (!isAuthPage) {
+      const redirectUrl = encodeURIComponent(request.nextUrl.href);
+
+      return NextResponse.redirect(
+        new URL(`/sign-in?redirectUrl=${redirectUrl}`, request.url)
+      );
+    }
+
+    return NextResponse.next(); // permite seguir a /sign-in o /sign-up sin token
   }
 
-  const isGuest = guestRegex.test(token?.email ?? '');
+  const isGuest = guestRegex.test(token?.email ?? "");
 
-  if (token && !isGuest && ['/sign-in', '/sign-up'].includes(pathname)) {
-    return NextResponse.redirect(new URL('/', request.url));
+  // Si el usuario ya está autenticado y no es guest, redirigir fuera de las auth pages
+  if (token && !isGuest && isAuthPage) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
 }
+
 export const config = {
   matcher: [
     /*     "/", */
@@ -48,7 +50,7 @@ export const config = {
     "/sign-up",
     "/",
     "/dashboard",
-              
+
     "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };
