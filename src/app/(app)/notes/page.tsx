@@ -1,9 +1,13 @@
-import React from 'react'
+import { Toaster } from "sonner";
+
+import { PlateEditor } from "@/components/editor/plate-editor";
 
 export default function Page() {
   return (
-    <div>
-       <h1>Notes</h1>
+    <div className="h-screen w-full">
+      <PlateEditor />
+
+      <Toaster />
     </div>
-  )
+  );
 }
