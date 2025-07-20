@@ -67,7 +67,7 @@ export function CustomNode({ data }: CustomNodeProps) {
           </div>
 
           {/* Title */}
-          <h3 className="font-bold text-sm text-gray-900 leading-tight">{label}</h3>
+          <h3 className="font-bold text-sm leading-tight">{label}</h3>
 
           {/* Description */}
           <p className="text-xs text-gray-600 leading-relaxed">{description}</p>

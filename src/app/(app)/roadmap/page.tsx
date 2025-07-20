@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { Trophy, Bird, Target } from "lucide-react"
+import { Trophy, Bird, Target, FileIcon, CogIcon, HelpCircleIcon, Home, MessageCircleMore, GitMerge, Calendar } from "lucide-react"
 
 import { ScrumRoadmap } from "@/components/roadmap/scrum-roadmap"
 import { TopicDetail } from "@/components/roadmap/topic-detail"
@@ -14,6 +14,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { FloatingDock } from "@/components/floating-dock"
+import { Dock } from "@/components/dock"
+import { DockDemo } from "@/components/dock-demo"
+import { ReactFlowProvider } from "@xyflow/react"
+import FlowWithProvider from "@/providers/reactflow-provider"
 
 export default function ScrumLearningAgent() {
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
@@ -27,9 +32,9 @@ export default function ScrumLearningAgent() {
   const progress = (completedTopics.size / totalTopics) * 100
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen ">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-50">
+      <div className=" backdrop-blur-sm border-b bg-background/30 border-foreground sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -42,11 +47,11 @@ export default function ScrumLearningAgent() {
             </div>
             <div className="flex items-center space-x-4">
               <Trophy className="w-5 h-5 text-yellow-500" />
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-sm font-medium ">
                 {completedTopics.size}/{totalTopics}
               </span>
               <Progress value={progress} className="w-32" />
-              <span className="text-sm font-bold text-gray-900">{Math.round(progress)}%</span>
+              <span className="text-sm font-bold ">{Math.round(progress)}%</span>
             </div>
           </div>
         </div>
@@ -56,7 +61,7 @@ export default function ScrumLearningAgent() {
       <div className="max-w-full mx-auto">
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
           {/* Roadmap */}
-         {/*  <div className="xl:col-span-3">
+          {/*  <div className="xl:col-span-3">
             <Card className="p-6 bg-white/70 backdrop-blur-sm border-0 shadow-xl">
               <div className="mb-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Ruta de Aprendizaje</h2>
@@ -76,13 +81,18 @@ export default function ScrumLearningAgent() {
           </div> */}
 
 
-          <ScrumRoadmap
-                onTopicSelect={setSelectedTopic}
-                completedTopics={completedTopics}
-              />
+ 
+
+            <ScrumRoadmap
+              onTopicSelect={setSelectedTopic}
+              completedTopics={completedTopics}
+            />
+ 
+
+
 
           {/* Placeholder */}
-         {/*  <div className="xl:col-span-1">
+          {/*  <div className="xl:col-span-1">
             <Card className="p-6 bg-white/70 backdrop-blur-sm border-0 shadow-xl sticky top-24">
               <div className="text-center py-8">
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
@@ -104,16 +114,30 @@ export default function ScrumLearningAgent() {
       {/* Modal de Detalle del Tema */}
       <Dialog open={!!selectedTopic} onOpenChange={(open) => !open && setSelectedTopic(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] w-96 h-[60vh] overflow-y-auto md:h-[60vh] md:w-[2xl]">
-          {selectedTopic && ( 
+          {selectedTopic && (
             <TopicDetail
               topicId={selectedTopic}
               onComplete={handleTopicComplete}
               isCompleted={completedTopics.has(selectedTopic)}
-              /* onClose={() => setSelectedTopic(null)} */
+            /* onClose={() => setSelectedTopic(null)} */
             />
           )}
         </DialogContent>
       </Dialog>
+
+      {/*  <FloatingDock items={[
+        { title: 'Home', icon: <Home />, href: '/home' },
+        { title: 'Chat', icon: <MessageCircleMore />, href: '/chat' },
+        { title: 'Ruta de aprendizaje', icon: <GitMerge />, href: '/roadmap' },
+        { title: 'Notas', icon: <FileIcon />, href: '/notes' },
+        { title: 'Calendario', icon: <Calendar />, href: '/calendar' },
+        { title: 'Configuración', icon: <CogIcon />, href: '/settings' },
+
+      ]}
+        mobileClassName="fixed left-1/2 -translate-x-1/2 bottom-4 z-50"
+        desktopClassName="fixed left-1/2 -translate-x-1/2 bottom-4 z-50 backdrop-blur-lg bg-white/30 backdrop-blur-sm border border-gray-200 rounded-lg"
+      />
+ */}
     </div>
   )
 }

@@ -397,21 +397,21 @@ export function ScrumRoadmap({ onTopicSelect, completedTopics }: ScrumRoadmapPro
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         fitView
-        className="bg-gradient-to-b from-slate-50 via-blue-50 to-purple-50"
+       /*  className="bg-gradient-to-b from-slate-50 via-blue-50 to-purple-50" */
         minZoom={0.2}
         maxZoom={1.0}
         defaultViewport={{ x: 0, y: 0, zoom: 0.6 }}
       >
         <Controls className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-lg" />
-        <MiniMap
+        {/* <MiniMap
           className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-lg"
           nodeColor={(node) => {
             if (completedTopics.has(node.id)) return "#10b981"
             if (node.type === "timeline") return "#6366f1"
             return "#6b7280"
           }}
-        />
-        <Background  gap={30} size={1} color="#e2e8f0" />
+        /> */}
+      {/*   <Background  gap={30} size={1} color="#e2e8f0" /> */}
       </ReactFlow>
     </div>
   )
