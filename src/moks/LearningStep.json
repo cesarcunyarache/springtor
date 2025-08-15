@@ -1,0 +1,44 @@
+[
+  {
+    "id": "8d4c5c27-32d6-4b5b-b24b-bb8c7c3d7c91",
+    "name": "Inicio",
+    "description": "Punto de partida del aprendizaje de Scrum.",
+    "createdAt": "2025-08-11T00:00:00.000Z",
+    "updatedAt": "2025-08-11T00:00:00.000Z"
+  },
+  {
+    "id": "3fa0c25f-b87b-47f4-a763-b9d1d487ef51",
+    "name": "Fundamentos",
+    "description": "Principios y valores esenciales de Scrum.",
+    "createdAt": "2025-08-11T00:00:00.000Z",
+    "updatedAt": "2025-08-11T00:00:00.000Z"
+  },
+  {
+    "id": "13f7cf90-7357-4b9a-8f67-99a1e92d8b2b",
+    "name": "Roles",
+    "description": "Roles esenciales dentro de Scrum.",
+    "createdAt": "2025-08-11T00:00:00.000Z",
+    "updatedAt": "2025-08-11T00:00:00.000Z"
+  },
+  {
+    "id": "a4a226d6-ef16-4b52-8b28-d7cf22992eb1",
+    "name": "Eventos",
+    "description": "Eventos clave para el desarrollo ágil.",
+    "createdAt": "2025-08-11T00:00:00.000Z",
+    "updatedAt": "2025-08-11T00:00:00.000Z"
+  },
+  {
+    "id": "29b5c88b-23e8-4e69-8d4a-3b0b0e62a8e5",
+    "name": "Artefactos",
+    "description": "Artefactos que ayudan a gestionar el trabajo.",
+    "createdAt": "2025-08-11T00:00:00.000Z",
+    "updatedAt": "2025-08-11T00:00:00.000Z"
+  },
+  {
+    "id": "f25b62ff-3f15-4829-9238-780cc5464971",
+    "name": "Maestría",
+    "description": "Dominio completo del marco Scrum.",
+    "createdAt": "2025-08-11T00:00:00.000Z",
+    "updatedAt": "2025-08-11T00:00:00.000Z"
+  }
+]

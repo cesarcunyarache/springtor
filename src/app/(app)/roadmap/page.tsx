@@ -1,6 +1,5 @@
-"use client"
 
-import { useState } from "react"
+/* import { useState } from "react" */
 import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Trophy, Bird, Target, FileIcon, CogIcon, HelpCircleIcon, Home, MessageCircleMore, GitMerge, Calendar } from "lucide-react"
@@ -19,17 +18,24 @@ import { Dock } from "@/components/dock"
 import { DockDemo } from "@/components/dock-demo"
 import { ReactFlowProvider } from "@xyflow/react"
 import FlowWithProvider from "@/providers/reactflow-provider"
+import { getLearningSteps, getTopicsByRoadmapId } from "@/lib/db/queries/learning"
 
-export default function ScrumLearningAgent() {
-  const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
-  const [completedTopics, setCompletedTopics] = useState<Set<string>>(new Set())
+export default async function Page() {
+  /* const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
+  const [completedTopics, setCompletedTopics] = useState<Set<string>>(new Set()) */
 
-  const handleTopicComplete = (topicId: string) => {
+  /* const handleTopicComplete = (topicId: string) => {
     setCompletedTopics((prev) => new Set([...prev, topicId]))
-  }
+  } */
 
-  const totalTopics = 12
-  const progress = (completedTopics.size / totalTopics) * 100
+  const topics = await getTopicsByRoadmapId("3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f")
+
+  const learningSteps = await getLearningSteps()
+
+  console.log(topics);
+
+/*   const totalTopics = 12
+  const progress = (completedTopics.size / totalTopics) * 100 */
 
   return (
     <div className="min-h-screen ">
@@ -45,14 +51,14 @@ export default function ScrumLearningAgent() {
                 Springtor
               </h1>
             </div>
-            <div className="flex items-center space-x-4">
+           {/*  <div className="flex items-center space-x-4">
               <Trophy className="w-5 h-5 text-yellow-500" />
               <span className="text-sm font-medium ">
                 {completedTopics.size}/{totalTopics}
               </span>
               <Progress value={progress} className="w-32" />
               <span className="text-sm font-bold ">{Math.round(progress)}%</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -83,11 +89,15 @@ export default function ScrumLearningAgent() {
 
  
 
-            <ScrumRoadmap
-              onTopicSelect={setSelectedTopic}
-              completedTopics={completedTopics}
+             <ScrumRoadmap
+
+             topics={topics}
+             learningSteps={learningSteps}
+             
+            /*   onTopicSelect={(topicId) => {}} */
+            /*   completedTopics={completedTopics} */
             />
- 
+  
 
 
 
@@ -112,18 +122,18 @@ export default function ScrumLearningAgent() {
       </div>
 
       {/* Modal de Detalle del Tema */}
-      <Dialog open={!!selectedTopic} onOpenChange={(open) => !open && setSelectedTopic(null)}>
+     {/*  <Dialog open={!!selectedTopic} onOpenChange={(open) => !open && setSelectedTopic(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] w-96 h-[60vh] overflow-y-auto md:h-[60vh] md:w-[2xl]">
           {selectedTopic && (
             <TopicDetail
               topicId={selectedTopic}
               onComplete={handleTopicComplete}
               isCompleted={completedTopics.has(selectedTopic)}
-            /* onClose={() => setSelectedTopic(null)} */
+            /* onClose={() => setSelectedTopic(null)} 
             />
           )}
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       {/*  <FloatingDock items={[
         { title: 'Home', icon: <Home />, href: '/home' },

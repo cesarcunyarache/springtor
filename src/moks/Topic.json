@@ -1,0 +1,58 @@
+[
+  {
+    "id": "4a3c07e3-f1a8-4c3c-a5ec-bc6c7d68b9c3",
+    "roadmapId": "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
+    "parentId": null,
+    "slug": "introduccion-a-scrum",
+    "title": "Introducción a Scrum",
+    "description": "Principios y valores ágiles",
+    "content": null,
+    "icon": "🎯",
+    "level": 1,
+    "stepId": "8d4c5c27-32d6-4b5b-b24b-bb8c7c3d7c91",
+    "createdAt": "2025-08-11T00:00:00.000Z",
+    "updatedAt": "2025-08-11T00:00:00.000Z"
+  },
+  {
+    "id": "b4f0d21e-93a1-4df3-95e4-cff6f48e6f10",
+    "roadmapId": "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
+    "parentId": null,
+    "slug": "mentalidad-agil",
+    "title": "Mentalidad Ágil",
+    "description": "Manifiesto y valores",
+    "content": null,
+    "icon": "🧠",
+    "level": 1,
+    "stepId": "3fa0c25f-b87b-47f4-a763-b9d1d487ef51",
+    "createdAt": "2025-08-11T00:00:00.000Z",
+    "updatedAt": "2025-08-11T00:00:00.000Z"
+  },
+  {
+    "id": "a5a95c08-9c71-49b2-8b59-0c1b9d3e9e3b",
+    "roadmapId": "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
+    "parentId": null,
+    "slug": "product-owner",
+    "title": "Product Owner",
+    "description": "Dueño del producto",
+    "content": null,
+    "icon": "👑",
+    "level": 2,
+    "stepId": "13f7cf90-7357-4b9a-8f67-99a1e92d8b2b",
+    "createdAt": "2025-08-11T00:00:00.000Z",
+    "updatedAt": "2025-08-11T00:00:00.000Z"
+  },
+  {
+    "id": "5c40b2dd-0c07-44e1-b49e-3197765ad798",
+    "roadmapId": "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
+    "parentId": null,
+    "slug": "scrum-master",
+    "title": "Scrum Master",
+    "description": "Facilitador del proceso",
+    "content": null,
+    "icon": "🎓",
+    "level": 2,
+    "stepId": "13f7cf90-7357-4b9a-8f67-99a1e92d8b2b",
+    "createdAt": "2025-08-11T00:00:00.000Z",
+    "updatedAt": "2025-08-11T00:00:00.000Z"
+  }
+]

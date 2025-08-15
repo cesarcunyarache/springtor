@@ -18,6 +18,9 @@ import ReactFlow, {
 import "reactflow/dist/style.css"
 import { CustomNode } from "./custom-node"
 import { TimelineNode } from "./timeline-node"
+import { LearningStep, Topic } from "@/type"
+import { generateNodesWithSteps } from "./utils/roadmap"
+
 
 const nodeTypes = {
   custom: CustomNode,
@@ -25,11 +28,13 @@ const nodeTypes = {
 }
 
 interface ScrumRoadmapProps {
-  onTopicSelect: (topicId: string) => void
-  completedTopics: Set<string>
+  topics: Topic[]
+  learningSteps: LearningStep[]
+ /*  onTopicSelect: (topicId: string) => void */
+  /* completedTopics: Set<string> */
 }
 
-const initialNodes: Node[] = [
+/* const initialNodes: Node[] = [
   // Timeline spine nodes (invisible connectors) - más espaciados
   { id: "spine-1", type: "timeline", position: { x: 500, y: 50 }, data: { label: "Inicio" } },
   { id: "spine-2", type: "timeline", position: { x: 500, y: 250 }, data: { label: "Fundamentos" } },
@@ -49,7 +54,7 @@ const initialNodes: Node[] = [
       icon: "🎯",
       category: "foundation",
       level: 1,
-      position: Position.Right,
+      
     },
   },
   {
@@ -216,7 +221,7 @@ const initialNodes: Node[] = [
       position: Position.Left,
     },
   },
-]
+] */
 
 const initialEdges: Edge[] = [
   // Timeline spine (main vertical line)
@@ -358,23 +363,31 @@ const initialEdges: Edge[] = [
   },
 ]
 
-export function ScrumRoadmap({ onTopicSelect, completedTopics }: ScrumRoadmapProps) {
+
+
+export function ScrumRoadmap({ /* onTopicSelect */ /* completedTopics */ topics, learningSteps }: ScrumRoadmapProps) {
+
+   const initialNodes = generateNodesWithSteps(learningSteps, topics);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Topic>(initialEdges)
 
   const onConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), [setEdges])
 
-  const onNodeClick = useCallback(
+ /*  const onNodeClick = useCallback(
     (event: React.MouseEvent, node: Node) => {
       if (node.type === "custom") {
         onTopicSelect(node.id)
       }
     },
     [onTopicSelect],
-  )
+  ) */
+
+    const onNodeClick = () => {
+      console.log("clicked");
+    }
 
   // Update nodes with completion status
-  useEffect(() => {
+  /* useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => ({
         ...node,
@@ -384,7 +397,7 @@ export function ScrumRoadmap({ onTopicSelect, completedTopics }: ScrumRoadmapPro
         },
       })),
     )
-  }, [completedTopics, setNodes])
+  }, [completedTopics, setNodes]) */
 
   return (
     <div className="h-[90vh] w-full rounded-xl overflow-hidden">

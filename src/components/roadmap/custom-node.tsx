@@ -4,21 +4,14 @@ import { Handle, Position } from "reactflow"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle } from "lucide-react"
+import { Topic } from "@/type"
 
 interface CustomNodeProps {
-  data: {
-    label: string
-    description: string
-    icon: string
-    category: string
-    level: number
-    completed?: boolean
-    position: Position
-  }
+  data: Topic
 }
 
 export function CustomNode({ data }: CustomNodeProps) {
-  const { label, description, icon, category, level, completed, position } = data
+  const { title, description, icon, level, } = data
 
   const categoryColors = {
     foundation: "from-blue-400 to-blue-600",
@@ -38,12 +31,12 @@ export function CustomNode({ data }: CustomNodeProps) {
 
   return (
     <div className="relative">
-      <Handle type="target" position={position} className="w-3 h-3 border-2 border-white" />
+     {/*  <Handle type="target" position={position} className="w-3 h-3 border-2 border-white" /> */}
 
       <Card
         className={`
         p-4 w-[180px] cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl
-        ${completed ? "bg-green-50 border-green-300 shadow-green-200/50" : "bg-white/90 backdrop-blur-sm border-gray-200"}
+       /*  ${false ? "bg-green-50 border-green-300 shadow-green-200/50" : "bg-white/90 backdrop-blur-sm border-gray-200"} */
         hover:border-blue-400 shadow-xl
       `}
       >
@@ -53,13 +46,13 @@ export function CustomNode({ data }: CustomNodeProps) {
             <div
               className={`
               w-12 h-12 rounded-full flex items-center justify-center text-xl
-              bg-gradient-to-r ${categoryColors[category as keyof typeof categoryColors]}
+              bg-gradient-to-r ${categoryColors['foundation']}
               shadow-lg transform transition-transform hover:rotate-12
             `}
             >
               {icon}
             </div>
-            {completed && (
+            {false && (
               <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
                 <CheckCircle className="w-5 h-5 text-white" />
               </div>
@@ -67,7 +60,7 @@ export function CustomNode({ data }: CustomNodeProps) {
           </div>
 
           {/* Title */}
-          <h3 className="font-bold text-sm leading-tight">{label}</h3>
+          <h3 className="font-bold text-sm leading-tight">{description}</h3>
 
           {/* Description */}
           <p className="text-xs text-gray-600 leading-relaxed">{description}</p>
@@ -75,18 +68,18 @@ export function CustomNode({ data }: CustomNodeProps) {
           {/* Level and Category */}
           <div className="flex items-center justify-between">
             <Badge
-              className={`text-xs ${categoryBadgeColors[category as keyof typeof categoryBadgeColors]} ${
-                completed ? "bg-green-100 text-green-800 border-green-200" : ""
+              className={`text-xs ${categoryBadgeColors['foundation']} ${
+                false ? "bg-green-100 text-green-800 border-green-200" : ""
               }`}
             >
               Nivel {level}
             </Badge>
-            <span className="text-xs text-gray-500 capitalize">{category}</span>
+            <span className="text-xs text-gray-500 capitalize">{'foundation'}</span>
           </div>
         </div>
 
         {/* Glow effect for completed */}
-        {completed && (
+        {false && (
           <div className="absolute inset-0 bg-gradient-to-r from-green-100/40 to-emerald-100/40 rounded-lg pointer-events-none animate-pulse" />
         )}
 
@@ -94,7 +87,7 @@ export function CustomNode({ data }: CustomNodeProps) {
         <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400/0 to-purple-400/0 hover:from-blue-400/10 hover:to-purple-400/10 transition-all duration-300 pointer-events-none" />
       </Card>
 
-      <Handle type="source" position={position} className="w-3 h-3 border-2 border-white" />
+      {/* <Handle type="source" position={position} className="w-3 h-3 border-2 border-white" /> */}
     </div>
   )
 }
