@@ -15,6 +15,12 @@ import {
   PlayCircle,
   X,
   Check,
+  HelpCircle,
+  Star,
+  Settings,
+  BookOpen,
+  MessageSquare,
+  StickyNote,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -30,7 +36,7 @@ import {
 
 
 
-import { Course, LessonCompletion } from "@/type";
+import { Course, LessonCompletion, Topic } from "@/type";
 import { CourseProgress } from "../CourseProgress";
 import DarkModeToggle from "../DarkModeToggle";
 import { calculateCourseProgress } from "@/lib/courseProgress";
@@ -38,7 +44,7 @@ import { calculateCourseProgress } from "@/lib/courseProgress";
 
 
 interface SidebarProps {
-  course: Course;
+  course: Topic;
   completedLessons?: LessonCompletion[];
 }
 
@@ -46,15 +52,15 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
   const pathname = usePathname();
   const { isOpen, toggle, close } = useSidebar();
   const [isMounted, setIsMounted] = useState(false);
-  const [openModules, setOpenModules] = useState<number[]>([]);
+  const [openModules, setOpenModules] = useState<string[]>([]);
 
   useEffect(() => {
     if (pathname && course?.modules) {
       const currentModuleId = course.modules.find((module) =>
-        module.lessons.some(
+        module.lessons?.some(
           (lesson) =>
             pathname ===
-            `/dashboard/courses/${course.id}/lessons/${lesson.id}`
+            `/tema/${course.id}/lessons/${lesson.id}`
         )
       )?.id;
 
@@ -72,10 +78,11 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
     return null;
   }
 
-  const progress = calculateCourseProgress(course.modules, completedLessons);
+  const progress = calculateCourseProgress(course!.modules!, completedLessons);
 
   const SidebarContent = () => (
     <div className="h-full flex flex-col">
+
       <div className="p-4 lg:p-6 border-b flex flex-col gap-y-4">
         <div className="flex items-center justify-between">
           <Link
@@ -85,7 +92,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
             <ArrowLeft className="h-4 w-4" />
             <div className="flex items-center gap-x-2">
               <Library className="h-4 w-4" />
-              <span>Course Library</span>
+              <span>Ruta de Aprendizaje</span>
             </div>
           </Link>
           <div className="space-x-2">
@@ -116,10 +123,10 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
             className="w-full space-y-4"
             value={openModules.map(String)}
             onValueChange={(values) =>
-              setOpenModules(values.map((v) => parseInt(v)))
+              setOpenModules(values.map((v) => v))
             }
           >
-            {course.modules.map((module, moduleIndex) => (
+            {course?.modules?.map((module, moduleIndex) => (
               <AccordionItem
                 key={module.id}
                 value={module.id.toString()}
@@ -138,17 +145,17 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
                         {module.title}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {module.lessons.length} lessons
+                        {module?.lessons?.length} lessons
                       </p>
                     </div>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="pt-2">
                   <div className="flex flex-col space-y-1">
-                    {module.lessons.map((lesson, lessonIndex) => {
+                    {module?.lessons?.map((lesson, lessonIndex) => {
                       const isActive =
                         pathname ===
-                        `/dashboard/courses/${course.id}/lessons/${lesson.id}`;
+                        `/tema/${course.id}/lessons/${lesson.id}`;
                       const isCompleted = completedLessons.some(
                         (completion) => completion.lesson.id === lesson.id
                       );
@@ -157,7 +164,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
                         <Link
                           key={lesson.id}
                           prefetch={false}
-                          href={`/dashboard/courses/${course.id}/lessons/${lesson.id}`}
+                          href={`/tema/${course.id}/lessons/${lesson.id}`}
                           onClick={close}
                           className={cn(
                             "flex items-center pl-8 lg:pl-10 pr-2 lg:pr-4 py-2 gap-x-2 lg:gap-x-4 group hover:bg-muted/50 transition-colors relative",
@@ -184,7 +191,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
                             className={cn(
                               "text-sm line-clamp-2 min-w-0",
                               isCompleted &&
-                                "text-muted-foreground line-through decoration-green-500/50"
+                              "text-muted-foreground line-through decoration-green-500/50"
                             )}
                           >
                             {lesson.title}
@@ -202,6 +209,8 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
           </Accordion>
         </div>
       </ScrollArea>
+
+
     </div>
   );
 
@@ -257,7 +266,49 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
         <div className="h-full">
           <SidebarContent />
         </div>
+        
       </aside>
+
+{/* 
+      <div className="flex flex-col flex-1 ml-14 lg:ml-96">
+        <nav
+          className={cn(
+            "sticky top-0 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+          )}
+        >
+          <div className="flex h-16 items-center justify-between px-4 lg:px-6">
+            <div className="flex items-center gap-4 min-w-0 flex-1">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <BookOpen className="h-4 w-4" />
+                
+              </div>
+              <h1 className="font-semibold text-lg truncate">{course.title}</h1>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2">
+                <MessageSquare className="h-4 w-4" />
+                <span className="hidden md:inline">Preguntar</span>
+              </Button>
+
+              <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2">
+                <StickyNote className="h-4 w-4" />
+                <span className="hidden md:inline">Notas</span>
+              </Button>
+
+        
+              <div className="flex sm:hidden items-center gap-1">
+                <Button variant="ghost" size="icon">
+                  <MessageSquare className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <StickyNote className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div> */}
 
       {isOpen && (
         <div

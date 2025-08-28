@@ -34,7 +34,7 @@ interface ScrumRoadmapProps {
   /* completedTopics: Set<string> */
 }
 
-/* const initialNodes: Node[] = [
+const initialNodes: Node[] = [
   // Timeline spine nodes (invisible connectors) - más espaciados
   { id: "spine-1", type: "timeline", position: { x: 500, y: 50 }, data: { label: "Inicio" } },
   { id: "spine-2", type: "timeline", position: { x: 500, y: 250 }, data: { label: "Fundamentos" } },
@@ -221,15 +221,15 @@ interface ScrumRoadmapProps {
       position: Position.Left,
     },
   },
-] */
+]
 
 const initialEdges: Edge[] = [
   // Timeline spine (main vertical line)
   {
     id: "spine-1-2",
-    source: "spine-1",
-    target: "spine-2",
-    style: { stroke: "#6366f1", strokeWidth: 4 },
+    source: "8d4c5c27-32d6-4b5b-b24b-bb8c7c3d7c91",
+    target: "3fa0c25f-b87b-47f4-a763-b9d1d487ef51",
+    /* style: { stroke: "#6366f1", strokeWidth: 4 }, */
     type: "straight",
   },
   {
@@ -264,16 +264,16 @@ const initialEdges: Edge[] = [
   // Foundation branches
   {
     id: "spine-2-intro",
-    source: "spine-2",
-    target: "intro-scrum",
-    style: { stroke: "#3b82f6", strokeWidth: 2, strokeDasharray: "5,5" },
+    source: "3fa0c25f-b87b-47f4-a763-b9d1d487ef51",
+    target: "agile-mindset",
+    /* style: { stroke: "#3b82f6", strokeWidth: 2, strokeDasharray: "5,5" }, */
     animated: true,
   },
   {
     id: "spine-2-agile",
-    source: "spine-2",
+    source: "3fa0c25f-b87b-47f4-a763-b9d1d487ef51",
     target: "agile-mindset",
-    style: { stroke: "#3b82f6", strokeWidth: 2, strokeDasharray: "5,5" },
+    /* style: { stroke: "#3b82f6", strokeWidth: 2, strokeDasharray: "5,5" }, */
     animated: true,
   },
 
@@ -282,14 +282,14 @@ const initialEdges: Edge[] = [
     id: "spine-3-po",
     source: "spine-3",
     target: "product-owner",
-    style: { stroke: "#10b981", strokeWidth: 2, strokeDasharray: "5,5" },
-    animated: true,
+  /*   style: { stroke: "#10b981", strokeWidth: 2, strokeDasharray: "5,5" }, */
+ /*    animated: true, */
   },
   {
     id: "spine-3-sm",
     source: "spine-3",
     target: "scrum-master",
-    style: { stroke: "#10b981", strokeWidth: 2, strokeDasharray: "5,5" },
+  /*   style: { stroke: "#10b981", strokeWidth: 2, strokeDasharray: "5,5" }, */
     animated: true,
   },
   {
@@ -367,9 +367,9 @@ const initialEdges: Edge[] = [
 
 export function ScrumRoadmap({ /* onTopicSelect */ /* completedTopics */ topics, learningSteps }: ScrumRoadmapProps) {
 
-   const initialNodes = generateNodesWithSteps(learningSteps, topics);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Topic>(initialEdges)
+   const { nodes: initialNode, edges: init } = generateNodesWithSteps(learningSteps, topics);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNode);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Topic>(init);
 
   const onConnect = useCallback((params: Connection) => setEdges((eds) => addEdge(params, eds)), [setEdges])
 
@@ -410,21 +410,21 @@ export function ScrumRoadmap({ /* onTopicSelect */ /* completedTopics */ topics,
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         fitView
-       /*  className="bg-gradient-to-b from-slate-50 via-blue-50 to-purple-50" */
+        className="bg-gradient-to-b from-slate-50 via-blue-50 to-purple-50"
         minZoom={0.2}
         maxZoom={1.0}
         defaultViewport={{ x: 0, y: 0, zoom: 0.6 }}
       >
         <Controls className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-lg" />
-        {/* <MiniMap
+        <MiniMap
           className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-lg"
           nodeColor={(node) => {
-            if (completedTopics.has(node.id)) return "#10b981"
+          /*   if (tre.has(node.id)) return "#10b981" */
             if (node.type === "timeline") return "#6366f1"
             return "#6b7280"
           }}
-        /> */}
-      {/*   <Background  gap={30} size={1} color="#e2e8f0" /> */}
+        />
+        <Background  gap={30} size={1} color="#e2e8f0" />
       </ReactFlow>
     </div>
   )

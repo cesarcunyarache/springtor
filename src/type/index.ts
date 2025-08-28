@@ -29,8 +29,28 @@ export interface Topic extends BaseModel {
   icon: string | null;
   stepId: string | null;
   learningStep?: LearningStep | null;
+  modules?: Module[];
 }
 
+export interface Module extends BaseModel {
+  id: string;
+  topicId: string;
+  title: string;
+  description: string | null;
+  lessons?: Lesson[];
+}
+
+export interface Lesson extends BaseModel {
+  id: string;
+  moduleId: string;
+  title: string;
+  slug: string;
+  description: string | null;
+  videoUrl: string | null;
+  loomUrl: string | null;
+  content: Object | null;
+  module?: Module | null;
+}
 
 export interface UserProgress {
   userId: number;
@@ -50,22 +70,6 @@ export interface LessonProgress {
   lessonId: number;
   isCompleted: boolean;
   completionDate?: Date;
-}
-
-export interface Lesson {
-  id: number;
-  title: string;
-  slug: string;
-  description?: string;
-  videoUrl?: string;
-  loomUrl?: string;
-  content?: any;
-}
-
-export interface Module {
-  id: number;
-  title: string;
-  lessons: Lesson[];
 }
 
 export interface Category {

@@ -7,11 +7,13 @@ import { CheckCircle } from "lucide-react"
 import { Topic } from "@/type"
 
 interface CustomNodeProps {
-  data: Topic
+  data: Topic & { position: Position }
+
 }
 
 export function CustomNode({ data }: CustomNodeProps) {
-  const { title, description, icon, level, } = data
+
+  const { title, description, icon, level, position } = data
 
   const categoryColors = {
     foundation: "from-blue-400 to-blue-600",
@@ -31,7 +33,7 @@ export function CustomNode({ data }: CustomNodeProps) {
 
   return (
     <div className="relative">
-     {/*  <Handle type="target" position={position} className="w-3 h-3 border-2 border-white" /> */}
+      <Handle type="target" position={position} className="w-3 h-3 border-2 border-white" />
 
       <Card
         className={`
@@ -87,7 +89,7 @@ export function CustomNode({ data }: CustomNodeProps) {
         <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400/0 to-purple-400/0 hover:from-blue-400/10 hover:to-purple-400/10 transition-all duration-300 pointer-events-none" />
       </Card>
 
-      {/* <Handle type="source" position={position} className="w-3 h-3 border-2 border-white" /> */}
+      <Handle type="source" position={position} className="w-3 h-3 border-2 border-white" />
     </div>
   )
 }

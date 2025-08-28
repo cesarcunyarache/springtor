@@ -7,7 +7,6 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { db } from "../index";
 import dotenv from "dotenv";
 
-
 // Datos iniciales
 const roadmaps = [
   {
@@ -209,13 +208,106 @@ const topics = [
   },
 ];
 
+const modules = [
+  {
+    id: "mod-intro-scrum-1",
+    topicId: "intro-scrum",
+    title: "Introducción a Scrum - Módulo 1",
+    description: "Primer módulo de Introducción a Scrum",
+  },
+  {
+    id: "mod-intro-scrum-2",
+    topicId: "intro-scrum",
+    title: "Introducción a Scrum - Módulo 2",
+    description: "Segundo módulo de Introducción a Scrum",
+  },
+  {
+    id: "mod-agile-mindset-1",
+    topicId: "agile-mindset",
+    title: "Mentalidad Ágil - Módulo 1",
+    description: "Primer módulo de Mentalidad Ágil",
+  },
+  {
+    id: "mod-agile-mindset-2",
+    topicId: "agile-mindset",
+    title: "Mentalidad Ágil - Módulo 2",
+    description: "Segundo módulo de Mentalidad Ágil",
+  },
+];
+
+const lessons = [
+  {
+    id: "lesson-intro-scrum-1-1",
+    moduleId: "mod-intro-scrum-1",
+    title: "Lección 1 - Conceptos básicos",
+    slug: "intro-scrum-mod1-lesson1",
+    description: "Primera lección del módulo 1 de Introducción a Scrum",
+    videoUrl: null,
+    loomUrl: null,
+    content: "",
+  },
+  {
+    id: "lesson-intro-scrum-1-2",
+    moduleId: "mod-intro-scrum-1",
+    title: "Lección 2 - Valores ágiles",
+    slug: "intro-scrum-mod1-lesson2",
+    description: "Segunda lección del módulo 1 de Introducción a Scrum",
+    videoUrl: null,
+    loomUrl: null,
+    content: "",
+  },
+  {
+    id: "lesson-intro-scrum-1-3",
+    moduleId: "mod-intro-scrum-1",
+    title: "Lección 3 - Principios de Scrum",
+    slug: "intro-scrum-mod1-lesson3",
+    description: "Tercera lección del módulo 1 de Introducción a Scrum",
+    videoUrl: null,
+    loomUrl: null,
+    content: "",
+  },
+
+  {
+    id: "lesson-intro-scrum-2-1",
+    moduleId: "mod-intro-scrum-2",
+    title: "Lección 1 - Historia de Scrum",
+    slug: "intro-scrum-mod2-lesson1",
+    description: "Primera lección del módulo 2 de Introducción a Scrum",
+    videoUrl: null,
+    loomUrl: null,
+    content: "",
+  },
+  {
+    id: "lesson-intro-scrum-2-2",
+    moduleId: "mod-intro-scrum-2",
+    title: "Lección 2 - Marcos ágiles relacionados",
+    slug: "intro-scrum-mod2-lesson2",
+    description: "Segunda lección del módulo 2 de Introducción a Scrum",
+    videoUrl: null,
+    loomUrl: null,
+    content: "",
+  },
+  {
+    id: "lesson-intro-scrum-2-3",
+    moduleId: "mod-intro-scrum-2",
+    title: "Lección 3 - Aplicaciones de Scrum",
+    slug: "intro-scrum-mod2-lesson3",
+    description: "Tercera lección del módulo 2 de Introducción a Scrum",
+    videoUrl: null,
+    loomUrl: null,
+    content: "",
+  },
+];
+
+
 async function main() {
-  
- dotenv.config();
+  dotenv.config();
   console.log("🌱 Seeding...");
-  await db.insert(schema.roadmaps).values(roadmaps);
+/*   await db.insert(schema.roadmaps).values(roadmaps);
   await db.insert(schema.learningSteps).values(learningSteps);
-  await db.insert(schema.topics).values(topics);
+  await db.insert(schema.topics).values(topics); */
+  await db.insert(schema.modules).values(modules);
+  await db.insert(schema.lessons).values(lessons);
 
   console.log("✅ Seed successful");
   /* await client.end(); */
