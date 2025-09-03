@@ -19,6 +19,7 @@ import { DockDemo } from "@/components/dock-demo"
 import { ReactFlowProvider } from "@xyflow/react"
 import FlowWithProvider from "@/providers/reactflow-provider"
 import { getLearningSteps, getTopicsByRoadmapId } from "@/lib/db/queries/learning"
+import  { TimelineDemo } from "@/components/roadmap/timeline-scrum"
 
 export default async function Page() {
   /* const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
@@ -32,26 +33,25 @@ export default async function Page() {
 
   const learningSteps = await getLearningSteps()
 
-/*   console.log(topics); */
+  /*   console.log(topics); */
 
-/*   const totalTopics = 12
-  const progress = (completedTopics.size / totalTopics) * 100 */
+  /*   const totalTopics = 12
+    const progress = (completedTopics.size / totalTopics) * 100 */
 
   return (
     <div className="min-h-screen ">
-      {/* Header */}
-      <div className=" backdrop-blur-sm border-b bg-background/30 border-foreground sticky top-0 z-50">
+      <div className=" backdrop-blur-sm border-b bg-background/30 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-950 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-primary  rounded-xl flex items-center justify-center">
                 <Bird className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-950 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-gradient-to-r bg-clip-text">
                 Springtor
               </h1>
             </div>
-           {/*  <div className="flex items-center space-x-4">
+            {/* <div className="flex items-center space-x-4">
               <Trophy className="w-5 h-5 text-yellow-500" />
               <span className="text-sm font-medium ">
                 {completedTopics.size}/{totalTopics}
@@ -87,17 +87,18 @@ export default async function Page() {
           </div> */}
 
 
- 
+          <TimelineDemo />
 
-             <ScrumRoadmap
+
+          {/*  <ScrumRoadmap
 
              topics={topics}
              learningSteps={learningSteps}
              
-            /*   onTopicSelect={(topicId) => {}} */
-            /*   completedTopics={completedTopics} */
-            />
-  
+            /*   onTopicSelect={(topicId) => {}} 
+            /*   completedTopics={completedTopics}
+            /> */}
+
 
 
 
@@ -122,7 +123,7 @@ export default async function Page() {
       </div>
 
       {/* Modal de Detalle del Tema */}
-     {/*  <Dialog open={!!selectedTopic} onOpenChange={(open) => !open && setSelectedTopic(null)}>
+      {/*  <Dialog open={!!selectedTopic} onOpenChange={(open) => !open && setSelectedTopic(null)}>
         <DialogContent className="max-w-2xl max-h-[90vh] w-96 h-[60vh] overflow-y-auto md:h-[60vh] md:w-[2xl]">
           {selectedTopic && (
             <TopicDetail
