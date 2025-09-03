@@ -48,7 +48,7 @@ export interface Lesson extends BaseModel {
   description: string | null;
   videoUrl: string | null;
   loomUrl: string | null;
-  content: Object | null;
+  content: string | null;
   module?: Module | null;
 }
 

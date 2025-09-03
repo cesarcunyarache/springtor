@@ -23,56 +23,12 @@ export const instructors: Instructor[] = [
 
 // ----- Lecciones -----
 export const lessons: Lesson[] = [
-  {
-    id: 1,
-    title: "Introducción a React",
-    slug: "introduccion-react",
-    description: "Primeros pasos con React",
-    videoUrl: "https://youtube.com/...",
-    loomUrl: "",
-    content: [
-      "jajajjajaj",
-      "ksksksksksk",
-      "Hola, soy un video de React",
-      "Este es un video de React",
-      "Este es un video de React",
-    ]
-  },
-  {
-    id: 2,
-    title: "Introducción a React",
-    slug: "introduccion-react",
-    description: "Primeros pasos con React",
-    videoUrl: "https://youtube.com/...",
-    loomUrl: "",
-    content: [
-      "jajajjajaj",
-      "ksksksksksk",
-      "Hola, soy un video de React",
-      "Este es un video de React",
-      "Este es un video de React",
-    ]
-  },
-  {
-    id: 3,
-    title: "Introducción a React",
-    slug: "introduccion-react",
-    description: "Primeros pasos con React",
-    videoUrl: "https://youtube.com/...",
-    loomUrl: "",
-    content: [
-      "jajajjajaj",
-      "ksksksksksk",
-      "Hola, soy un video de React",
-      "Este es un video de React",
-      "Este es un video de React",
-    ]
-  }
+  
 ];
 
 // ----- Módulos -----
 export const modules: Module[] = [
-  { id: 1, title: "Fundamentos de React", lessons: lessons }
+ 
 ];
 
 // ----- Cursos -----
@@ -162,8 +118,7 @@ export function getModulesByCourseId(courseId: number): Module[] {
 
 // Obtener lecciones de un módulo
 export function getLessonsByModuleId(moduleId: number): Lesson[] {
-  const moduleVar = modules.find((m) => m.id === moduleId);
-  return moduleVar ? moduleVar.lessons : [];
+  return [];
 }
 
 // Obtener inscripciones por estudiante
@@ -194,8 +149,7 @@ export async function getCourseProgress(
 
   // Todas las lecciones del curso
   const totalLessons = course.modules.reduce(
-    (acc, mod) => acc + mod.lessons.length,
-    0
+    (acc, mod) => acc,
   );
 
   // Lecciones completadas por el estudiante
@@ -204,11 +158,7 @@ export async function getCourseProgress(
   );
 
   // Porcentaje de progreso
-  const percentage =
-    totalLessons > 0
-      ? Math.round((completedLessons.length / totalLessons) * 100)
-      : 0;
-
+  const percentage = Math.round((completedLessons.length / 0) * 100);
   return { percentage, completedLessons };
 }
 
@@ -224,7 +174,7 @@ export async function getLessonCompletionStatusAction(
   if (!student) return false;
 
   return lessonCompletions.some(
-    (lc) => lc.student.id === student.id && lc.lesson.id === lessonId
+    (lc) => lc.student.id === student.id && lc.lesson.id === "sjjs"
   );
 }
 
@@ -234,14 +184,12 @@ export async function completeLessonAction(
   clerkId: string
 ): Promise<LessonCompletion | null> {
   const student = students.find((s) => s.clerkId === clerkId);
-  const lesson = lessons.find((l) => l.id === lessonId);
+  const lesson = lessons.find((l) => l.id === "e");
   if (!student || !lesson) return null;
 
-  const moduleVar = modules.find((m) =>
-    m.lessons.some((l) => l.id === lessonId)
-  );
+  const moduleVar = "jjd"
   const course = courses.find((c) =>
-    c.modules.some((m) => m.id === moduleVar?.id)
+    c.modules.some((m) => m.id === "ksks")
   );
 
   if (!moduleVar || !course) return null;
@@ -250,7 +198,7 @@ export async function completeLessonAction(
   const alreadyCompleted = lessonCompletions.find(
     (lc) =>
       lc.student.id === student.id &&
-      lc.lesson.id === lessonId &&
+      "jdjd" &&
       lc.course.id === course.id
   );
   if (alreadyCompleted) return alreadyCompleted;
@@ -259,7 +207,7 @@ export async function completeLessonAction(
     id: lessonCompletionId++,
     student,
     lesson,
-    module: moduleVar,
+    module: { id: "ksks" } as Module,
     course,
     completedAt: new Date().toISOString(),
   };
@@ -276,7 +224,7 @@ export async function uncompleteLessonAction(
   if (!student) return false;
 
   const index = lessonCompletions.findIndex(
-    (lc) => lc.student.id === student.id && lc.lesson.id === lessonId
+    (lc) => lc.student.id === student.id && lc.lesson.id === "j"
   );
 
   if (index === -1) return false;
@@ -286,17 +234,15 @@ export async function uncompleteLessonAction(
 }
 
 export function getLessonById(lessonId: number) {
-  const lesson = lessons.find((l) => l.id === lessonId);
+  const lesson = lessons.find((l) => l.id === "ee");
   if (!lesson) return null;
 
   // Buscar módulo
-  const moduleVar = modules.find((m) =>
-    m.lessons.some((ml) => ml.id === lesson.id)
-  );
+  const moduleVar = "jjd"
 
   // Buscar curso
   const course = courses.find((c) =>
-    c.modules.some((m) => m.id === moduleVar?.id)
+    c.modules.some((m) => m.id === "ksks")
   );
 
   return {
