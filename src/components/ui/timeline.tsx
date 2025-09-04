@@ -45,8 +45,9 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
                     Este es un recorrido por las etapas clave para comprender y aplicar Scrum,
                     desde sus fundamentos hasta su implementación avanzada.
                 </p>
-
             </div>
+
+
 
             <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
                 {data.map((item, index) => (

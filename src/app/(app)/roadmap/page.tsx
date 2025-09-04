@@ -19,7 +19,7 @@ import { DockDemo } from "@/components/dock-demo"
 import { ReactFlowProvider } from "@xyflow/react"
 import FlowWithProvider from "@/providers/reactflow-provider"
 import { getLearningSteps, getTopicsByRoadmapId } from "@/lib/db/queries/learning"
-import  { TimelineDemo } from "@/components/roadmap/timeline-scrum"
+import { TimelineDemo } from "@/components/roadmap/timeline-scrum"
 
 export default async function Page() {
   /* const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
@@ -39,7 +39,7 @@ export default async function Page() {
     const progress = (completedTopics.size / totalTopics) * 100 */
 
   return (
-    <div className="min-h-screen ">
+    <div className=" ">
       <div className=" backdrop-blur-sm border-b bg-background/30 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -64,10 +64,10 @@ export default async function Page() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-full mx-auto">
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
-          {/* Roadmap */}
-          {/*  <div className="xl:col-span-3">
+      <div className="max-w-full">
+
+        {/* Roadmap */}
+        {/*  <div className="xl:col-span-3">
             <Card className="p-6 bg-white/70 backdrop-blur-sm border-0 shadow-xl">
               <div className="mb-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Ruta de Aprendizaje</h2>
@@ -87,10 +87,10 @@ export default async function Page() {
           </div> */}
 
 
-          <TimelineDemo />
+        <TimelineDemo />
 
 
-          {/*  <ScrumRoadmap
+        {/*  <ScrumRoadmap
 
              topics={topics}
              learningSteps={learningSteps}
@@ -102,8 +102,8 @@ export default async function Page() {
 
 
 
-          {/* Placeholder */}
-          {/*  <div className="xl:col-span-1">
+        {/* Placeholder */}
+        {/*  <div className="xl:col-span-1">
             <Card className="p-6 bg-white/70 backdrop-blur-sm border-0 shadow-xl sticky top-24">
               <div className="text-center py-8">
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
@@ -119,8 +119,8 @@ export default async function Page() {
               </div>
             </Card>
           </div> */}
-        </div>
       </div>
+
 
       {/* Modal de Detalle del Tema */}
       {/*  <Dialog open={!!selectedTopic} onOpenChange={(open) => !open && setSelectedTopic(null)}>
