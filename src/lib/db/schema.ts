@@ -229,8 +229,8 @@ export const roadmaps = pgTable("roadmap", {
 
 export type Roadmap = InferSelectModel<typeof roadmaps>;
 
-export const roadmapRelations = relations(roadmaps,({one, many}) => ({
-   steps: many(learningSteps),
+export const roadmapRelations = relations(roadmaps, ({ one, many }) => ({
+  steps: many(learningSteps),
 }));
 
 export const learningSteps = pgTable("learningStep", {
@@ -246,13 +246,16 @@ export const learningSteps = pgTable("learningStep", {
 
 export type LearningStep = InferSelectModel<typeof learningSteps>;
 
-export const learningStepRelations = relations(learningSteps,({one, many }) => ({
-  roadmap: one(roadmaps, {
-    fields: [learningSteps.roadmapId],
-    references: [roadmaps.id],
-  }),
-  topics: many(topics),
-}));
+export const learningStepRelations = relations(
+  learningSteps,
+  ({ one, many }) => ({
+    roadmap: one(roadmaps, {
+      fields: [learningSteps.roadmapId],
+      references: [roadmaps.id],
+    }),
+    topics: many(topics),
+  })
+);
 
 export const topics = pgTable("topic", {
   id: text("id")
@@ -286,24 +289,25 @@ export const modules = pgTable("module", {
     .references(() => topics.id),
   title: varchar("title", { length: 255 }).notNull(),
   description: text("description"),
+  level: integer("level"),
   ...timestamps,
 });
 
 export type Module = InferSelectModel<typeof modules>;
 
-export const moduleRelations = relations(modules,({ one, many}) => ({
-	topic: one(topics, {
-		fields: [modules.topicId],
-		references: [topics.id],
-	}),
+export const moduleRelations = relations(modules, ({ one, many }) => ({
+  topic: one(topics, {
+    fields: [modules.topicId],
+    references: [topics.id],
+  }),
   lessons: many(lessons),
 }));
 
-export const topicRelations = relations(topics,({ one, many }) => ({
-	parent: one(topics, {
-		fields: [topics.parentId],
-		references: [topics.id],
-	}),
+export const topicRelations = relations(topics, ({ one, many }) => ({
+  parent: one(topics, {
+    fields: [topics.parentId],
+    references: [topics.id],
+  }),
   learningStep: one(learningSteps, {
     fields: [topics.stepId],
     references: [learningSteps.id],
@@ -324,13 +328,14 @@ export const lessons = pgTable("lesson", {
   videoUrl: varchar("videoUrl", { length: 255 }),
   loomUrl: varchar("loomUrl", { length: 255 }),
   content: text("content"),
+  level: integer("level"),
   ...timestamps,
 });
-export const lessonRelations = relations(lessons,({ one, many }) => ({
-	module: one(modules, {
-		fields: [lessons.moduleId],
-		references: [modules.id],
-	}),
+export const lessonRelations = relations(lessons, ({ one, many }) => ({
+  module: one(modules, {
+    fields: [lessons.moduleId],
+    references: [modules.id],
+  }),
 }));
 
 export type Lesson = InferSelectModel<typeof lessons>;
@@ -379,4 +384,3 @@ export const questions = pgTable("questions", {
 });
 
 export type Question = InferSelectModel<typeof questions>;
-
