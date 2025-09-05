@@ -108,7 +108,7 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
   ];
 
   return (
-    <div className="mt-20 m-6">
+    <div className="mt-20 m-10">
       <section className="">
         <MarkdownView content={lesson!.content!} />
       </section>

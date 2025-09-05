@@ -1,73 +1,59 @@
 import React from "react";
 import { Timeline } from "@/components/ui/timeline";
+import CardFlip from "./card-flip";
+import CardFlip2 from "./card-flip copy";
+import { LearningStep } from "@/type";
+import { IconName } from "lucide-react/dynamic";
 
-export function TimelineDemo() {
+export function TimelineDemo({ steps }: { steps: LearningStep[] }) {
+
+  const dataFound = steps.map((step) => ({
+    title: step.name,
+    content: (
+      <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
+        {
+          step.topics?.map((topic) => (
+            <CardFlip2 
+              key={topic.id}
+              title={topic.title}
+              subtitle={topic.subtitle ?? ""}
+              description={topic.description ?? ""}
+              features={topic.features ?? []}
+              icon={topic.icon as IconName ?? "rocket"}
+              id={topic.id}
+            />
+          ))
+
+        }
+      </div>
+    ),
+  }));
   const data = [
     {
       title: "Inicio",
       content: (
+
         <div>
-          <p className="mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
-            Introducción a Scrum: sus orígenes, valores ágiles y pilares
-            principales. Se presenta la visión general del marco.
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <img
-              src="https://assets.aceternity.com/templates/startup-1.webp"
-              alt="Scrum inicio 1"
-              className="h-20 w-full rounded-lg object-cover shadow-md md:h-44 lg:h-60"
-            />
-            <img
-              src="https://assets.aceternity.com/templates/startup-2.webp"
-              alt="Scrum inicio 2"
-              className="h-20 w-full rounded-lg object-cover shadow-md md:h-44 lg:h-60"
-            />
-            <img
-              src="https://assets.aceternity.com/templates/startup-3.webp"
-              alt="Scrum inicio 3"
-              className="h-20 w-full rounded-lg object-cover shadow-md md:h-44 lg:h-60"
-            />
-            <img
-              src="https://assets.aceternity.com/templates/startup-4.webp"
-              alt="Scrum inicio 4"
-              className="h-20 w-full rounded-lg object-cover shadow-md md:h-44 lg:h-60"
-            />
-          </div>
+
+          <CardFlip2 
+            title="Introducción a Scrum"
+            subtitle="sus orígenes, valores ágiles y pilares" 
+            icon="rocket"
+            id="intro-scrum"
+          />
         </div>
+
       ),
     },
     {
       title: "Fundamentos",
       content: (
-        <div>
-          <p className="mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
-            Se estudian los roles, eventos y artefactos de Scrum. El foco está en
-            comprender cómo se organiza el trabajo y qué responsabilidades tiene
-            cada miembro del equipo.
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <img
-              src="https://assets.aceternity.com/pro/hero-sections.png"
-              alt="Scrum fundamentos 1"
-              className="h-20 w-full rounded-lg object-cover shadow-md md:h-44 lg:h-60"
-            />
-            <img
-              src="https://assets.aceternity.com/features-section.png"
-              alt="Scrum fundamentos 2"
-              className="h-20 w-full rounded-lg object-cover shadow-md md:h-44 lg:h-60"
-            />
-            <img
-              src="https://assets.aceternity.com/pro/bento-grids.png"
-              alt="Scrum fundamentos 3"
-              className="h-20 w-full rounded-lg object-cover shadow-md md:h-44 lg:h-60"
-            />
-            <img
-              src="https://assets.aceternity.com/cards.png"
-              alt="Scrum fundamentos 4"
-              className="h-20 w-full rounded-lg object-cover shadow-md md:h-44 lg:h-60"
-            />
-          </div>
-        </div>
+        <CardFlip
+          title="Introducción a Scrum"
+          subtitle="sus orígenes, valores ágiles y pilares"
+          description="Introducción a Scrum: sus orígenes, valores ágiles y pilares"
+          features={["UI/UX", "Modern Design", "Tailwind CSS", "Kokonut UI"]}
+        />
       ),
     },
     {
@@ -152,7 +138,7 @@ export function TimelineDemo() {
 
   return (
     <div className="relative w-full overflow-clip">
-      <Timeline data={data} />
+      <Timeline data={dataFound} />
     </div>
   );
 }

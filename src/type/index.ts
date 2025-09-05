@@ -7,7 +7,7 @@ export interface Roadmap extends BaseModel {
   id: string;
   slug: string;
   title: string;
-  description?: string;
+  description: string | null;
   topics?: Topic[];
 }
 
@@ -15,6 +15,9 @@ export interface LearningStep extends BaseModel {
   id: string;
   name: string;
   description: string | null;
+  level: number;
+  roadmapId: string | null;
+  topics?: Topic[];
 }
 
 export interface Topic extends BaseModel {
@@ -23,10 +26,13 @@ export interface Topic extends BaseModel {
   parentId: string | null;
   slug: string;
   title: string;
+  subtitle: string | null;
+  features: string[] | null;
   description: string | null;
   content: string | null;
   level: number;
   icon: string | null;
+  color: string | null;
   stepId: string | null;
   learningStep?: LearningStep | null;
   modules?: Module[];

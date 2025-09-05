@@ -229,16 +229,30 @@ export const roadmaps = pgTable("roadmap", {
 
 export type Roadmap = InferSelectModel<typeof roadmaps>;
 
+export const roadmapRelations = relations(roadmaps,({one, many}) => ({
+   steps: many(learningSteps),
+}));
+
 export const learningSteps = pgTable("learningStep", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
+  level: integer("level").notNull().default(1),
+  roadmapId: text("roadmapId").references(() => roadmaps.id),
   ...timestamps,
 });
 
 export type LearningStep = InferSelectModel<typeof learningSteps>;
+
+export const learningStepRelations = relations(learningSteps,({one, many }) => ({
+  roadmap: one(roadmaps, {
+    fields: [learningSteps.roadmapId],
+    references: [roadmaps.id],
+  }),
+  topics: many(topics),
+}));
 
 export const topics = pgTable("topic", {
   id: text("id")
@@ -250,9 +264,12 @@ export const topics = pgTable("topic", {
   parentId: text("parentId"),
   slug: varchar("slug", { length: 255 }).unique().notNull(),
   title: varchar("title", { length: 255 }).notNull(),
+  subtitle: varchar("subtitle", { length: 255 }),
   description: text("description"),
   content: text("content"),
+  features: text("features").array(),
   icon: varchar("icon", { length: 255 }),
+  color: varchar("color", { length: 255 }),
   level: integer("level").notNull(),
   stepId: text("stepId").references(() => learningSteps.id),
   ...timestamps,
@@ -336,3 +353,30 @@ export const lessonCompletions = pgTable("lessonCompletions", {
 });
 
 export type LessonCompletion = InferSelectModel<typeof lessonCompletions>;
+
+export const assessments = pgTable("assessments", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  title: text("title").notNull(),
+  description: text("description"),
+  ...timestamps,
+});
+
+export type Assessment = InferSelectModel<typeof assessments>;
+
+export const questions = pgTable("questions", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  assessmentId: text("assessmentId")
+    .notNull()
+    .references(() => assessments.id),
+  question: text("question").notNull(),
+  options: text("options").notNull().array(),
+  answer: text("answer").notNull(),
+  ...timestamps,
+});
+
+export type Question = InferSelectModel<typeof questions>;
+

@@ -5,7 +5,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { learningSteps, lessons, roadmaps, topics } from "../../schema";
 import { eq } from "drizzle-orm";
-import { LearningStep, Lesson, Topic } from "@/type";
+import { LearningStep, Lesson, Roadmap, Topic } from "@/type";
 import * as schema from "../../schema";
 import { db } from "../..";
 
@@ -27,6 +27,37 @@ export async function getTopicsByRoadmapId(
         learningStep: true,
       },
     });
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function getRoadmapById(roadmapId: string): Promise<Roadmap | null> {
+  try {
+    const found = await db.query.roadmaps.findFirst({
+      where: eq(roadmaps.id, roadmapId),
+      with: {
+        steps: true,
+      },
+    });
+
+    if (!found) return null;
+
+    return found;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function getStepsByRoadmapId(roadmapId: string): Promise<LearningStep[]> {
+  try {
+    return await db.query.learningSteps.findMany({
+      where: eq(learningSteps.roadmapId, roadmapId),
+      with: {
+        topics: true,
+      },
+    });
+
   } catch (error) {
     return [];
   }

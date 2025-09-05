@@ -18,7 +18,7 @@ import { Dock } from "@/components/dock"
 import { DockDemo } from "@/components/dock-demo"
 import { ReactFlowProvider } from "@xyflow/react"
 import FlowWithProvider from "@/providers/reactflow-provider"
-import { getLearningSteps, getTopicsByRoadmapId } from "@/lib/db/queries/learning"
+import { getLearningSteps, getStepsByRoadmapId, getTopicsByRoadmapId } from "@/lib/db/queries/learning"
 import { TimelineDemo } from "@/components/roadmap/timeline-scrum"
 
 export default async function Page() {
@@ -29,9 +29,8 @@ export default async function Page() {
     setCompletedTopics((prev) => new Set([...prev, topicId]))
   } */
 
-  const topics = await getTopicsByRoadmapId("3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f")
+  const steps = await getStepsByRoadmapId("3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f")
 
-  const learningSteps = await getLearningSteps()
 
   /*   console.log(topics); */
 
@@ -64,7 +63,7 @@ export default async function Page() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-full">
+      <div className="max-w-full mb-24">
 
         {/* Roadmap */}
         {/*  <div className="xl:col-span-3">
@@ -87,7 +86,10 @@ export default async function Page() {
           </div> */}
 
 
-        <TimelineDemo />
+        <TimelineDemo 
+        
+          steps={steps}
+        />
 
 
         {/*  <ScrumRoadmap
