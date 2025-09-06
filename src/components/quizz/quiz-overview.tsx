@@ -27,7 +27,7 @@ export default function QuizReview({ questions, userAnswers }: QuizReviewProps) 
                 {question.question}
               </h3>
               <div className="space-y-2">
-                {question.options.map((option, optionIndex) => {
+                {question.options?.map((option, optionIndex) => {
                   const currentLabel = answerLabels[optionIndex]
                   const isCorrect = currentLabel === question.answer
                   const isSelected = currentLabel === userAnswer?.selectedOption

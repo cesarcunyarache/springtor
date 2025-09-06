@@ -118,7 +118,11 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
       </section>
 
       <section>
-        <Quiz title={"Quiz"} questions={scrumQuestions} />
+        <Quiz title={"Quiz"} questions={[]}
+          onSubmit={() => {
+            
+          }}
+        />
       </section>
     </div>
   );

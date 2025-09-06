@@ -11,6 +11,6 @@ export default async function Page() {
   }
 
   return (
-    <ClientPage questions={assement?.questions!} />
+    <ClientPage questions={assement?.questions ?? []} />
   );
 }

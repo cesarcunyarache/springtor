@@ -18,7 +18,7 @@ export const QuestionCard: React.FC<{
                 {question.question}
             </h2>
             <div className="grid grid-cols-1 gap-4">
-                {question.options.map((option, index) => (
+                {question.options?.map((option, index) => (
                     <Button
                         key={index}
                         variant={

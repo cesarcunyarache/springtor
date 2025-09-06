@@ -103,7 +103,11 @@ export default function ChatWithFiles() {
 
   if (questions.length === 4) {
     return (
-      <Quiz title={title ?? "Quiz"} questions={questions} />
+      <Quiz title={title ?? "Quiz"} questions={[]}
+        onSubmit={() => {
+          toast.success("Quiz submitted");
+        }}
+      />
     );
   }
 
