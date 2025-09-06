@@ -3,9 +3,9 @@ export const runtime = "nodejs";
 
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { learningSteps, lessons, modules, roadmaps, topics } from "../../schema";
+import { assessments, learningSteps, lessons, modules, roadmaps, topics } from "../../schema";
 import { asc, eq } from "drizzle-orm";
-import { LearningStep, Lesson, Roadmap, Topic } from "@/type";
+import { Assessment, LearningStep, Lesson, Roadmap, Topic } from "@/type";
 import * as schema from "../../schema";
 import { db } from "../..";
 
@@ -49,10 +49,15 @@ export async function getRoadmapById(roadmapId: string): Promise<Roadmap | null>
   }
 }
 
-export async function getStepsByRoadmapId(roadmapId: string): Promise<LearningStep[]> {
+export async function getStepsByRoadmapBySlug(slug: string): Promise<LearningStep[]> {
   try {
     return await db.query.learningSteps.findMany({
-      where: eq(learningSteps.roadmapId, roadmapId),
+      where: (steps, { eq }) => eq(steps.roadmapId, 
+        db.select({ id: roadmaps.id })
+          .from(roadmaps)
+          .where(eq(roadmaps.slug, slug))
+          .limit(1)
+      ),
       with: {
         topics: {
           orderBy: [asc(topics.level)],
@@ -62,6 +67,7 @@ export async function getStepsByRoadmapId(roadmapId: string): Promise<LearningSt
     });
 
   } catch (error) {
+    console.log(error);
     return [];
   }
 }
@@ -106,6 +112,22 @@ export async function getLessionById(lessonId: string): Promise<Lesson | null> {
 
     if (!lesson) return null;
     return lesson;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function getAssessmentBySlug(slug: string): Promise<Assessment | null> {
+  try {
+    const assessment = await db.query.assessments.findFirst({
+      where: eq(assessments.slug, slug),
+      with: {
+        questions: true,
+      },
+    });
+
+    if (!assessment) return null;
+    return assessment;
   } catch (error) {
     return null;
   }

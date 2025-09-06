@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { Lesson } from "@/type";
 import AnimatedAIChat from "@/components/chat/input-chat";
-import Quiz from "@/components/quiz";
+import Quiz from "@/components/quizz";
 import { Question } from "@/lib/schemas";
 import { MarkdownView } from "@/components/markdown/index";
 
@@ -118,7 +118,7 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
       </section>
 
       <section>
-        <Quiz title={"Quiz"} questions={scrumQuestions} clearPDF={() => { }} />
+        <Quiz title={"Quiz"} questions={scrumQuestions} />
       </section>
     </div>
   );

@@ -17,7 +17,11 @@ type FormData = {
   explanationPreference: string
 }
 
-export default function OnboardingForm() {
+type OnboardingFormProps = {
+  onSubmit: (data: FormData) => void
+}
+
+export default function OnboardingForm({ onSubmit }: OnboardingFormProps) {
   const [step, setStep] = useState(1)
   const totalSteps = 3
   const [isCompleted, setIsCompleted] = useState(false)
@@ -42,17 +46,18 @@ export default function OnboardingForm() {
   const canProceed =
     (step === 1 && isFirstStepValid) || (step === 2 && isSecondStepValid) || (step === 3 && isThirdStepValid)
 
-  const onSubmit = (data: FormData) => {
+  const onHandleSubmit = (data: FormData) => {
     console.log("Form submitted:", data)
     setFormData(data)
-    setIsCompleted(true)
+     onSubmit(data)
+
   }
 
   const nextStep = () => {
     if (step < totalSteps) {
       setStep(step + 1)
     } else {
-      handleSubmit(onSubmit)()
+      handleSubmit(onHandleSubmit)()
     }
   }
 
@@ -79,7 +84,9 @@ export default function OnboardingForm() {
   }
 
   return (
-      <Card className="shadow-none py-0 bg-background overflow-hidden gap-0 rounded-xl border-0 w-full h-[100vh]">
+
+    <div className="flex flex-col items-center justify-center bg-background w-full h-screen">
+      <Card className="shadow-none  bg-background overflow-hidden gap-0 rounded-xl border-0 w-full h-[100vh] container px-4 py-12 max-w-4xl">
         <div className="m-6">
           <div className="flex justify-center items-center mb-2">
             <span className="text-sm font-medium text-primary bg-primary-foreground p-2 rounded-xl">
@@ -176,5 +183,6 @@ export default function OnboardingForm() {
         </div>
 
       </Card>
+    </div>
   )
 }

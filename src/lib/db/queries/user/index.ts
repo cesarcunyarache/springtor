@@ -1,114 +1,102 @@
-import "server-only";
-export const runtime = "nodejs";
+"use server";
+
 
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { learningSteps, lessons, modules, roadmaps, topics, preTestResponses } from "../../schema";
-import { asc, eq } from "drizzle-orm";
-import { LearningStep, Lesson, Roadmap, Topic } from "@/type";
+import {
+  learningSteps,
+  lessons,
+  modules,
+  roadmaps,
+  topics,
+  preTestResponses,
+  users,
+} from "../../schema";
+import { asc, eq, exists } from "drizzle-orm";
+import { LearningStep, Lesson, Roadmap, Topic, User } from "@/type";
 import * as schema from "../../schema";
 import { db } from "../..";
+import { QuizResult } from "@/components/quizz";
+import { auth } from "@/auth";
 
-export async function getRoadm(): Promise<boolean> {
+export async function isUserResponsePreTest(userId: string): Promise<boolean> {
   try {
-    await db.query.preTestResponses.findFirst({where: eq(preTestResponses.userId, "")});
+    const foundUser = await db.query.preTestResponses.findFirst({
+      where: eq(preTestResponses.userId, userId),
+    })
 
-    return true;
+    if (foundUser) {
+      return true;
+    }
+    return false;
   } catch (error) {
     return false;
   }
 }
 
-export async function getTopicsByRoadmapId(
-  roadmapId: string
-): Promise<Topic[]> {
+export async function getUserById( userId: string): Promise<User | null> {
+    try {
+      const foundUser = await db.query.users.findFirst({
+        where: eq(users.id, userId),
+      });
+      if (foundUser ) {
+        return foundUser;
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+export async function saveUserResponsePreTest(
+  quizzResults: QuizResult[]
+): Promise<boolean> {
   try {
-    return await db.query.topics.findMany({
-      where: eq(topics.roadmapId, roadmapId),
-      with: {
-        learningStep: true,
-      },
-    });
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return false;
+
+    const prepareDate = quizzResults.map((q) => ({
+      ...q,
+      userId,
+    }));
+
+    const results = await db.insert(preTestResponses).values(prepareDate).returning();
+
+    if (results.length > 0) {
+      return true;
+    }
+
+    return false;
   } catch (error) {
-    return [];
+    console.log(error);
+    return false;
   }
 }
 
-export async function getRoadmapById(roadmapId: string): Promise<Roadmap | null> {
+
+export async function saveUserPreferences(
+  preferences: any
+): Promise<boolean> {
   try {
-    const found = await db.query.roadmaps.findFirst({
-      where: eq(roadmaps.id, roadmapId),
-      with: {
-        steps: true,
-      },
-    });
+    const session = await auth();
+    const userId = session?.user?.id;
 
-    if (!found) return null;
+    if (!userId) return false;
 
-    return found;
+    const foundUser = await db.update(users).set({
+      preferences,
+    })
+
+    if (foundUser) {
+      return true;
+    }
+
+    return false;
   } catch (error) {
-    return null;
+    console.log(error);
+    return false;
   }
 }
 
-export async function getStepsByRoadmapId(roadmapId: string): Promise<LearningStep[]> {
-  try {
-    return await db.query.learningSteps.findMany({
-      where: eq(learningSteps.roadmapId, roadmapId),
-      with: {
-        topics: {
-          orderBy: [asc(topics.level)],
-        },
-      },
-      orderBy: [asc(learningSteps.level)],
-    });
-
-  } catch (error) {
-    return [];
-  }
-}
-
-export async function getLearningSteps(): Promise<LearningStep[]> {
-  try {
-    return await db.select().from(learningSteps);
-  } catch (error) {
-    return [];
-  }
-}
-
-export async function getTopicById(topicId: string): Promise<Topic | null> {
-  try {
-    const topic = await db.query.topics.findFirst({
-      where: eq(topics.id, topicId),
-      with: {
-        learningStep: true,
-        modules: {
-          with: {
-            lessons: {
-              orderBy: [asc(lessons.level)],
-            },
-          },
-          orderBy: [asc(modules.level)],
-        }
-      },
-    });
-    if (!topic) return null;
-    return topic;
-  } catch (error) {
-    return null;
-  }
-}
-
-export async function getLessionById(lessonId: string): Promise<Lesson | null> {
-  try {
-    const lesson = await db.query.lessons.findFirst({
-      where: eq(lessons.id, lessonId),
-      orderBy: [asc(lessons.level)],
-    });
-
-    if (!lesson) return null;
-    return lesson;
-  } catch (error) {
-    return null;
-  }
-}

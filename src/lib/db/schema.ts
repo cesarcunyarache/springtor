@@ -23,6 +23,7 @@ export const users = pgTable("user", {
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  preferences: json("preferences"),
 });
 
 export const accounts = pgTable(
@@ -365,10 +366,15 @@ export const assessments = pgTable("assessments", {
     .$defaultFn(() => crypto.randomUUID()),
   title: text("title").notNull(),
   description: text("description"),
+  slug: text("slug"),
   ...timestamps,
 });
 
 export type Assessment = InferSelectModel<typeof assessments>;
+
+export const assessmentRelations = relations(assessments, ({ one, many }) => ({
+  questions: many(questions),
+}));
 
 export const questions = pgTable("questions", {
   id: text("id")
@@ -384,6 +390,13 @@ export const questions = pgTable("questions", {
 });
 
 export type Question = InferSelectModel<typeof questions>;
+
+export const questionRelations = relations(questions, ({ one, many }) => ({
+  assessment: one(assessments, {
+    fields: [questions.assessmentId],
+    references: [assessments.id],
+  }),
+}));
 
 export const preTestResponses = pgTable("preTestResponses", {
   id: text("id")

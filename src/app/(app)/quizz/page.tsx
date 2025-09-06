@@ -16,7 +16,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import Quiz from "@/components/quiz";
+import Quiz from "@/components/quizz";
 import { Link } from "@/components/ui/link";
 import NextLink from "next/link";
 import { generateQuizTitle } from "./actions";
@@ -103,7 +103,7 @@ export default function ChatWithFiles() {
 
   if (questions.length === 4) {
     return (
-      <Quiz title={title ?? "Quiz"} questions={questions} clearPDF={clearPDF} />
+      <Quiz title={title ?? "Quiz"} questions={questions} />
     );
   }
 

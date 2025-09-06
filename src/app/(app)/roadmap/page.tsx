@@ -18,8 +18,11 @@ import { Dock } from "@/components/dock"
 import { DockDemo } from "@/components/dock-demo"
 import { ReactFlowProvider } from "@xyflow/react"
 import FlowWithProvider from "@/providers/reactflow-provider"
-import { getLearningSteps, getStepsByRoadmapId, getTopicsByRoadmapId } from "@/lib/db/queries/learning"
+import { getLearningSteps, getStepsByRoadmapBySlug, getTopicsByRoadmapId } from "@/lib/db/queries/learning"
 import { TimelineDemo } from "@/components/roadmap/timeline-scrum"
+import { auth } from "@/auth"
+import { redirect } from "next/navigation"
+import { isUserResponsePreTest } from "@/lib/db/queries/user"
 
 export default async function Page() {
   /* const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
@@ -29,8 +32,8 @@ export default async function Page() {
     setCompletedTopics((prev) => new Set([...prev, topicId]))
   } */
 
-  const steps = await getStepsByRoadmapId("3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f")
 
+  const steps = await getStepsByRoadmapBySlug("scrum")
 
   /*   console.log(topics); */
 
@@ -86,8 +89,8 @@ export default async function Page() {
           </div> */}
 
 
-        <TimelineDemo 
-        
+        <TimelineDemo
+
           steps={steps}
         />
 

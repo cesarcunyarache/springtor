@@ -3,6 +3,21 @@ export interface BaseModel {
   updatedAt: Date | null;
 }
 
+export interface User {
+  id: string;
+  name: string | null;
+  password: string | null;
+  email: string | null;
+  emailVerified: Date | null;
+  image: string | null;
+  preferences: {
+    experienceLevel?: string;
+    explanationPreference?: string;
+    learningTopics?: string[];
+    otherTopic?: string;
+  } | unknown;
+}
+
 export interface Roadmap extends BaseModel {
   id: string;
   slug: string;
@@ -56,6 +71,21 @@ export interface Lesson extends BaseModel {
   loomUrl: string | null;
   content: string | null;
   module?: Module | null;
+}
+
+export interface Assessment extends BaseModel {
+  id: string;
+  title: string;
+  description: string | null;
+  questions?: Question[];
+}
+export interface Question extends BaseModel {
+  id: string;
+  question: string;
+  options: string[] | null;
+  answer: string;
+  assessmentId: string;
+  assessment?: Assessment;
 }
 
 export interface UserProgress {
