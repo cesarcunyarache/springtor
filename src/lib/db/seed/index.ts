@@ -302,7 +302,7 @@ const lessons = [
 ];
 
 const assessment = {
-  id: crypto.randomUUID(),
+  id: "60be81ff-2d07-4599-8da1-9b18099ae43b",
   title: "Examen de Conocimientos Scrum",
   description: "Pre-Test/Post-Test sobre comprensión de roles, eventos y artefactos del marco Scrum.",
 };
@@ -463,7 +463,7 @@ async function main() {
   /* await db.insert(schema.modules).values(modules);
   await db.insert(schema.lessons).values(lessons); */
 
-  await db.insert(schema.assessments).values(assessment);
+/*   await db.insert(schema.assessments).values(assessment); */
   await db.insert(schema.questions).values(questionsData);
   console.log("✅ Seed successful");
   /* await client.end(); */
