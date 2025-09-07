@@ -15,11 +15,11 @@ export default function page() {
 
       </section>
 
-      <section id="features">
+      <section id="features" className='pt-32'>
         <FeaturesSectionDemo />
       </section>
 
-      <section id="timeline">
+      <section id="timeline" className='pt-32'>
         <ArcTimelineDemo />
       </section>
 

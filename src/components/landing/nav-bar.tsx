@@ -15,7 +15,7 @@ import { useState } from "react";
 export function NavbarDemo() {
     const navItems = [
         {
-            name: "Sobre nosotros",
+            name: "Acerca de",
             link: "#about",
         },
         {

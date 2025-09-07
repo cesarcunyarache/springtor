@@ -6,7 +6,7 @@ import { Highlighter } from "./ui/highlighter";
 export function ArcTimelineDemo() {
     return (
 
-        <div className="my-20 max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto">
 
             <div className="text-center">
                 <p className="leading-relaxed">

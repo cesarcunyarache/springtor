@@ -4,7 +4,7 @@ import { Bird, BirdIcon } from "lucide-react";
 
 export default function FooterGlow() {
   return (
-    <footer className="relative z-10 mt-8 w-full overflow-hidden pt-16 pb-8">
+    <footer className="relative z-10 mt-32 w-full overflow-hidden pt-16  pb-8">
       <style jsx global>{`
         .glass {
           backdrop-filter: blur(3px) saturate(180%);

@@ -46,8 +46,8 @@ export function FeaturesSectionDemo() {
   ];
     return (
 
-        <div>
-            <div className="px-8">
+        <div className="max-w-7xl mx-auto flex justify-center items-center flex-col">
+            <div className="">    
                 <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black dark:text-white">
                   Repleto de funcionalidades para dominar Scrum
                 </h4>
