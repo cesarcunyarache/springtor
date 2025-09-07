@@ -38,9 +38,19 @@ export function HeroSectionOne() {
                 </h1>
  */}
                 <div>
-                    <h1 className="text-4xl md:text-4xl lg:text-6xl font-semibold max-w-7xl mx-auto text-center mt-6 relative z-20 py-6 bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white">
+                    <motion.h1
+                        initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+                        animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                        transition={{
+                            duration: 0.3,
+                            delay: 0.1,
+                            ease: "easeInOut",
+                        }}
+                        className="text-4xl md:text-4xl lg:text-6xl font-semibold max-w-7xl mx-auto text-center mt-6 relative z-20 py-6 bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white"
+                    >
+
                         Domina el marco Scrum <br /> con un <Cover>mentor inteligente</Cover>
-                    </h1>
+                    </motion.h1>
                 </div>
 
                 <motion.p
@@ -104,7 +114,7 @@ export function HeroSectionOne() {
                     </div>
                 </motion.div>
             </div>
-        </div>
+        </div >
     );
 }
 
