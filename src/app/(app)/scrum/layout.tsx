@@ -24,7 +24,7 @@ export default async function Layout({
 
   const assement = await getAssessmentBySlug("pre-test")
 
-  if (!assement) {
+  if (assement) {
     if (!await isUserResponsePreTest(session.user.id)) redirect('/pre-test');
   }
 

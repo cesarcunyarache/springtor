@@ -23,6 +23,7 @@ type QuizProps = {
   isViewingResults?: boolean;
   questionResults?: QuizResult[];
   allowReset?: boolean;
+  isOmitted?: boolean;
 };
 
 export default function Quiz({
@@ -32,6 +33,7 @@ export default function Quiz({
   isViewingResults = true,
   questionResults,
   allowReset = false,
+  isOmitted = true,
 }: QuizProps) {
 
   const initialAnswers =
@@ -128,7 +130,7 @@ export default function Quiz({
             <h1 className="text-3xl font-bold text-center text-foreground">
               {title}
             </h1>
-            {!isSubmitted && (
+            {!isSubmitted && isOmitted && (
               <Button
                 onClick={handleOmit}
                 variant="ghost"

@@ -13,10 +13,10 @@ import { cn } from "@udecode/cn";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { Lesson } from "@/type";
+import { Lesson, Question } from "@/type";
 import AnimatedAIChat from "@/components/chat/input-chat";
 import Quiz from "@/components/quizz";
-import { Question } from "@/lib/schemas";
+
 import { MarkdownView } from "@/components/markdown/index";
 
 
@@ -74,6 +74,10 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
         "Supervisar y evaluar el desempeño individual",
       ],
       answer: "B",
+      id: "1",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      assessmentId: "1",
     },
     {
       question: "¿Qué artefacto de Scrum representa el trabajo pendiente del producto?",
@@ -84,6 +88,10 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
         "Burndown Chart",
       ],
       answer: "A",
+      id: "2",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      assessmentId: "1",
     },
     {
       question: "¿Cuál es la duración recomendada para un Sprint en Scrum?",
@@ -94,6 +102,10 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
         "El tiempo que el Product Owner considere necesario",
       ],
       answer: "A",
+      id: "3",
+       createdAt: new Date(),
+      updatedAt: new Date(),
+      assessmentId: "1",
     },
     {
       question: "¿Qué evento de Scrum se utiliza para inspeccionar el incremento y adaptar el Product Backlog si es necesario?",
@@ -104,6 +116,10 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
         "Refinamiento del Backlog",
       ],
       answer: "C",
+      id: "4",
+       createdAt: new Date(),
+      updatedAt: new Date(),
+      assessmentId: "1",
     },
   ];
 
@@ -118,7 +134,8 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
       </section>
 
       <section>
-        <Quiz title={"Quiz"} questions={questions}
+        <Quiz title={"Quiz"} questions={scrumQuestions}
+        isOmitted={false}
           onSubmit={() => {
 
           }}
