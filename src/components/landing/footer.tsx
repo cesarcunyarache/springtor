@@ -76,32 +76,29 @@ export default function FooterGlow() {
               Producto
             </div>
             <ul className="space-y-2">
-              <li><a href="#" className="text-foreground/70">Características</a></li>
-              <li><a href="#" className="text-foreground/70">Precios</a></li>
-              <li><a href="#" className="text-foreground/70">Integraciones</a></li>
-              <li><a href="#" className="text-foreground/70">Novedades</a></li>
+              <li><a href="#about" className="text-foreground/70">Acerca de</a></li>
+              <li><a href="#features" className="text-foreground/70">Características</a></li>
+              <li><a href="#timeline" className="text-foreground/70">Ruta</a></li>
+
             </ul>
           </div>
           <div>
             <div className="mb-3 text-xs font-semibold tracking-widest text-blue-400 uppercase">
-              Compañía
+              Terminos y Condiciones
             </div>
             <ul className="space-y-2">
-              <li><a href="#" className="text-foreground/70">Sobre nosotros</a></li>
-              <li><a href="#" className="text-foreground/70">Carreras</a></li>
-              <li><a href="#" className="text-foreground/70">Blog</a></li>
-              <li><a href="#" className="text-foreground/70">Contacto</a></li>
+              <li><a href="/terms" className="text-foreground/70">Términos y Condiciones</a></li>
+              <li><a href="/privacy" className="text-foreground/70">Política de Privacidad</a></li>
             </ul>
           </div>
           <div>
             <div className="mb-3 text-xs font-semibold tracking-widest text-blue-400 uppercase">
-              Recursos
+              Comenzar ahora
             </div>
             <ul className="space-y-2">
-              <li><a href="#" className="text-foreground/70">Documentación</a></li>
-              <li><a href="#" className="text-foreground/70">Comunidad</a></li>
-              <li><a href="#" className="text-foreground/70">Soporte</a></li>
-              <li><a href="#" className="text-foreground/70">Seguridad</a></li>
+              <li><a href="/sign-in" className="text-foreground/70">Iniciar Sesión</a></li>
+              <li><a href="/sign-up" className="text-foreground/70">Registrate</a></li>
+              
             </ul>
           </div>
         </nav>
