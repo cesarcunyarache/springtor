@@ -53,107 +53,25 @@ export default async function Page() {
                 Springtor
               </h1>
             </div>
-            {/* <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4">
               <Trophy className="w-5 h-5 text-yellow-500" />
               <span className="text-sm font-medium ">
-                {completedTopics.size}/{totalTopics}
+                10/100
               </span>
-              <Progress value={progress} className="w-32" />
-              <span className="text-sm font-bold ">{Math.round(progress)}%</span>
-            </div> */}
+              <Progress value={10} className="w-32" />
+              <span className="text-sm font-bold ">{Math.round(10)}%</span>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Main Content */}
+      
       <div className="max-w-full mb-24">
-
-        {/* Roadmap */}
-        {/*  <div className="xl:col-span-3">
-            <Card className="p-6 bg-white/70 backdrop-blur-sm border-0 shadow-xl">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Ruta de Aprendizaje</h2>
-                <div className="mt-4 flex items-center space-x-6 text-sm text-gray-600">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-1 bg-blue-500"></div>
-                    <span>Línea principal</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-1 bg-gray-400 border-dashed border-t-2"></div>
-                    <span>Ramas de aprendizaje</span>
-                  </div>
-                </div>
-              </div>
-              
-            </Card>
-          </div> */}
-
 
         <TimelineDemo
 
           steps={steps}
         />
-
-
-        {/*  <ScrumRoadmap
-
-             topics={topics}
-             learningSteps={learningSteps}
-             
-            /*   onTopicSelect={(topicId) => {}} 
-            /*   completedTopics={completedTopics}
-            /> */}
-
-
-
-
-        {/* Placeholder */}
-        {/*  <div className="xl:col-span-1">
-            <Card className="p-6 bg-white/70 backdrop-blur-sm border-0 shadow-xl sticky top-24">
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                  <Target className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">¡Explora la Timeline!</h3>
-                <p className="text-gray-600 mb-4">
-                  Haz clic en cualquier nodo de la línea de tiempo para comenzar tu aprendizaje
-                </p>
-                <div className="text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
-                  💡 Tip: Sigue la línea vertical principal y explora cada rama lateral
-                </div>
-              </div>
-            </Card>
-          </div> */}
       </div>
-
-
-      {/* Modal de Detalle del Tema */}
-      {/*  <Dialog open={!!selectedTopic} onOpenChange={(open) => !open && setSelectedTopic(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] w-96 h-[60vh] overflow-y-auto md:h-[60vh] md:w-[2xl]">
-          {selectedTopic && (
-            <TopicDetail
-              topicId={selectedTopic}
-              onComplete={handleTopicComplete}
-              isCompleted={completedTopics.has(selectedTopic)}
-            /* onClose={() => setSelectedTopic(null)} 
-            />
-          )}
-        </DialogContent>
-      </Dialog> */}
-
-      {/*  <FloatingDock items={[
-        { title: 'Home', icon: <Home />, href: '/home' },
-        { title: 'Chat', icon: <MessageCircleMore />, href: '/chat' },
-        { title: 'Ruta de aprendizaje', icon: <GitMerge />, href: '/roadmap' },
-        { title: 'Notas', icon: <FileIcon />, href: '/notes' },
-        { title: 'Calendario', icon: <Calendar />, href: '/calendar' },
-        { title: 'Configuración', icon: <CogIcon />, href: '/settings' },
-
-      ]}
-        mobileClassName="fixed left-1/2 -translate-x-1/2 bottom-4 z-50"
-        desktopClassName="fixed left-1/2 -translate-x-1/2 bottom-4 z-50 backdrop-blur-lg bg-white/30 backdrop-blur-sm border border-gray-200 rounded-lg"
-      />
- */}
     </div>
   )
 }

@@ -14,6 +14,7 @@ export interface CardFlipProps {
     features?: string[];
     icon: IconName;
     id: string;
+    color: string;
 }
 
 export default function CardFlip2({
@@ -28,6 +29,7 @@ export default function CardFlip2({
     ],
     icon,
     id,
+    color,
 }: CardFlipProps) {
     const [isFlipped, setIsFlipped] = useState(false);
 
@@ -64,7 +66,8 @@ export default function CardFlip2({
                     )}
                 >
                     {/* Background gradient effect */}
-                    <div className="from-primary/5 dark:from-primary/10 absolute inset-0 bg-gradient-to-br via-transparent to-blue-500/5 dark:to-blue-500/10" />
+                    <div className={`from-primary/5 dark:from-primary/10 absolute inset-0 bg-gradient-to-br via-transparent to-primary-500/5 dark:to-blue-500/10`}
+                    />
 
                     {/* Animated code blocks */}
                     <div className="absolute inset-0 flex items-center justify-center pt-20">
@@ -99,7 +102,7 @@ export default function CardFlip2({
                                         'transition-all duration-500 group-hover:scale-110 group-hover:rotate-12',
                                     )}
                                 >
-                                     <DynamicIcon name={icon} color="white" size={48} className="h-6 w-6 text-white" />
+                                    <DynamicIcon name={icon} color="white" size={48} className="h-6 w-6 text-white" />
                                 </div>
                             </div>
                         </div>
@@ -126,7 +129,7 @@ export default function CardFlip2({
                                 />
                                 {/* <Zap className="text-primary relative z-10 h-5 w-5 transition-all duration-300 group-hover/icon:scale-110 group-hover/icon:rotate-12" /> */}
 
-                                 <CircularProgress value={70} size={50} strokeWidth={5} />
+                                <CircularProgress value={70} size={50} strokeWidth={5} />
                             </div>
                         </div>
                     </div>
@@ -156,8 +159,8 @@ export default function CardFlip2({
                         <div className="space-y-2">
                             <div className="mb-2 flex items-center gap-2">
                                 <div className="from-primary via-primary/90 to-primary/80 flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br">
-                        
-                                     <DynamicIcon name={icon} color="white" className="h-4 w-4 text-white" />
+
+                                    <DynamicIcon name={icon} color="white" className="h-4 w-4 text-white" />
                                 </div>
                                 <h3 className="text-lg leading-snug font-semibold tracking-tight text-zinc-900 transition-all duration-500 ease-out group-hover:translate-y-[-2px] dark:text-white">
                                     {title}

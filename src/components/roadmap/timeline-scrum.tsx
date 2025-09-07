@@ -21,6 +21,7 @@ export function TimelineDemo({ steps }: { steps: LearningStep[] }) {
               features={topic.features ?? []}
               icon={topic.icon as IconName ?? "rocket"}
               id={topic.id}
+              color={topic.color ?? "blue"}
             />
           ))
 
@@ -40,6 +41,7 @@ export function TimelineDemo({ steps }: { steps: LearningStep[] }) {
             subtitle="sus orígenes, valores ágiles y pilares" 
             icon="rocket"
             id="intro-scrum"
+            color="blue"
           />
         </div>
 
