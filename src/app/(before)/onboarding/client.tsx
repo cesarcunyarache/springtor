@@ -8,7 +8,6 @@ import { toast } from 'sonner';
 
 export default function ClientPage() {
   return (
-    <div>
       <OnboardingForm onSubmit={(data) => {
          toast.promise(saveUserPreferences(data), {
             loading: 'Enviando...',
@@ -17,10 +16,9 @@ export default function ClientPage() {
             },
             error: 'Algo salió mal. Por favor, inténtalo de nuevo.',
             finally: () => {
-                redirect('/roadmap');
+                redirect('/scrum/roadmap');
             }
         });
       }} />
-    </div>
   )
 }

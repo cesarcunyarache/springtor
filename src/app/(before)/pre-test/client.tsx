@@ -4,8 +4,6 @@ import Quiz, { QuizResult } from "@/components/quizz";
 import { saveUserResponsePreTest } from "@/lib/db/queries/user";
 import { Question } from "@/type";
 import { redirect } from "next/navigation";
-
-
 import { toast } from "sonner";
 
 export default function ClientPage({ questions }: { questions: Question[] }) {
@@ -18,7 +16,6 @@ export default function ClientPage({ questions }: { questions: Question[] }) {
     ]
 
     const handleSubmit = async (answers: QuizResult[]) => {
-
         toast.promise(saveUserResponsePreTest(answers), {
             loading: 'Enviando...',
             success: (res: boolean) => {
@@ -27,11 +24,10 @@ export default function ClientPage({ questions }: { questions: Question[] }) {
             },
             error: 'Algo salió mal. Por favor, inténtalo de nuevo.',
             finally: () => {
-                redirect('/roadmap');
+                redirect('/scrum/roadmap');
             }
         });
     }
-
 
     return (
         <Quiz

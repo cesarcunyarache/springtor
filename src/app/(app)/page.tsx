@@ -19,7 +19,7 @@ export default function page() {
             <FeaturesSectionDemo />
         </section>
 
-        <section id="timeline" className='max-w-7xl mx-auto'>
+        <section id="timeline">
             <ArcTimelineDemo />
         </section>
 
