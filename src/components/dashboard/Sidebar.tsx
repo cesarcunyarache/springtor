@@ -51,7 +51,7 @@ interface SidebarProps {
 
 export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
   const pathname = usePathname();
-  const { isOpen, toggle, close } = useSidebar();
+  const {isOpen, toggle, close } = useSidebar();
   const [isMounted, setIsMounted] = useState(false);
   const [openModules, setOpenModules] = useState<string[]>([]);
 
@@ -61,7 +61,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
         module.lessons?.some(
           (lesson) =>
             pathname ===
-            `scrum/tema/${course.id}/lessons/${lesson.id}`
+            `/scrum/tema/${course.id}/leccion/${lesson.id}`
         )
       )?.id;
 
@@ -87,7 +87,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
       <div className="p-4 lg:p-6 border-b flex flex-col gap-y-4">
         <div className="flex items-center justify-between">
           <Link
-            href="/my-courses"
+            href="/scrum/roadmap"
             className="flex items-center gap-x-2 text-sm hover:text-primary transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -156,7 +156,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
                     {module?.lessons?.map((lesson, lessonIndex) => {
                       const isActive =
                         pathname ===
-                        `/scrum/tema/${course.id}/lessons/${lesson.id}`;
+                        `/scrum/tema/${course.id}/leccion/${lesson.id}`;
                       const isCompleted = completedLessons.some(
                         (completion) => completion.lesson.id === lesson.id
                       );
@@ -165,7 +165,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
                         <Link
                           key={lesson.id}
                           prefetch={false}
-                          href={`/tema/${course.id}/lessons/${lesson.id}`}
+                          href={`/scrum/tema/${course.id}/leccion/${lesson.id}`}
                           onClick={close}
                           className={cn(
                             "flex items-center pl-8 lg:pl-10 pr-2 lg:pr-4 py-2 gap-x-2 lg:gap-x-4 group hover:bg-muted/50 transition-colors relative",

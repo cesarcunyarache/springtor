@@ -117,13 +117,13 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
         <AnimatedAIChat />
       </section>
 
-     {/*  <section>
-        <Quiz title={"Quiz"} questions={[]}
+      <section>
+        <Quiz title={"Quiz"} questions={questions}
           onSubmit={() => {
 
           }}
         />
-      </section> */}
+      </section>
     </div>
   );
 }

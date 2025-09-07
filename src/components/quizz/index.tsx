@@ -118,6 +118,8 @@ export default function Quiz({
   const currentQuestion = questions[currentQuestionIndex];
   const currentAnswer = answers[currentQuestionIndex]?.selectedOption;
 
+  if (questions.length === 0) return null;
+
   return (
     <div className="bg-background text-foreground h-screen flex justify-center items-center">
       <main className="container px-4 py-12 max-w-4xl">
