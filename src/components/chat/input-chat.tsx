@@ -13,6 +13,10 @@ import {
   LoaderIcon,
   Sparkles,
   Command,
+  Users,
+  CalendarCheck,
+  ListTodo,
+  RefreshCcw,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as React from 'react';
@@ -169,6 +173,36 @@ export default function AnimatedAIChat() {
     },
   ];
 
+
+
+const question: CommandSuggestion[] = [
+  {
+    icon: <Users className="h-4 w-4" />,
+    label: "Roles en Scrum",
+    description: "Explica los roles y responsabilidades dentro de un equipo Scrum",
+    prefix: "/roles",
+  },
+  {
+    icon: <CalendarCheck className="h-4 w-4" />,
+    label: "Eventos Scrum",
+    description: "Describe los eventos principales como Sprint, Daily y Retrospectiva",
+    prefix: "/eventos",
+  },
+  {
+    icon: <ListTodo className="h-4 w-4" />,
+    label: "Product Backlog",
+    description: "Explica qué es y cómo se gestiona el Product Backlog",
+    prefix: "/backlog",
+  },
+  {
+    icon: <RefreshCcw className="h-4 w-4" />,
+    label: "Mejora continua",
+    description: "Cómo Scrum promueve la mejora continua en el equipo",
+    prefix: "/mejora",
+  },
+];
+
+
   useEffect(() => {
     if (value.startsWith('/') && !value.includes(' ')) {
       setShowCommandPalette(true);
@@ -306,7 +340,7 @@ export default function AnimatedAIChat() {
                 className="inline-block"
               >
                 <h1 className="pb-1 text-3xl font-medium tracking-tight">
-                  How can I help today?
+                  ¿En qué puedo ayudarte hoy?
                 </h1>
                 <motion.div
                   className="via-primary/50 h-px bg-gradient-to-r from-transparent to-transparent"
@@ -321,7 +355,7 @@ export default function AnimatedAIChat() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                Type a command or ask a question
+                Escribe un comando o haz una pregunta
               </motion.p>
             </div>
 
@@ -381,7 +415,7 @@ export default function AnimatedAIChat() {
                   onKeyDown={handleKeyDown}
                   onFocus={() => setInputFocused(true)}
                   onBlur={() => setInputFocused(false)}
-                  placeholder="Ask mvp.ai a question..."
+                  placeholder="Hazle una pregunta a springtor..."
                   containerClassName="w-full"
                   className={cn(
                     'w-full px-4 py-3',
@@ -483,13 +517,13 @@ export default function AnimatedAIChat() {
                   ) : (
                     <SendIcon className="h-4 w-4" />
                   )}
-                  <span>Send</span>
+                  <span>Enviar</span>
                 </motion.button>
               </div>
             </motion.div>
 
             <div className="flex flex-wrap items-center justify-center gap-2">
-              {commandSuggestions.map((suggestion, index) => (
+              {question.map((suggestion, index) => (
                 <motion.button
                   key={suggestion.prefix}
                   onClick={() => selectCommandSuggestion(index)}

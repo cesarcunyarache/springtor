@@ -15,7 +15,7 @@ export const QuestionCard: React.FC<{
     return (
         <div className="space-y-6">
             <h2 className="text-lg font-semibold leading-tight">
-                {question.question}
+                {question?.question}
             </h2>
             <div className="grid grid-cols-1 gap-4">
                 {question.options?.map((option, index) => (

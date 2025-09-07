@@ -19,7 +19,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
   if (course.modules?.[0]?.lessons?.[0]?.id) {
     redirect(
-      `/tema/${courseId}/lessons/${course.modules[0].lessons[0].id}`
+      `/scrum/tema/${courseId}/lessons/${course.modules[0].lessons[0].id}`
     );
   }
 

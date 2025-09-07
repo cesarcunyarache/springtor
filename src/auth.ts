@@ -75,7 +75,7 @@ export const authConfig: NextAuthConfig = {
      async redirect({ url, baseUrl }) {
 
       /* return baseUrl || '/'; */
-      return '/roadmap';
+      return '/scrum/roadmap';
     },
   },
   secret: process.env.AUTH_SECRET!,

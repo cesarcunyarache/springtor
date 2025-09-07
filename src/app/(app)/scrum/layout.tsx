@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { DockDemo } from "@/components/dock-demo";
+import { getAssessmentBySlug } from "@/lib/db/queries/learning";
 
 import { getUserById, isUserResponsePreTest } from "@/lib/db/queries/user";
 import { redirect } from "next/navigation";
@@ -21,7 +22,12 @@ export default async function Layout({
     redirect('/onboarding');
   }
 
-  if (!await isUserResponsePreTest(session.user.id)) redirect('/pre-test');
+  const assement = await getAssessmentBySlug("pre-test")
+
+  if (!assement) {
+    if (!await isUserResponsePreTest(session.user.id)) redirect('/pre-test');
+  }
+
 
   return (
     <main>

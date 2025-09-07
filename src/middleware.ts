@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
   });
 
   // ⚠️ Evitar redirección infinita en /sign-in o /sign-up
-  const isAuthPage = ["/sign-in", "/sign-up"].includes(pathname);
+  const isAuthPage = ["/sign-in", "/sign-up", "/"].includes(pathname);
 
   if (!token) {
     if (!isAuthPage) {

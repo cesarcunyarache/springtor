@@ -4,7 +4,7 @@ import { ChatRequestOptions, Message } from 'ai';
 import { Button } from './ui/button';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Textarea } from './ui/textarea';
-import { deleteTrailingMessages } from '@/app/(app)/(chat)/actions';
+import { deleteTrailingMessages } from '@/app/(app)/scrum/(chat)/actions';
 import { UseChatHelpers } from '@ai-sdk/react';
 
 export type MessageEditorProps = {
@@ -96,7 +96,7 @@ export function MessageEditor({
             reload();
           }}
         >
-          {isSubmitting ? 'Sending...' : 'Send'}
+          {isSubmitting ? 'Enviando...' : 'Enviar'}
         </Button>
       </div>
     </div>

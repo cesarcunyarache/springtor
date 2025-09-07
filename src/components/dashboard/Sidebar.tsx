@@ -61,7 +61,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
         module.lessons?.some(
           (lesson) =>
             pathname ===
-            `/tema/${course.id}/lessons/${lesson.id}`
+            `scrum/tema/${course.id}/lessons/${lesson.id}`
         )
       )?.id;
 
@@ -79,7 +79,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
     return null;
   }
 
-  const progress = calculateCourseProgress(course!.modules!, completedLessons);
+  const progress = 10 /* calculateCourseProgress(course!.modules!, completedLessons); */
 
   const SidebarContent = () => (
     <div className="h-full flex flex-col">
@@ -112,8 +112,8 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
           <h1 className="font-semibold text-2xl">{course.title}</h1>
           <CourseProgress
             progress={progress}
-            variant="success"
-            label="Course Progress"
+            variant="success" 
+            label="Progreso del Tema"
           />
         </div>
       </div>
@@ -156,7 +156,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
                     {module?.lessons?.map((lesson, lessonIndex) => {
                       const isActive =
                         pathname ===
-                        `/tema/${course.id}/lessons/${lesson.id}`;
+                        `/scrum/tema/${course.id}/lessons/${lesson.id}`;
                       const isCompleted = completedLessons.some(
                         (completion) => completion.lesson.id === lesson.id
                       );
