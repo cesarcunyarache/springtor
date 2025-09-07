@@ -8,23 +8,23 @@ import React from 'react'
 export default function page() {
   return (
     <div className='m-2'>
-        <NavbarDemo />
+      <NavbarDemo />
 
-        <section id="about">
-             <HeroSectionOne />
+      <section id="about">
+        <HeroSectionOne />
 
-        </section>
+      </section>
 
-        <section id="features">
-            <FeaturesSectionDemo />
-        </section>
+      <section id="features">
+        <FeaturesSectionDemo />
+      </section>
 
-        <section id="timeline">
-            <ArcTimelineDemo />
-        </section>
+      <section id="timeline">
+        <ArcTimelineDemo />
+      </section>
 
-        <FooterGlow />
-      
+      <FooterGlow />
+
     </div>
   )
 }
