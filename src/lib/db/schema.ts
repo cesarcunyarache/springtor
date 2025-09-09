@@ -11,6 +11,7 @@ import {
   boolean,
   integer,
   jsonb,
+  unique,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -379,6 +380,7 @@ export type Assessment = InferSelectModel<typeof assessments>;
 
 export const assessmentRelations = relations(assessments, ({ one, many }) => ({
   questions: many(questions),
+  theoryLessonAnswers: many(theoryLessonAnswers),
 }));
 
 export const questions = pgTable("questions", {
@@ -417,6 +419,41 @@ export const preTestResponses = pgTable("preTestResponses", {
 });
 
 export type PreTestResponse = InferSelectModel<typeof preTestResponses>;
+
+export const theoryLessonAnswers = pgTable("theoryLessonAnswers", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id").notNull(),
+  assessmentId: text("assessment_id")
+    .references(() => assessments.id),
+  questionId: text("question_id")
+    .notNull()
+    .references(() => questions.id),
+  selectedOption: text("selected_option"),
+  isCorrect: boolean("is_correct").notNull(),
+  ...timestamps,
+}, (table) => {
+  return {
+    uniqueUserAssessmentQuestion: unique().on(table.userId, table.assessmentId, table.questionId),
+  }
+});
+
+export type TheoryLessonAnswer = InferSelectModel<typeof theoryLessonAnswers>;
+
+export const theoryLessonAnswerRelations = relations(
+  theoryLessonAnswers,
+  ({ one, many }) => ({
+    question: one(questions, {
+      fields: [theoryLessonAnswers.questionId],
+      references: [questions.id],
+    }),
+    assessment: one(assessments, {
+      fields: [theoryLessonAnswers.assessmentId],
+      references: [assessments.id],
+    }),
+  })
+);
 
 export const theoryAnswers = pgTable("theoryAnswers", {
   id: text("id")

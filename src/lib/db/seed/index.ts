@@ -301,13 +301,19 @@ const lessons = [
   },
 ];
 
-const assessment = {
+const assessmentPreTest = {
   id: "60be81ff-2d07-4599-8da1-9b18099ae43b",
   title: "Examen de Conocimientos Scrum",
   description: "Pre-Test/Post-Test sobre comprensión de roles, eventos y artefactos del marco Scrum.",
 };
 
-const questionsData = [
+const assessmentLesson= {
+  id: "60be01ff-2d07-459f-8da1-9b18299ae43b",
+  title: "Lession test",
+  description: "Lession test",
+};
+
+/* const questionsData = [
   {
     assessmentId: assessment.id,
     question: "¿Quién facilita el cumplimiento de las reglas de Scrum y ayuda a eliminar impedimentos?",
@@ -451,7 +457,55 @@ const questionsData = [
 ].map((q) => ({
   ...q,
   id: crypto.randomUUID(),
-}));
+})); */
+
+
+const questionsData = [
+  {
+      question: "¿Cuál es el rol principal del Scrum Master en un equipo Scrum?",
+      options: [
+        "Asegurarse de que se cumplan los plazos",
+        "Eliminar impedimentos y facilitar el marco de trabajo",
+        "Asignar tareas a cada miembro del equipo",
+        "Supervisar y evaluar el desempeño individual",
+      ],
+      answer: "B",
+      assessmentId: assessmentLesson.id,
+    },
+    {
+      question: "¿Qué artefacto de Scrum representa el trabajo pendiente del producto?",
+      options: [
+        "Product Backlog",
+        "Sprint Backlog",
+        "Incremento",
+        "Burndown Chart",
+      ],
+      answer: "A",
+       assessmentId: assessmentLesson.id,
+    },
+    {
+      question: "¿Cuál es la duración recomendada para un Sprint en Scrum?",
+      options: [
+        "Un máximo de un mes",
+        "Exactamente dos semanas",
+        "Entre uno y seis meses",
+        "El tiempo que el Product Owner considere necesario",
+      ],
+      answer: "A",
+       assessmentId: assessmentLesson.id,
+    },
+    {
+      question: "¿Qué evento de Scrum se utiliza para inspeccionar el incremento y adaptar el Product Backlog si es necesario?",
+      options: [
+        "Daily Scrum",
+        "Sprint Retrospective",
+        "Sprint Review",
+        "Refinamiento del Backlog",
+      ],
+      answer: "C",
+      assessmentId: assessmentLesson.id,
+    },
+  ]
 
 
 async function main() {
@@ -463,8 +517,8 @@ async function main() {
   /* await db.insert(schema.modules).values(modules);
   await db.insert(schema.lessons).values(lessons); */
 
-/*   await db.insert(schema.assessments).values(assessment); */
-  await db.insert(schema.questions).values(questionsData);
+   await db.insert(schema.assessments).values(assessmentLesson); 
+   await db.insert(schema.questions).values(questionsData); 
   console.log("✅ Seed successful");
   /* await client.end(); */
 }

@@ -64,6 +64,20 @@
       "when": 1757283792537,
       "tag": "0008_cloudy_millenium_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1757456616766,
+      "tag": "0009_watery_kang",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1757459542854,
+      "tag": "0010_oval_chimera",
+      "breakpoints": true
     }
   ]
 }

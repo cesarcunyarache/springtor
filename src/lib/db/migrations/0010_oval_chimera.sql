@@ -1,0 +1,1 @@
+ALTER TABLE "theoryLessonAnswers" ADD CONSTRAINT "theoryLessonAnswers_user_id_assessment_id_question_id_unique" UNIQUE("user_id","assessment_id","question_id");

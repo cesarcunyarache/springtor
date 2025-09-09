@@ -71,6 +71,7 @@ export interface Lesson extends BaseModel {
   loomUrl: string | null;
   content: string | null;
   module?: Module | null;
+  assessment?: Assessment | null;
 }
 
 export interface Assessment extends BaseModel {
@@ -78,6 +79,7 @@ export interface Assessment extends BaseModel {
   title: string;
   description: string | null;
   questions?: Question[];
+  theoryLessonAnswers?: TheoryLessonAnswer[];
 }
 export interface Question extends BaseModel {
   id: string;
@@ -86,6 +88,15 @@ export interface Question extends BaseModel {
   answer: string;
   assessmentId: string;
   assessment?: Assessment;
+}
+
+export interface TheoryLessonAnswer extends BaseModel {
+  id: string;
+  userId: string;
+  assessmentId: string | null;
+  questionId: string;
+  selectedOption: string | null;
+  isCorrect: boolean;
 }
 
 export interface UserProgress {

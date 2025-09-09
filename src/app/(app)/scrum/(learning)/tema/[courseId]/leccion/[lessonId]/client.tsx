@@ -13,11 +13,13 @@ import { cn } from "@udecode/cn";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { Lesson, Question } from "@/type";
+import { Lesson, Question, TheoryLessonAnswer } from "@/type";
 import AnimatedAIChat from "@/components/chat/input-chat";
-import Quiz from "@/components/quizz";
+import Quiz, { QuizResult } from "@/components/quizz";
 
 import { MarkdownView } from "@/components/markdown/index";
+import { toast } from "sonner";
+import { saveUserResponseLessonAnswers } from "@/lib/db/queries/user";
 
 
 interface LessonPageProps {
@@ -63,65 +65,16 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
     })
   }
 
+  const handleOnSubmit = async (answers: QuizResult[]) => {
+    toast.promise(saveUserResponseLessonAnswers(answers, lesson?.assessment?.id), {
+      loading: 'Enviando...',
+      success: (res: boolean) => {
+        return res ? 'Respuestas enviada con éxito' : 'Algo salió mal. Por favor, inténtalo de nuevo';
+      },
+      error: 'Algo salió mal. Por favor, inténtalo de nuevo.',
+    });
+  }
 
-  const scrumQuestions: Question[] = [
-    {
-      question: "¿Cuál es el rol principal del Scrum Master en un equipo Scrum?",
-      options: [
-        "Asegurarse de que se cumplan los plazos",
-        "Eliminar impedimentos y facilitar el marco de trabajo",
-        "Asignar tareas a cada miembro del equipo",
-        "Supervisar y evaluar el desempeño individual",
-      ],
-      answer: "B",
-      id: "1",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      assessmentId: "1",
-    },
-    {
-      question: "¿Qué artefacto de Scrum representa el trabajo pendiente del producto?",
-      options: [
-        "Product Backlog",
-        "Sprint Backlog",
-        "Incremento",
-        "Burndown Chart",
-      ],
-      answer: "A",
-      id: "2",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      assessmentId: "1",
-    },
-    {
-      question: "¿Cuál es la duración recomendada para un Sprint en Scrum?",
-      options: [
-        "Un máximo de un mes",
-        "Exactamente dos semanas",
-        "Entre uno y seis meses",
-        "El tiempo que el Product Owner considere necesario",
-      ],
-      answer: "A",
-      id: "3",
-       createdAt: new Date(),
-      updatedAt: new Date(),
-      assessmentId: "1",
-    },
-    {
-      question: "¿Qué evento de Scrum se utiliza para inspeccionar el incremento y adaptar el Product Backlog si es necesario?",
-      options: [
-        "Daily Scrum",
-        "Sprint Retrospective",
-        "Sprint Review",
-        "Refinamiento del Backlog",
-      ],
-      answer: "C",
-      id: "4",
-       createdAt: new Date(),
-      updatedAt: new Date(),
-      assessmentId: "1",
-    },
-  ];
 
   return (
     <div className="mt-20 m-10">
@@ -134,11 +87,18 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
       </section>
 
       <section>
-        <Quiz title={"Quiz"} questions={scrumQuestions}
-        isOmitted={false}
-          onSubmit={() => {
-
-          }}
+        <Quiz title={"Quiz"} questions={lesson?.assessment?.questions ?? []}
+          isOmitted={false}
+          onSubmit={handleOnSubmit}
+          isViewingResults={true}
+          questionResults={
+            lesson?.assessment?.theoryLessonAnswers?.map((a) => ({
+              questionId: a.questionId,
+              selectedOption: a.selectedOption,
+              isCorrect: a.isCorrect,
+            }))
+          }
+          allowReset={true}
         />
       </section>
     </div>

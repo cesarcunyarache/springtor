@@ -1,6 +1,5 @@
 "use server";
 
-
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import {
@@ -11,9 +10,17 @@ import {
   topics,
   preTestResponses,
   users,
+  theoryLessonAnswers,
 } from "../../schema";
-import { asc, eq, exists } from "drizzle-orm";
-import { LearningStep, Lesson, Roadmap, Topic, User } from "@/type";
+import { asc, eq, exists, sql } from "drizzle-orm";
+import {
+  LearningStep,
+  Lesson,
+  Roadmap,
+  TheoryLessonAnswer,
+  Topic,
+  User,
+} from "@/type";
 import * as schema from "../../schema";
 import { db } from "../..";
 import { QuizResult } from "@/components/quizz";
@@ -23,7 +30,7 @@ export async function isUserResponsePreTest(userId: string): Promise<boolean> {
   try {
     const foundUser = await db.query.preTestResponses.findFirst({
       where: eq(preTestResponses.userId, userId),
-    })
+    });
 
     if (foundUser) {
       return true;
@@ -34,19 +41,19 @@ export async function isUserResponsePreTest(userId: string): Promise<boolean> {
   }
 }
 
-export async function getUserById( userId: string): Promise<User | null> {
-    try {
-      const foundUser = await db.query.users.findFirst({
-        where: eq(users.id, userId),
-      });
-      if (foundUser ) {
-        return foundUser;
-      }
-      return null;
-    } catch (error) {
-      return null;
+export async function getUserById(userId: string): Promise<User | null> {
+  try {
+    const foundUser = await db.query.users.findFirst({
+      where: eq(users.id, userId),
+    });
+    if (foundUser) {
+      return foundUser;
     }
+    return null;
+  } catch (error) {
+    return null;
   }
+}
 
 export async function saveUserResponsePreTest(
   quizzResults: QuizResult[]
@@ -62,7 +69,10 @@ export async function saveUserResponsePreTest(
       userId,
     }));
 
-    const results = await db.insert(preTestResponses).values(prepareDate).returning();
+    const results = await db
+      .insert(preTestResponses)
+      .values(prepareDate)
+      .returning();
 
     if (results.length > 0) {
       return true;
@@ -70,15 +80,11 @@ export async function saveUserResponsePreTest(
 
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
 
-
-export async function saveUserPreferences(
-  preferences: any
-): Promise<boolean> {
+export async function saveUserPreferences(preferences: any): Promise<boolean> {
   try {
     const session = await auth();
     const userId = session?.user?.id;
@@ -87,7 +93,7 @@ export async function saveUserPreferences(
 
     const foundUser = await db.update(users).set({
       preferences,
-    })
+    });
 
     if (foundUser) {
       return true;
@@ -95,8 +101,50 @@ export async function saveUserPreferences(
 
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
 
+export async function saveUserResponseLessonAnswers(
+  lessonAnswers: QuizResult[],
+  assessmentId?: string
+): Promise<boolean> {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return false;
+
+    const preparedDate = lessonAnswers.map((q) => ({
+      ...q,
+      userId,
+      assessmentId,
+    }));
+
+    const results = await db
+      .insert(theoryLessonAnswers)
+      .values(preparedDate)
+      .onConflictDoUpdate({
+        target: [
+          theoryLessonAnswers.userId,
+          theoryLessonAnswers.assessmentId,
+          theoryLessonAnswers.questionId,
+        ],
+        set: {
+          selectedOption: sql.raw(
+            `excluded.${theoryLessonAnswers.selectedOption.name}`
+          ),
+          isCorrect: sql.raw(`excluded.${theoryLessonAnswers.isCorrect.name}`),
+        },
+      })
+      .returning();
+
+    if (results.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
