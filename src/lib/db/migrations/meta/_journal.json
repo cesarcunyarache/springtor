@@ -57,6 +57,13 @@
       "when": 1757128138158,
       "tag": "0007_friendly_orphan",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1757283792537,
+      "tag": "0008_cloudy_millenium_guard",
+      "breakpoints": true
     }
   ]
 }

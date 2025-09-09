@@ -330,12 +330,17 @@ export const lessons = pgTable("lesson", {
   loomUrl: varchar("loomUrl", { length: 255 }),
   content: text("content"),
   level: integer("level"),
+  assessmentId: text("assessmentId").references(() => assessments.id),
   ...timestamps,
 });
 export const lessonRelations = relations(lessons, ({ one, many }) => ({
   module: one(modules, {
     fields: [lessons.moduleId],
     references: [modules.id],
+  }),
+  assessment: one(assessments, {
+    fields: [lessons.assessmentId],
+    references: [assessments.id],
   }),
 }));
 
@@ -406,9 +411,34 @@ export const preTestResponses = pgTable("preTestResponses", {
   questionId: text("question_id")
     .notNull()
     .references(() => questions.id),
-  selectedOption: text("selected_option"), 
+  selectedOption: text("selected_option"),
   isCorrect: boolean("is_correct").notNull(),
   ...timestamps,
 });
 
 export type PreTestResponse = InferSelectModel<typeof preTestResponses>;
+
+export const theoryAnswers = pgTable("theoryAnswers", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id").notNull(),
+  questionId: text("question_id")
+    .notNull()
+    .references(() => questions.id),
+  selectedOption: text("selected_option"),
+  isCorrect: boolean("is_correct").notNull(),
+  ...timestamps,
+});
+
+export type TheoryAnswer = InferSelectModel<typeof theoryAnswers>;
+
+export const theoryQuestionRelations = relations(
+  theoryAnswers,
+  ({ one, many }) => ({
+    question: one(questions, {
+      fields: [theoryAnswers.questionId],
+      references: [questions.id],
+    }),
+  })
+);
