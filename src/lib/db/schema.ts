@@ -277,6 +277,7 @@ export const topics = pgTable("topic", {
   color: varchar("color", { length: 255 }),
   level: integer("level").notNull(),
   stepId: text("stepId").references(() => learningSteps.id),
+  assessmentId: text("assessmentId").references(() => assessments.id),
   ...timestamps,
 });
 
@@ -315,6 +316,10 @@ export const topicRelations = relations(topics, ({ one, many }) => ({
     references: [learningSteps.id],
   }),
   modules: many(modules),
+  assessment: one(assessments, {
+    fields: [topics.assessmentId],
+    references: [assessments.id],
+  }),
 }));
 
 export const lessons = pgTable("lesson", {
@@ -381,6 +386,9 @@ export type Assessment = InferSelectModel<typeof assessments>;
 export const assessmentRelations = relations(assessments, ({ one, many }) => ({
   questions: many(questions),
   theoryLessonAnswers: many(theoryLessonAnswers),
+  topics: many(topics),
+  lessons: many(lessons),
+  theoryAnswers: many(theoryAnswers),
 }));
 
 export const questions = pgTable("questions", {
@@ -460,12 +468,17 @@ export const theoryAnswers = pgTable("theoryAnswers", {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   userId: text("user_id").notNull(),
+  assessmentId: text("assessment_id").references(() => assessments.id),
   questionId: text("question_id")
     .notNull()
     .references(() => questions.id),
   selectedOption: text("selected_option"),
   isCorrect: boolean("is_correct").notNull(),
   ...timestamps,
+}, (table) => {
+  return {
+    uniqueUserAssessmentQuestion: unique().on(table.userId, table.assessmentId, table.questionId),
+  }
 });
 
 export type TheoryAnswer = InferSelectModel<typeof theoryAnswers>;
@@ -476,6 +489,10 @@ export const theoryQuestionRelations = relations(
     question: one(questions, {
       fields: [theoryAnswers.questionId],
       references: [questions.id],
+    }),
+    assessment: one(assessments, {
+      fields: [theoryAnswers.assessmentId],
+      references: [assessments.id],
     }),
   })
 );

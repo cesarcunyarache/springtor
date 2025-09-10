@@ -98,6 +98,12 @@ export async function getTopicById(topicId: string): Promise<Topic | null> {
       where: eq(topics.id, topicId),
       with: {
         learningStep: true,
+        assessment: {
+          with:{ 
+            questions: true,
+            theoryAnswers: true,
+          },
+        },
         modules: {
           with: {
             lessons: {
@@ -111,6 +117,7 @@ export async function getTopicById(topicId: string): Promise<Topic | null> {
     if (!topic) return null;
     return topic;
   } catch (error) {
+    console.log(error);
     return null;
   }
 }

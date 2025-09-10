@@ -213,16 +213,16 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
 
       <div className="flex flex-col">
       {/* Evaluación práctica */}
-      <button className="flex flex-1  gap-4 p-4 text-sm font-medium text-gray-700 hover:bg-gray-50 border">
+      <Link href={`/scrum/tema/${course.id}/evaluacion-practica`} className="flex flex-1  gap-4 p-4 text-sm font-medium text-gray-700 hover:bg-gray-50 border">
         <ClipboardList className="w-5 h-5 text-blue-500" />
         <span>Evaluación práctica</span>
-      </button>
+      </Link>
 
       {/* Evaluación teórica */}
-      <button className="flex flex-1 gap-4 p-4 text-sm font-medium text-gray-700 hover:bg-gray-50  border">
+      <Link  href={`/scrum/tema/${course.id}/evaluacion-teorica`} className="flex flex-1 gap-4 p-4 text-sm font-medium text-gray-700 hover:bg-gray-50  border">
         <BookOpen className="w-5 h-5 text-green-500" />
         <span>Evaluación teórica</span>
-      </button>
+      </Link>
     </div>
      
 

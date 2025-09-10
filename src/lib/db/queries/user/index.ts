@@ -11,6 +11,7 @@ import {
   preTestResponses,
   users,
   theoryLessonAnswers,
+  theoryAnswers,
 } from "../../schema";
 import { asc, eq, exists, sql } from "drizzle-orm";
 import {
@@ -145,6 +146,53 @@ export async function saveUserResponseLessonAnswers(
 
     return false;
   } catch (error) {
+    return false;
+  }
+}
+
+
+
+export async function saveUserResponseTheoryAnswers(
+  lessonAnswers: QuizResult[],
+  assessmentId?: string
+): Promise<boolean> {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return false;
+
+    const preparedDate = lessonAnswers.map((q) => ({
+      ...q,
+      userId,
+      assessmentId,
+    }));
+
+    const results = await db
+      .insert(theoryAnswers)
+      .values(preparedDate)
+      .onConflictDoUpdate({
+        target: [
+          theoryAnswers.userId,
+          theoryAnswers.assessmentId,
+          theoryAnswers.questionId,
+        ],
+        set: {
+          selectedOption: sql.raw(
+            `excluded.${theoryAnswers.selectedOption.name}`
+          ),
+          isCorrect: sql.raw(`excluded.${theoryAnswers.isCorrect.name}`),
+        },
+      })
+      .returning();
+
+    if (results.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.log(error);
     return false;
   }
 }

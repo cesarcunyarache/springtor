@@ -123,7 +123,7 @@ export default function Quiz({
   if (questions.length === 0) return null;
 
   return (
-    <div className="bg-background text-foreground h-screen flex justify-center items-center">
+    <div className="bg-background text-foreground flex justify-center items-center">
       <main className="container px-4 py-12 max-w-4xl">
         {title && (
           <div className="relative mb-8">

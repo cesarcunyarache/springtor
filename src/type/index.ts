@@ -51,6 +51,7 @@ export interface Topic extends BaseModel {
   stepId: string | null;
   learningStep?: LearningStep | null;
   modules?: Module[];
+  assessment?: Assessment | null;
 }
 
 export interface Module extends BaseModel {
@@ -80,6 +81,7 @@ export interface Assessment extends BaseModel {
   description: string | null;
   questions?: Question[];
   theoryLessonAnswers?: TheoryLessonAnswer[];
+  theoryAnswers?: TheoryAnswer[];
 }
 export interface Question extends BaseModel {
   id: string;
@@ -91,6 +93,15 @@ export interface Question extends BaseModel {
 }
 
 export interface TheoryLessonAnswer extends BaseModel {
+  id: string;
+  userId: string;
+  assessmentId: string | null;
+  questionId: string;
+  selectedOption: string | null;
+  isCorrect: boolean;
+}
+
+export interface TheoryAnswer extends BaseModel {
   id: string;
   userId: string;
   assessmentId: string | null;
