@@ -348,6 +348,11 @@ export const lessonRelations = relations(lessons, ({ one, many }) => ({
     fields: [lessons.assessmentId],
     references: [assessments.id],
   }),
+  lessonCompletions: many(lessonCompletions),
+  lessonCompletion: one(lessonCompletions, {
+    fields: [lessons.id],
+    references: [lessonCompletions.id],
+  }),
 }));
 
 export type Lesson = InferSelectModel<typeof lessons>;
@@ -370,6 +375,21 @@ export const lessonCompletions = pgTable("lessonCompletions", {
 });
 
 export type LessonCompletion = InferSelectModel<typeof lessonCompletions>;
+
+export const lessonCompletionsRelations = relations(lessonCompletions, ({ one, many }) => ({
+  lesson: one(lessons, {
+    fields: [lessonCompletions.lessonId],
+    references: [lessons.id],
+  }),
+  module: one(modules, {
+    fields: [lessonCompletions.moduleId],
+    references: [modules.id],
+  }),
+  topic: one(topics, {
+    fields: [lessonCompletions.topicId],
+    references: [topics.id],
+  }),
+}));
 
 export const assessments = pgTable("assessments", {
   id: text("id")

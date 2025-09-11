@@ -6,15 +6,17 @@ import postgres from "postgres";
 import {
   assessments,
   learningSteps,
+  lessonCompletions,
   lessons,
   modules,
   roadmaps,
   topics,
 } from "../../schema";
-import { asc, eq } from "drizzle-orm";
-import { Assessment, LearningStep, Lesson, Roadmap, Topic } from "@/type";
+import { and, asc, eq } from "drizzle-orm";
+import { Assessment, LearningStep, Lesson, LessonCompletion, Roadmap, Topic } from "@/type";
 import * as schema from "../../schema";
 import { db } from "../..";
+import { auth } from "@/auth";
 
 export async function getRoadmaps() {
   try {
@@ -99,7 +101,7 @@ export async function getTopicById(topicId: string): Promise<Topic | null> {
       with: {
         learningStep: true,
         assessment: {
-          with:{ 
+          with: {
             questions: true,
             theoryAnswers: true,
           },
@@ -124,10 +126,19 @@ export async function getTopicById(topicId: string): Promise<Topic | null> {
 
 export async function getLessionById(lessonId: string): Promise<Lesson | null> {
   try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return null;
+
     const lesson = await db.query.lessons.findFirst({
       where: eq(lessons.id, lessonId),
       orderBy: [asc(lessons.level)],
       with: {
+        module: true,
+        lessonCompletions: {
+            where: eq(lessonCompletions.userId, userId),
+        },
         assessment: {
           with: {
             questions: true,
@@ -159,5 +170,33 @@ export async function getAssessmentBySlug(
     return assessment;
   } catch (error) {
     return null;
+  }
+}
+
+export async function getCompletedLessonsByUserId(topicId: string): Promise<LessonCompletion[]> {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return [];
+
+    const foundLessons = await db.query.lessonCompletions.findMany({
+      where: and(
+        eq(lessonCompletions.userId, userId),
+        eq(lessonCompletions.topicId, topicId)
+      ),
+      with: {
+        lesson: true,
+        module: true,
+        topic: true,
+      },
+    });
+
+    if (!foundLessons) return [];
+
+    return foundLessons;
+
+  } catch (error) {
+    return [];
   }
 }

@@ -7,12 +7,13 @@ import { LoomEmbed } from "@/components/LoomEmbed";
 import { getLessonById } from "@/moks/data";
 import { getLessionById } from "@/lib/db/queries/learning";
 import { Button } from "@/components/ui/button";
-import { BookOpen, MessageSquare, Send, Sparkles, StickyNote, Target } from "lucide-react";
+import { BookOpen, Check, MessageSquare, Send, Sparkles, StickyNote, Target } from "lucide-react";
 import { cn } from "@udecode/cn";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import ClientLessonPage from "./client";
 import { MarkdownView } from "@/components/markdown/index";
+import { completeLesson } from "@/lib/db/queries/user";
 
 
 
@@ -34,6 +35,18 @@ export default async function LessonPage({ params }: LessonPageProps) {
   }
 
 
+  const handleCompleteLesson = async () => {
+
+    await completeLesson(
+      {
+        moduleId: lesson.moduleId,
+        lessonId: lesson.id,
+        topicId: lesson.module?.topicId!,
+      }
+    );
+
+  }
+
 
   return (
     <>
@@ -52,6 +65,10 @@ export default async function LessonPage({ params }: LessonPageProps) {
             </div>
 
             <div className="flex items-center gap-2">
+
+
+             
+
               <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2">
                 <MessageSquare className="h-4 w-4" />
                 <span className="hidden md:inline">Preguntar</span>
@@ -61,6 +78,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
                 <StickyNote className="h-4 w-4" />
                 <span className="hidden md:inline">Notas</span>
               </Button>
+
 
               {/* Mobile action buttons */}
               <div className="flex sm:hidden items-center gap-1">

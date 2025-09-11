@@ -37,7 +37,7 @@ import {
 
 
 
-import { Course, LessonCompletion, Topic } from "@/type";
+import {  LessonCompletion, Topic } from "@/type";
 import { CourseProgress } from "../CourseProgress";
 import DarkModeToggle from "../DarkModeToggle";
 import { calculateCourseProgress } from "@/lib/courseProgress";
@@ -75,9 +75,9 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
     setIsMounted(true);
   }, []);
 
-  if (!course || !isMounted) {
+  /* if (!course || !isMounted) {
     return null;
-  }
+  } */
 
   const progress = 10 /* calculateCourseProgress(course!.modules!, completedLessons); */
 
@@ -158,7 +158,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
                         pathname ===
                         `/scrum/tema/${course.id}/leccion/${lesson.id}`;
                       const isCompleted = completedLessons.some(
-                        (completion) => completion.lesson.id === lesson.id
+                        (completion) => completion.lessonId === lesson.id
                       );
 
                       return (

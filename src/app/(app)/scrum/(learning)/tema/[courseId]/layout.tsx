@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 
 import { getCourseById, getCourseProgress } from "@/moks/data";
-import { getTopicById } from "@/lib/db/queries/learning";
+import { getCompletedLessonsByUserId, getTopicById } from "@/lib/db/queries/learning";
 import { db } from "@/lib/db";
 import { topics } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
@@ -36,19 +36,16 @@ export default async function CourseLayout({
  */
   const [course, progress] = await Promise.all([
     getTopicById(courseId),
-    getCourseProgress(1, Number(courseId)),
+    getCompletedLessonsByUserId(courseId),
   ]);
-
-
    
-
   if (!course) {
     return <h1>Course not found</h1>
   }
 
   return (
     <div className="h-full">
-      <Sidebar course={course} completedLessons={progress.completedLessons} />
+      <Sidebar course={course} completedLessons={progress} />
       <main className="h-full  pl-16 lg:pl-96">{children}</main>
     </div>
   );

@@ -1,5 +1,5 @@
 "use client";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 import { PortableText } from "@portabletext/react";
 
@@ -8,7 +8,7 @@ import { LoomEmbed } from "@/components/LoomEmbed";
 import { getLessonById } from "@/moks/data";
 import { getLessionById } from "@/lib/db/queries/learning";
 import { Button } from "@/components/ui/button";
-import { BookOpen, MessageSquare, Send, Sparkles, StickyNote, Target } from "lucide-react";
+import { BookOpen, Check, MessageSquare, Send, Sparkles, StickyNote, Target } from "lucide-react";
 import { cn } from "@udecode/cn";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,7 +19,7 @@ import Quiz, { QuizResult } from "@/components/quizz";
 
 import { MarkdownView } from "@/components/markdown/index";
 import { toast } from "sonner";
-import { saveUserResponseLessonAnswers } from "@/lib/db/queries/user";
+import { completeLesson, saveUserResponseLessonAnswers } from "@/lib/db/queries/user";
 
 
 interface LessonPageProps {
@@ -75,9 +75,32 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
     });
   }
 
+  const router = useRouter();
+
+  const handleCompleteLesson = async () => {
+
+    await completeLesson(
+      {
+        moduleId: lesson.moduleId,
+        lessonId: lesson.id,
+        topicId: lesson.module?.topicId!,
+      }
+    );
+
+    router.refresh();
+
+  }
+
+
 
   return (
     <div className="mt-20 m-10">
+
+      <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2" onClick={handleCompleteLesson}>
+        <Check className="h-4 w-4" />
+        <span className="hidden md:inline">Completar</span>
+      </Button>
+
       <section className="">
         <MarkdownView content={lesson!.content!} />
       </section>

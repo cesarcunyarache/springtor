@@ -12,6 +12,7 @@ import {
   users,
   theoryLessonAnswers,
   theoryAnswers,
+  lessonCompletions,
 } from "../../schema";
 import { asc, eq, exists, sql } from "drizzle-orm";
 import {
@@ -195,4 +196,33 @@ export async function saveUserResponseTheoryAnswers(
     console.log(error);
     return false;
   }
+}
+
+
+export async function completeLesson(
+  lesson: { 
+      moduleId: string;
+      lessonId: string;
+      topicId: string;
+      userId?: string;
+  },
+): Promise<boolean> {
+  try { 
+    const session = await auth(); 
+    const userId = session?.user?.id;
+
+     if (!userId) return false;
+
+     lesson.userId = userId;
+
+    const result = await db.insert(lessonCompletions).values(lesson).returning();
+
+    if (result.length > 0) {
+      return true;
+    }
+    return false;
+
+  } catch (error) {
+    return false;
+  } 
 }
