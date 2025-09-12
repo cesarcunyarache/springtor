@@ -2,7 +2,6 @@
 
 import { Sidebar } from "@/components/dashboard/Sidebar";
 
-import { getCourseById, getCourseProgress } from "@/moks/data";
 import { getCompletedLessonsByUserId, getTopicById } from "@/lib/db/queries/learning";
 import { db } from "@/lib/db";
 import { topics } from "@/lib/db/schema";

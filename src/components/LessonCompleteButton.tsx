@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import { CheckCircle, Loader2, XCircle } from "lucide-react";
 import { Button } from "./ui/button";
@@ -6,7 +6,7 @@ import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { completeLessonAction, getLessonCompletionStatusAction, uncompleteLessonAction } from "@/moks/data";
+
 
 interface LessonCompleteButtonProps {
   lessonId: string;
@@ -114,3 +114,4 @@ export function LessonCompleteButton({
     </div>
   );
 }
+ */

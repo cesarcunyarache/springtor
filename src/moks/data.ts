@@ -1,4 +1,4 @@
-import {
+/* import {
   Category,
   Instructor,
   Course,
@@ -250,4 +250,4 @@ export function getLessonById(lessonId: number) {
     module: moduleVar,
     course,
   };
-}
+} */

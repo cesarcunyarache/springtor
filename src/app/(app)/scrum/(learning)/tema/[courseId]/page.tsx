@@ -1,6 +1,6 @@
 
 import { getTopicById } from "@/lib/db/queries/learning";
-import { getCourseById } from "@/moks/data";
+
 import { redirect } from "next/navigation";
 
 interface CoursePageProps {

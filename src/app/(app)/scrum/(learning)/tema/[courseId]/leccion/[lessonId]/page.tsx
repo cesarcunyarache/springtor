@@ -2,9 +2,9 @@ import { redirect } from "next/navigation";
 
 import { PortableText } from "@portabletext/react";
 
-import { LessonCompleteButton } from "@/components/LessonCompleteButton";
+/* import { LessonCompleteButton } from "@/components/LessonCompleteButton"; */
 import { LoomEmbed } from "@/components/LoomEmbed";
-import { getLessonById } from "@/moks/data";
+
 import { getLessionById } from "@/lib/db/queries/learning";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Check, MessageSquare, Send, Sparkles, StickyNote, Target } from "lucide-react";
