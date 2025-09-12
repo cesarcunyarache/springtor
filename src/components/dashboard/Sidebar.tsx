@@ -83,7 +83,6 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
 
   const SidebarContent = () => (
     <div className="h-full flex flex-col">
-
       <div className="p-4 lg:p-6 border-b flex flex-col gap-y-4">
         <div className="flex items-center justify-between">
           <Link
@@ -284,48 +283,6 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
         </div>
 
       </aside>
-
-      {/* 
-      <div className="flex flex-col flex-1 ml-14 lg:ml-96">
-        <nav
-          className={cn(
-            "sticky top-0 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-          )}
-        >
-          <div className="flex h-16 items-center justify-between px-4 lg:px-6">
-            <div className="flex items-center gap-4 min-w-0 flex-1">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <BookOpen className="h-4 w-4" />
-                
-              </div>
-              <h1 className="font-semibold text-lg truncate">{course.title}</h1>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2">
-                <MessageSquare className="h-4 w-4" />
-                <span className="hidden md:inline">Preguntar</span>
-              </Button>
-
-              <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2">
-                <StickyNote className="h-4 w-4" />
-                <span className="hidden md:inline">Notas</span>
-              </Button>
-
-        
-              <div className="flex sm:hidden items-center gap-1">
-                <Button variant="ghost" size="icon">
-                  <MessageSquare className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="icon">
-                  <StickyNote className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </nav>
-      </div> */}
-
       {isOpen && (
         <div
           className="fixed inset-0 z-30 bg-background/80 backdrop-blur-sm lg:hidden"

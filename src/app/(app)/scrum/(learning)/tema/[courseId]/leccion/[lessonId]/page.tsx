@@ -26,7 +26,7 @@ interface LessonPageProps {
 
 export default async function LessonPage({ params }: LessonPageProps) {
   /*   const user = await currentUser(); */
-  const { courseId, lessonId,  } = await params;
+  const { courseId, lessonId, } = await params;
 
   const lesson = await getLessionById(lessonId);
 
@@ -41,7 +41,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
       {
         moduleId: lesson.moduleId,
         lessonId: lesson.id,
-        topicId: lesson.module?.topicId!,
+        topicId: lesson.module?.topicId ?? "",
       }
     );
 
@@ -67,7 +67,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
             <div className="flex items-center gap-2">
 
 
-             
+
 
               <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2">
                 <MessageSquare className="h-4 w-4" />
@@ -93,7 +93,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
           </div>
         </nav>
 
-       
+
       </div>
 
       <ClientLessonPage lesson={lesson} />

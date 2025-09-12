@@ -83,7 +83,7 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
       {
         moduleId: lesson.moduleId,
         lessonId: lesson.id,
-        topicId: lesson.module?.topicId!,
+        topicId: lesson.module?.topicId ?? "",
       }
     );
 
