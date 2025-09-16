@@ -15,6 +15,7 @@ import ClientLessonPage from "./client";
 import { MarkdownView } from "@/components/markdown/index";
 import { completeLesson } from "@/lib/db/queries/user";
 import LessonNavbar from "../../../../components/lesson-navbar";
+import LessonChat from "../../../../server/lesson-chat";
 
 
 
@@ -36,16 +37,16 @@ export default async function LessonPage({ params }: LessonPageProps) {
   }
 
   return (
-    <div className="">
+   /*  <div className="">
 
       
 
       <LessonNavbar lesson={lesson} />
 
-      <div className="flex flex-col flex-1 w-full ml-1 overflow-auto h-[92vh]">
+      <div className="flex flex-col flex-1 w-full ml-1 overflow-auto h-[92vh]"> */
 
-        <ClientLessonPage lesson={lesson} />
-      </div>
-    </div>
+        <ClientLessonPage lesson={lesson} chat={<LessonChat lessonId={""} />} />
+      /* </div>
+    </div> */
   );
 }

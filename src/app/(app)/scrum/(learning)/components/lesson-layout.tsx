@@ -14,10 +14,10 @@ interface LessonLayoutProps {
 export function LessonLayout({ children, chat }: LessonLayoutProps) {
   const { isChatOpen } = useChatStore()
   return (
-    <ResizablePanelGroup direction="horizontal" className="h-screen" autoSaveId="persitence">
-      <ResizablePanel >
+   /*  <ResizablePanelGroup direction="horizontal" className="h-screen" autoSaveId="persitence">
+      <ResizablePanel > */
         <main className="h-full pl-16 lg:pl-96">{children}</main>
-      </ResizablePanel>
+   /*    </ResizablePanel>
 
       {isChatOpen &&
         (
@@ -31,6 +31,6 @@ export function LessonLayout({ children, chat }: LessonLayoutProps) {
             </ResizablePanel>
           </>
         )}
-    </ResizablePanelGroup>
+    </ResizablePanelGroup> */
   )
 }

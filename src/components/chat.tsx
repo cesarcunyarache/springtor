@@ -29,6 +29,7 @@ export function Chat({
   isReadonly,
   session,
   autoResume,
+  isRedirect = true,
 }: {
   id: string;
   initialMessages: Array<UIMessage>;
@@ -37,6 +38,7 @@ export function Chat({
   isReadonly: boolean;
   session: Session;
   autoResume: boolean;
+  isRedirect?: boolean;
 }) {
   const { mutate } = useSWRConfig();
 
@@ -96,7 +98,9 @@ export function Chat({
       });
 
       setHasAppendedQuery(true);
+      if (isRedirect) {
       window.history.replaceState({}, '', `/scrum/chat/${id}`);
+      }
     }
   }, [query, append, hasAppendedQuery, id]);
 

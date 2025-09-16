@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { LessonLayout } from "../../components/lesson-layout";
 import LessonChat from "../../server/lesson-chat";
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { cookies } from "next/headers";
 
 interface CourseLayoutProps {
   children: React.ReactNode;
@@ -45,15 +47,17 @@ export default async function CourseLayout({
   }
 
 
-
+  const cookieStore = await cookies();
+  const isCollapsed = cookieStore.get('sidebar:state')?.value !== 'true';
 
   return (
     <div className="h-full ">
-      <Sidebar course={course} completedLessons={progress} />
+      <SidebarProvider defaultOpen={!isCollapsed}>
+        <Sidebar course={course} completedLessons={progress} />
         <LessonLayout chat={<LessonChat lessonId={""} />}>
           {children}
         </LessonLayout>
-
+      </SidebarProvider>
     </div>
   );
 }

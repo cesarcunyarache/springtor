@@ -20,13 +20,17 @@ import Quiz, { QuizResult } from "@/components/quizz";
 import { MarkdownView } from "@/components/markdown/index";
 import { toast } from "sonner";
 import { completeLesson, saveUserResponseLessonAnswers } from "@/lib/db/queries/user";
+import LessonNavbar from "../../../../components/lesson-navbar";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { useChatStore } from "@/hooks/use-chat-store";
 
 
 interface LessonPageProps {
   lesson: Lesson;
+  chat: React.ReactNode;
 }
 
-export default function ClientLessonPage({ lesson }: LessonPageProps) {
+export default function ClientLessonPage({ lesson, chat }: LessonPageProps) {
   /*   const user = await currentUser(); */
 
 
@@ -91,39 +95,72 @@ export default function ClientLessonPage({ lesson }: LessonPageProps) {
 
   }
 
-
+const { isChatOpen } = useChatStore()
 
   return (
-    <div className="mt-20 m-10">
 
-      <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2" onClick={handleCompleteLesson}>
-        <Check className="h-4 w-4" />
-        <span className="hidden md:inline">Completar</span>
-      </Button>
 
-      <section className="">
-        <MarkdownView content={lesson!.content!} />
-      </section>
+    
 
-      <section>
-        <AnimatedAIChat />
-      </section>
+     <ResizablePanelGroup direction="horizontal" className="h-screen" autoSaveId="persitence">
+      <ResizablePanel > 
+       
+       <div className="">
 
-      <section>
-        <Quiz title={"Quiz"} questions={lesson?.assessment?.questions ?? []}
-          isOmitted={false}
-          onSubmit={handleOnSubmit}
-          isViewingResults={true}
-          questionResults={
-            lesson?.assessment?.theoryLessonAnswers?.map((a) => ({
-              questionId: a.questionId,
-              selectedOption: a.selectedOption,
-              isCorrect: a.isCorrect,
-            }))
-          }
-          allowReset={true}
-        />
-      </section>
+
+
+      <LessonNavbar lesson={lesson} />
+
+      <div className="flex flex-col flex-1 w-full ml-1 overflow-auto h-[92vh]">
+
+        {/*     <ClientLessonPage lesson={lesson} /> */}
+        <div className="mt-20 m-10">
+
+          <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2" onClick={handleCompleteLesson}>
+            <Check className="h-4 w-4" />
+            <span className="hidden md:inline">Completar</span>
+          </Button>
+
+          <section className="">
+            <MarkdownView content={lesson!.content!} />
+          </section>
+
+          <section>
+            <AnimatedAIChat />
+          </section>
+
+          <section>
+            <Quiz title={"Quiz"} questions={lesson?.assessment?.questions ?? []}
+              isOmitted={false}
+              onSubmit={handleOnSubmit}
+              isViewingResults={true}
+              questionResults={
+                lesson?.assessment?.theoryLessonAnswers?.map((a) => ({
+                  questionId: a.questionId,
+                  selectedOption: a.selectedOption,
+                  isCorrect: a.isCorrect,
+                }))
+              }
+              allowReset={true}
+            />
+          </section>
+        </div>
+      </div>
     </div>
+     </ResizablePanel>
+
+      {isChatOpen &&
+        (
+          <>
+            <ResizableHandle withHandle />
+            <ResizablePanel
+              minSize={20}
+              maxSize={40}
+            >
+             {chat}
+            </ResizablePanel>
+          </>
+        )}
+    </ResizablePanelGroup> 
   );
 }

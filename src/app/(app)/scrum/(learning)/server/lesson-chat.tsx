@@ -60,12 +60,13 @@ export default async function LessonChat({ lessonId }: { lessonId: string }) {
         <>
             <Chat
                 id={chat.id}
-                initialMessages={convertToUIMessages(messagesFromDb ?? [])}
+                initialMessages={/* convertToUIMessages(messagesFromDb ?? []) */ []}
                 initialChatModel={DEFAULT_CHAT_MODEL}
                 initialVisibilityType={chat.visibility}
                 isReadonly={session?.user?.id !== chat.userId}
                 session={session}
                 autoResume={true}
+                isRedirect={false}
             />
             <DataStreamHandler id={id} />
         </>
