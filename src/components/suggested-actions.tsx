@@ -57,7 +57,7 @@ function PureSuggestedActions({
           <Button
             variant="ghost"
             onClick={async () => {
-              window.history.replaceState({}, '', `/chat/${chatId}`);
+              window.history.replaceState({}, '', `/scrum/chat/${chatId}`);
 
               append({
                 role: 'user',

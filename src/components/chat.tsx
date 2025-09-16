@@ -96,7 +96,7 @@ export function Chat({
       });
 
       setHasAppendedQuery(true);
-      window.history.replaceState({}, '', `/chat/${id}`);
+      window.history.replaceState({}, '', `/scrum/chat/${id}`);
     }
   }, [query, append, hasAppendedQuery, id]);
 

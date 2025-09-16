@@ -37,7 +37,7 @@ import {
 
 
 
-import {  LessonCompletion, Topic } from "@/type";
+import { LessonCompletion, Topic } from "@/type";
 import { CourseProgress } from "../CourseProgress";
 import DarkModeToggle from "../DarkModeToggle";
 import { calculateCourseProgress } from "@/lib/courseProgress";
@@ -51,9 +51,11 @@ interface SidebarProps {
 
 export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
   const pathname = usePathname();
-  const {isOpen, toggle, close } = useSidebar();
+  const { isOpen, toggle, close } = useSidebar();
   const [isMounted, setIsMounted] = useState(false);
   const [openModules, setOpenModules] = useState<string[]>([]);
+
+  console.log(isOpen);
 
   useEffect(() => {
     if (pathname && course?.modules) {
@@ -111,7 +113,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
           <h1 className="font-semibold text-2xl">{course.title}</h1>
           <CourseProgress
             progress={progress}
-            variant="success" 
+            variant="success"
             label="Progreso del Tema"
           />
         </div>
@@ -211,19 +213,19 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
       </ScrollArea>
 
       <div className="flex flex-col">
-      {/* Evaluación práctica */}
-      <Link href={`/scrum/tema/${course.id}/evaluacion-practica`} className="flex flex-1  gap-4 p-4 text-sm font-medium text-gray-700 hover:bg-gray-50 border">
-        <ClipboardList className="w-5 h-5 text-blue-500" />
-        <span>Evaluación práctica</span>
-      </Link>
+        {/* Evaluación práctica */}
+        <Link href={`/scrum/tema/${course.id}/evaluacion-practica`} className="flex flex-1  gap-4 p-4 text-sm font-medium text-gray-700 hover:bg-gray-50 border">
+          <ClipboardList className="w-5 h-5 text-blue-500" />
+          <span>Evaluación práctica</span>
+        </Link>
 
-      {/* Evaluación teórica */}
-      <Link  href={`/scrum/tema/${course.id}/evaluacion-teorica`} className="flex flex-1 gap-4 p-4 text-sm font-medium text-gray-700 hover:bg-gray-50  border">
-        <BookOpen className="w-5 h-5 text-green-500" />
-        <span>Evaluación teórica</span>
-      </Link>
-    </div>
-     
+        {/* Evaluación teórica */}
+        <Link href={`/scrum/tema/${course.id}/evaluacion-teorica`} className="flex flex-1 gap-4 p-4 text-sm font-medium text-gray-700 hover:bg-gray-50  border">
+          <BookOpen className="w-5 h-5 text-green-500" />
+          <span>Evaluación teórica</span>
+        </Link>
+      </div>
+
 
 
     </div>
