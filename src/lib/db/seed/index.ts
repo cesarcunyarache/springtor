@@ -7,307 +7,17 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { db } from "../index";
 import dotenv from "dotenv";
 import { Assessment } from "../schema";
+import { features } from "process";
 
-// Datos iniciales
-const roadmaps = [
-  {
-    id: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    slug: "scrum-roadmap",
-    title: "Roadmap de Scrum",
-    description: "Aprende Scrum desde los fundamentos hasta la maestría.",
-  },
-];
-
-const learningSteps = [
-  {
-    id: "8d4c5c27-32d6-4b5b-b24b-bb8c7c3d7c91",
-    name: "Inicio",
-    description: "Punto de partida del aprendizaje de Scrum.",
-  },
-  {
-    id: "3fa0c25f-b87b-47f4-a763-b9d1d487ef51",
-    name: "Fundamentos",
-    description: "Principios y valores esenciales de Scrum.",
-  },
-  {
-    id: "13f7cf90-7357-4b9a-8f67-99a1e92d8b2b",
-    name: "Roles",
-    description: "Roles esenciales dentro de Scrum.",
-  },
-  {
-    id: "a4a226d6-ef16-4b52-8b28-d7cf22992eb1",
-    name: "Eventos",
-    description: "Eventos clave para el desarrollo ágil.",
-  },
-  {
-    id: "29b5c88b-23e8-4e69-8d4a-3b0b0e62a8e5",
-    name: "Artefactos",
-    description: "Artefactos que ayudan a gestionar el trabajo.",
-  },
-  {
-    id: "f25b62ff-3f15-4829-9238-780cc5464971",
-    name: "Maestría",
-    description: "Dominio completo del marco Scrum.",
-  },
-];
-
-const topics = [
-  {
-    id: "intro-scrum",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "intro-scrum",
-    title: "Introducción a Scrum",
-    description: "Principios y valores ágiles",
-    content: null,
-    icon: "🎯",
-    level: 1,
-    stepId: "8d4c5c27-32d6-4b5b-b24b-bb8c7c3d7c91",
-  },
-  {
-    id: "agile-mindset",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "agile-mindset",
-    title: "Mentalidad Ágil",
-    description: "Manifiesto y valores",
-    content: null,
-    icon: "🧠",
-    level: 1,
-    stepId: "8d4c5c27-32d6-4b5b-b24b-bb8c7c3d7c91",
-  },
-  {
-    id: "product-owner",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "product-owner",
-    title: "Product Owner",
-    description: "Dueño del producto",
-    content: null,
-    icon: "👑",
-    level: 2,
-    stepId: "13f7cf90-7357-4b9a-8f67-99a1e92d8b2b",
-  },
-  {
-    id: "scrum-master",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "scrum-master",
-    title: "Scrum Master",
-    description: "Facilitador del proceso",
-    content: null,
-    icon: "🎓",
-    level: 2,
-    stepId: "13f7cf90-7357-4b9a-8f67-99a1e92d8b2b",
-  },
-  {
-    id: "dev-team",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "dev-team",
-    title: "Development Team",
-    description: "Equipo de desarrollo",
-    content: null,
-    icon: "👥",
-    level: 2,
-    stepId: "13f7cf90-7357-4b9a-8f67-99a1e92d8b2b",
-  },
-  {
-    id: "sprint-planning",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "sprint-planning",
-    title: "Sprint Planning",
-    description: "Planificación del Sprint",
-    content: null,
-    icon: "📋",
-    level: 3,
-    stepId: "a4a226d6-ef16-4b52-8b28-d7cf22992eb1",
-  },
-  {
-    id: "daily-scrum",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "daily-scrum",
-    title: "Daily Scrum",
-    description: "Reunión diaria",
-    content: null,
-    icon: "☀️",
-    level: 3,
-    stepId: "a4a226d6-ef16-4b52-8b28-d7cf22992eb1",
-  },
-  {
-    id: "sprint-review",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "sprint-review",
-    title: "Sprint Review",
-    description: "Revisión del Sprint",
-    content: null,
-    icon: "👀",
-    level: 3,
-    stepId: "a4a226d6-ef16-4b52-8b28-d7cf22992eb1",
-  },
-  {
-    id: "sprint-retrospective",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "sprint-retrospective",
-    title: "Sprint Retrospective",
-    description: "Retrospectiva del equipo",
-    content: null,
-    icon: "🔄",
-    level: 3,
-    stepId: "a4a226d6-ef16-4b52-8b28-d7cf22992eb1",
-  },
-  {
-    id: "product-backlog",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "product-backlog",
-    title: "Product Backlog",
-    description: "Lista de funcionalidades",
-    content: null,
-    icon: "📊",
-    level: 4,
-    stepId: "29b5c88b-23e8-4e69-8d4a-3b0b0e62a8e5",
-  },
-  {
-    id: "increment",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "increment",
-    title: "Increment",
-    description: "Producto funcional",
-    content: null,
-    icon: "🚀",
-    level: 4,
-    stepId: "29b5c88b-23e8-4e69-8d4a-3b0b0e62a8e5",
-  },
-  {
-    id: "sprint-backlog",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "sprint-backlog",
-    title: "Sprint Backlog",
-    description: "Trabajo del Sprint",
-    content: null,
-    icon: "📈",
-    level: 4,
-    stepId: "29b5c88b-23e8-4e69-8d4a-3b0b0e62a8e5",
-  },
-  {
-    id: "scrum-mastery",
-    roadmapId: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
-    parentId: null,
-    slug: "scrum-mastery",
-    title: "Maestría en Scrum",
-    description: "Dominio completo",
-    content: null,
-    icon: "🏆",
-    level: 5,
-    stepId: "f25b62ff-3f15-4829-9238-780cc5464971",
-  },
-];
-
-const modules = [
-  {
-    id: "mod-intro-scrum-1",
-    topicId: "intro-scrum",
-    title: "Introducción a Scrum - Módulo 1",
-    description: "Primer módulo de Introducción a Scrum",
-  },
-  {
-    id: "mod-intro-scrum-2",
-    topicId: "intro-scrum",
-    title: "Introducción a Scrum - Módulo 2",
-    description: "Segundo módulo de Introducción a Scrum",
-  },
-  {
-    id: "mod-agile-mindset-1",
-    topicId: "agile-mindset",
-    title: "Mentalidad Ágil - Módulo 1",
-    description: "Primer módulo de Mentalidad Ágil",
-  },
-  {
-    id: "mod-agile-mindset-2",
-    topicId: "agile-mindset",
-    title: "Mentalidad Ágil - Módulo 2",
-    description: "Segundo módulo de Mentalidad Ágil",
-  },
-];
-
-const lessons = [
-  {
-    id: "lesson-intro-scrum-1-1",
-    moduleId: "mod-intro-scrum-1",
-    title: "Lección 1 - Conceptos básicos",
-    slug: "intro-scrum-mod1-lesson1",
-    description: "Primera lección del módulo 1 de Introducción a Scrum",
-    videoUrl: null,
-    loomUrl: null,
-    content: "",
-  },
-  {
-    id: "lesson-intro-scrum-1-2",
-    moduleId: "mod-intro-scrum-1",
-    title: "Lección 2 - Valores ágiles",
-    slug: "intro-scrum-mod1-lesson2",
-    description: "Segunda lección del módulo 1 de Introducción a Scrum",
-    videoUrl: null,
-    loomUrl: null,
-    content: "",
-  },
-  {
-    id: "lesson-intro-scrum-1-3",
-    moduleId: "mod-intro-scrum-1",
-    title: "Lección 3 - Principios de Scrum",
-    slug: "intro-scrum-mod1-lesson3",
-    description: "Tercera lección del módulo 1 de Introducción a Scrum",
-    videoUrl: null,
-    loomUrl: null,
-    content: "",
-  },
-
-  {
-    id: "lesson-intro-scrum-2-1",
-    moduleId: "mod-intro-scrum-2",
-    title: "Lección 1 - Historia de Scrum",
-    slug: "intro-scrum-mod2-lesson1",
-    description: "Primera lección del módulo 2 de Introducción a Scrum",
-    videoUrl: null,
-    loomUrl: null,
-    content: "",
-  },
-  {
-    id: "lesson-intro-scrum-2-2",
-    moduleId: "mod-intro-scrum-2",
-    title: "Lección 2 - Marcos ágiles relacionados",
-    slug: "intro-scrum-mod2-lesson2",
-    description: "Segunda lección del módulo 2 de Introducción a Scrum",
-    videoUrl: null,
-    loomUrl: null,
-    content: "",
-  },
-  {
-    id: "lesson-intro-scrum-2-3",
-    moduleId: "mod-intro-scrum-2",
-    title: "Lección 3 - Aplicaciones de Scrum",
-    slug: "intro-scrum-mod2-lesson3",
-    description: "Tercera lección del módulo 2 de Introducción a Scrum",
-    videoUrl: null,
-    loomUrl: null,
-    content: "",
-  },
-];
 
 const assessmentPreTest = {
   id: "60be81ff-2d07-4599-8da1-9b18099ae43b",
   title: "Examen de Conocimientos Scrum",
-  description: "Pre-Test/Post-Test sobre comprensión de roles, eventos y artefactos del marco Scrum.",
+  description:
+    "Pre-Test/Post-Test sobre comprensión de roles, eventos y artefactos del marco Scrum.",
 };
 
-const assessmentLesson= {
+const assessmentLesson = {
   id: "60be01ff-2d07-459f-8da1-9b18299ae43b",
   title: "Lession test",
   description: "Lession test",
@@ -459,66 +169,133 @@ const assessmentLesson= {
   id: crypto.randomUUID(),
 })); */
 
-
 const questionsData = [
   {
-      question: "¿Cuál es el rol principal del Scrum Master en un equipo Scrum?",
-      options: [
-        "Asegurarse de que se cumplan los plazos",
-        "Eliminar impedimentos y facilitar el marco de trabajo",
-        "Asignar tareas a cada miembro del equipo",
-        "Supervisar y evaluar el desempeño individual",
-      ],
-      answer: "B",
-      assessmentId: assessmentLesson.id,
-    },
-    {
-      question: "¿Qué artefacto de Scrum representa el trabajo pendiente del producto?",
-      options: [
-        "Product Backlog",
-        "Sprint Backlog",
-        "Incremento",
-        "Burndown Chart",
-      ],
-      answer: "A",
-       assessmentId: assessmentLesson.id,
-    },
-    {
-      question: "¿Cuál es la duración recomendada para un Sprint en Scrum?",
-      options: [
-        "Un máximo de un mes",
-        "Exactamente dos semanas",
-        "Entre uno y seis meses",
-        "El tiempo que el Product Owner considere necesario",
-      ],
-      answer: "A",
-       assessmentId: assessmentLesson.id,
-    },
-    {
-      question: "¿Qué evento de Scrum se utiliza para inspeccionar el incremento y adaptar el Product Backlog si es necesario?",
-      options: [
-        "Daily Scrum",
-        "Sprint Retrospective",
-        "Sprint Review",
-        "Refinamiento del Backlog",
-      ],
-      answer: "C",
-      assessmentId: assessmentLesson.id,
-    },
-  ]
+    question: "¿Cuál es el rol principal del Scrum Master en un equipo Scrum?",
+    options: [
+      "Asegurarse de que se cumplan los plazos",
+      "Eliminar impedimentos y facilitar el marco de trabajo",
+      "Asignar tareas a cada miembro del equipo",
+      "Supervisar y evaluar el desempeño individual",
+    ],
+    answer: "B",
+    assessmentId: assessmentLesson.id,
+  },
+  {
+    question:
+      "¿Qué artefacto de Scrum representa el trabajo pendiente del producto?",
+    options: [
+      "Product Backlog",
+      "Sprint Backlog",
+      "Incremento",
+      "Burndown Chart",
+    ],
+    answer: "A",
+    assessmentId: assessmentLesson.id,
+  },
+  {
+    question: "¿Cuál es la duración recomendada para un Sprint en Scrum?",
+    options: [
+      "Un máximo de un mes",
+      "Exactamente dos semanas",
+      "Entre uno y seis meses",
+      "El tiempo que el Product Owner considere necesario",
+    ],
+    answer: "A",
+    assessmentId: assessmentLesson.id,
+  },
+  {
+    question:
+      "¿Qué evento de Scrum se utiliza para inspeccionar el incremento y adaptar el Product Backlog si es necesario?",
+    options: [
+      "Daily Scrum",
+      "Sprint Retrospective",
+      "Sprint Review",
+      "Refinamiento del Backlog",
+    ],
+    answer: "C",
+    assessmentId: assessmentLesson.id,
+  },
+];
+
+const seed = [
+  {
+    id: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
+    slug: "scrum",
+    title: "Scrum",
+    description: "Aprende Scrum desde los fundamentos hasta la maestría.",
+    learningSteps: [
+      {
+        id: "8d4c5c27-32d6-4b5b-b24b-bb8c7c3d7c91",
+        name: "Introducción a Scrum",
+        level: 1,
+        topics: [
+          {
+            id: "3f94b0f1-89b1-4b59-9b92-d3e2b9c0e19f",
+            title: "Fundamentos de la Agilidad",
+            subtitle: "",
+            slug: "fundamentos-de-la-agilidad",
+            description:
+              "Aprende los valores y fundamentos que impulsan la agilidad en proyectos y equipos.",
+            content: "",
+            icont: "rocket",
+            level: 1,
+            features: [
+              "Valores del Manifiesto Ágil",
+              "Principios de la agilidad",
+              "Beneficios de la agilidad",
+              "Colaboración y adaptación",
+            ],
+            modules: [
+              {
+                id: "5f834a31-7ddb-4f19-a2be-60945e646605",
+                title: "¿Qué es la Agilidad?",
+                level: 1,
+                lessons: [
+                  {
+                    id: "922cba69-3abf-4d65-8aee-07e57b1a89b0",
+                    title: "Introducción  a la Agilidad",
+                    slug: "introducción-a-la-gilidad",
+                    level: 1,
+                    content: "",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
 
 
 async function main() {
   dotenv.config();
-  console.log("🌱 Seeding...");
-/*   await db.insert(schema.roadmaps).values(roadmaps);
-  await db.insert(schema.learningSteps).values(learningSteps);
-  await db.insert(schema.topics).values(topics); */
-  /* await db.insert(schema.modules).values(modules);
-  await db.insert(schema.lessons).values(lessons); */
+ console.log("🗑️ Limpiando base de datos...");
 
-   await db.insert(schema.assessments).values(assessmentLesson); 
-   await db.insert(schema.questions).values(questionsData); 
+  // El orden importa por las FK: primero hijos, luego padres
+  await db.delete(schema.lessons);
+  await db.delete(schema.modules);
+  await db.delete(schema.topics);
+  await db.delete(schema.learningSteps);
+  await db.delete(schema.roadmaps);
+  await db.delete(schema.questions);
+  await db.delete(schema.assessments);
+
+  console.log("🌱 Seeding...");
+
+  const { roadmaps, steps, topics, modules, lessons } = flattenSeed(seed);
+
+  await db.insert(schema.roadmaps).values(roadmaps);
+  await db.insert(schema.learningSteps).values(steps);
+  await db.insert(schema.topics).values(topics);
+  await db.insert(schema.modules).values(modules);
+  await db.insert(schema.lessons).values(lessons);
+
+  await db.insert(schema.assessments).values(assessmentLesson);
+  await db.insert(schema.questions).values(questionsData);
+
   console.log("✅ Seed successful");
   /* await client.end(); */
 }
@@ -527,3 +304,66 @@ main().catch((err) => {
   console.error(err);
   process.exit(1);
 });
+
+
+function flattenSeed(seed: any) {
+  const roadmaps: any[] = [];
+  const steps: any[] = [];
+  const topics: any[] = [];
+  const modules: any[] = [];
+  const lessons: any[] = [];
+
+  for (const roadmap of seed) {
+    roadmaps.push({
+      id: roadmap.id,
+      slug: roadmap.slug,
+      title: roadmap.title,
+      description: roadmap.description,
+    });
+
+    for (const step of roadmap.learningSteps) {
+      steps.push({
+        id: step.id,
+        roadmapId: roadmap.id, // 🔑 relación
+        name: step.name,
+        level: step.level,
+      });
+
+      for (const topic of step.topics) {
+        topics.push({
+          id: topic.id,
+          stepId: step.id, // 🔑 relación
+          roadmapId: roadmap.id, // 🔑 relación
+          title: topic.title,
+          slug: topic.slug,
+          description: topic.description,
+          level: topic.level,
+          features: topic.features,
+          icon: topic.icon,
+        });
+
+        for (const module of topic.modules) {
+          modules.push({
+            id: module.id,
+            topicId: topic.id, // 🔑 relación
+            title: module.title,
+            level: module.level,
+          });
+
+          for (const lesson of module.lessons) {
+            lessons.push({
+              id: lesson.id,
+              moduleId: module.id, // 🔑 relación
+              title: lesson.title,
+              slug: lesson.slug,
+              level: lesson.level,
+              content: lesson.content,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return { roadmaps, steps, topics, modules, lessons };
+}

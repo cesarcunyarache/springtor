@@ -52,7 +52,7 @@ export default async function CourseLayout({
 
   return (
     <div className="h-full ">
-      <SidebarProvider defaultOpen={!isCollapsed}>
+      <SidebarProvider defaultOpen={!false}>
         <Sidebar course={course} completedLessons={progress} />
         <LessonLayout chat={<LessonChat lessonId={""} />}>
           {children}

@@ -99,7 +99,7 @@ export function Chat({
 
       setHasAppendedQuery(true);
       if (isRedirect) {
-      window.history.replaceState({}, '', `/scrum/chat/${id}`);
+        window.history.replaceState({}, '', `/scrum/chat/${id}`);
       }
     }
   }, [query, append, hasAppendedQuery, id]);
@@ -131,16 +131,18 @@ export function Chat({
           session={session}
         />
 
-        <Messages
-          chatId={id}
-          status={status}
-          votes={votes}
-          messages={messages}
-          setMessages={setMessages}
-          reload={reload}
-          isReadonly={isReadonly}
-          isArtifactVisible={isArtifactVisible}
-        />
+        <div className="flex-1 overflow-y-auto">
+          <Messages
+            chatId={id}
+            status={status}
+            votes={votes}
+            messages={messages}
+            setMessages={setMessages}
+            reload={reload}
+            isReadonly={isReadonly}
+            isArtifactVisible={isArtifactVisible}
+          />
+        </div>
 
         <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
           {!isReadonly && (
@@ -157,6 +159,8 @@ export function Chat({
               setMessages={setMessages}
               append={append}
               selectedVisibilityType={visibilityType}
+              isRedirect={isRedirect}
+
             />
           )}
         </form>
@@ -178,6 +182,7 @@ export function Chat({
         votes={votes}
         isReadonly={isReadonly}
         selectedVisibilityType={visibilityType}
+        isRedirect={isRedirect}
       />
     </>
   );

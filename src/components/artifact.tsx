@@ -68,6 +68,7 @@ function PureArtifact({
   votes,
   isReadonly,
   selectedVisibilityType,
+  isRedirect = true,
 }: {
   chatId: string;
   input: string;
@@ -84,6 +85,7 @@ function PureArtifact({
   reload: UseChatHelpers['reload'];
   isReadonly: boolean;
   selectedVisibilityType: VisibilityType;
+  isRedirect: boolean;
 }) {
   const { artifact, setArtifact, metadata, setMetadata } = useArtifact();
 
@@ -325,7 +327,8 @@ function PureArtifact({
                 />
 
                 <form className="flex flex-row gap-2 relative items-end w-full px-4 pb-4">
-                  <MultimodalInput
+                  <MultimodalInput 
+                  isRedirect={isRedirect}
                     chatId={chatId}
                     input={input}
                     setInput={setInput}

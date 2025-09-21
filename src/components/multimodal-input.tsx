@@ -42,6 +42,7 @@ function PureMultimodalInput({
   handleSubmit,
   className,
   selectedVisibilityType,
+  isRedirect = true,
 }: {
   chatId: string;
   input: UseChatHelpers['input'];
@@ -56,6 +57,7 @@ function PureMultimodalInput({
   handleSubmit: UseChatHelpers['handleSubmit'];
   className?: string;
   selectedVisibilityType: VisibilityType;
+  isRedirect: boolean;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { width } = useWindowSize();
@@ -110,8 +112,10 @@ function PureMultimodalInput({
   const [uploadQueue, setUploadQueue] = useState<Array<string>>([]);
 
   const submitForm = useCallback(() => {
-    window.history.replaceState({}, '', `/scrum/chat/${chatId}`);
 
+    if (isRedirect) {
+      window.history.replaceState({}, '', `/scrum/chat/${chatId}`);
+    }
     handleSubmit(undefined, {
       experimental_attachments: attachments,
     });

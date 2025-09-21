@@ -7,18 +7,17 @@ import { DBMessage } from '@/lib/db/schema';
 import { Attachment, UIMessage } from 'ai';
 import { notFound } from 'next/dist/client/components/not-found';
 
+ import type { VisibilityType } from '@/components/visibility-selector';
+
 import { redirect } from 'next/navigation';
+import { generateUUID } from '@/lib/utils';
 
 export default async function LessonChat({ lessonId }: { lessonId: string }) {
 
 
-    const id = "6c522403-363d-45f9-8281-6c61484d1358";
+    const id = generateUUID();
 
     const chat = await getChatById({ id });
-
-    if (!chat) {
-        notFound();
-    }
 
     const session = await auth();
 
@@ -26,20 +25,12 @@ export default async function LessonChat({ lessonId }: { lessonId: string }) {
         redirect('/api/auth/guest');
     }
 
-    if (chat.visibility === 'private') {
-        if (!session.user) {
-            return notFound();
-        }
-
-        if (session.user.id !== chat.userId) {
-            return notFound();
-        }
-    }
 
     const messagesFromDb = await getMessagesByChatId({
         id,
     });
 
+   
     function convertToUIMessages(messages: Array<DBMessage>): Array<UIMessage> {
         return messages.map((message) => ({
             id: message.id,
@@ -59,11 +50,11 @@ export default async function LessonChat({ lessonId }: { lessonId: string }) {
 
         <>
             <Chat
-                id={chat.id}
-                initialMessages={/* convertToUIMessages(messagesFromDb ?? []) */ []}
+                id={chat?.id ?? id}
+                initialMessages={ convertToUIMessages(messagesFromDb ?? []) }
                 initialChatModel={DEFAULT_CHAT_MODEL}
-                initialVisibilityType={chat.visibility}
-                isReadonly={session?.user?.id !== chat.userId}
+                initialVisibilityType={'private'}
+                isReadonly={false}
                 session={session}
                 autoResume={true}
                 isRedirect={false}
