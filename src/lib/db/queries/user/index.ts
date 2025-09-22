@@ -205,6 +205,7 @@ export async function completeLesson(
       lessonId: string;
       topicId: string;
       userId?: string;
+      chatId?: string;
   },
 ): Promise<boolean> {
   try { 
@@ -223,6 +224,7 @@ export async function completeLesson(
     return false;
 
   } catch (error) {
+    console.log(error);
     return false;
   } 
 }

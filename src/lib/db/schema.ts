@@ -371,6 +371,7 @@ export const lessonCompletions = pgTable("lessonCompletions", {
   topicId: text("topicId")
     .notNull()
     .references(() => topics.id),
+  chatId: uuid("chatId").references(() => chat.id),
   ...timestamps,
 });
 

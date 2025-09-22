@@ -7,15 +7,16 @@ import { DBMessage } from '@/lib/db/schema';
 import { Attachment, UIMessage } from 'ai';
 import { notFound } from 'next/dist/client/components/not-found';
 
- import type { VisibilityType } from '@/components/visibility-selector';
+import type { VisibilityType } from '@/components/visibility-selector';
 
 import { redirect } from 'next/navigation';
 import { generateUUID } from '@/lib/utils';
+import { Lesson } from '@/type';
+import { completeLesson } from '@/lib/db/queries/user';
 
-export default async function LessonChat({ lessonId }: { lessonId: string }) {
+export default async function LessonChat({ lesson }: { lesson: Lesson }) {
 
-
-    const id = generateUUID();
+    const id = lesson?.lessonCompletions?.[0]?.chatId ?? generateUUID();
 
     const chat = await getChatById({ id });
 
@@ -25,12 +26,15 @@ export default async function LessonChat({ lessonId }: { lessonId: string }) {
         redirect('/api/auth/guest');
     }
 
-
     const messagesFromDb = await getMessagesByChatId({
         id,
     });
 
-   
+    const hasCompletionForChat = lesson?.lessonCompletions?.some(c => c.chatId === id);
+
+    
+
+
     function convertToUIMessages(messages: Array<DBMessage>): Array<UIMessage> {
         return messages.map((message) => ({
             id: message.id,
@@ -51,13 +55,14 @@ export default async function LessonChat({ lessonId }: { lessonId: string }) {
         <>
             <Chat
                 id={chat?.id ?? id}
-                initialMessages={ convertToUIMessages(messagesFromDb ?? []) }
+                initialMessages={convertToUIMessages(messagesFromDb ?? [])}
                 initialChatModel={DEFAULT_CHAT_MODEL}
                 initialVisibilityType={'private'}
                 isReadonly={false}
                 session={session}
                 autoResume={true}
                 isRedirect={false}
+                lesson={lesson}
             />
             <DataStreamHandler id={id} />
         </>

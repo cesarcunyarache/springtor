@@ -99,6 +99,27 @@
       "when": 1757463885254,
       "tag": "0013_magical_silver_samurai",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1758494488130,
+      "tag": "0014_easy_oracle",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1758494601945,
+      "tag": "0015_crazy_wolverine",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1758495318100,
+      "tag": "0016_harsh_wild_child",
+      "breakpoints": true
     }
   ]
 }

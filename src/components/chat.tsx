@@ -16,10 +16,13 @@ import { unstable_serialize } from 'swr/infinite';
 import { getChatHistoryPaginationKey } from './sidebar-history';
 import { toast } from './toast';
 import type { Session } from 'next-auth';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useChatVisibility } from '@/hooks/use-chat-visibility';
 import { useAutoResume } from '@/hooks/use-auto-resume';
 import { ChatSDKError } from '@/lib/errors';
+import { Lesson } from '@/type';
+import { completeLesson } from '@/lib/db/queries/user';
+
 
 export function Chat({
   id,
@@ -30,6 +33,7 @@ export function Chat({
   session,
   autoResume,
   isRedirect = true,
+  lesson
 }: {
   id: string;
   initialMessages: Array<UIMessage>;
@@ -39,6 +43,7 @@ export function Chat({
   session: Session;
   autoResume: boolean;
   isRedirect?: boolean;
+  lesson?: Lesson;
 }) {
   const { mutate } = useSWRConfig();
 
@@ -46,6 +51,8 @@ export function Chat({
     chatId: id,
     initialVisibilityType,
   });
+
+  const router = useRouter();
 
   const {
     messages,
@@ -72,8 +79,18 @@ export function Chat({
       selectedChatModel: initialChatModel,
       selectedVisibilityType: visibilityType,
     }),
-    onFinish: () => {
+    onFinish: async() => {
       mutate(unstable_serialize(getChatHistoryPaginationKey));
+
+      if (lesson && lesson.lessonCompletions?.[0]?.chatId == null) {
+        await completeLesson({
+          moduleId: lesson.moduleId,
+          lessonId: lesson.id,
+          topicId: lesson.module?.topicId ?? "",
+          chatId: id,
+        });
+        router.refresh();
+      }
     },
     onError: (error) => {
       if (error instanceof ChatSDKError) {

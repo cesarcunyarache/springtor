@@ -32,6 +32,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
   const lesson = await getLessionById(lessonId);
 
+
   if (!lesson) {
     return <h1>Lesson not found</h1>
   }
@@ -45,7 +46,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
       <div className="flex flex-col flex-1 w-full ml-1 overflow-auto h-[92vh]"> */
 
-        <ClientLessonPage lesson={lesson} chat={<LessonChat lessonId={""} />} />
+        <ClientLessonPage lesson={lesson} chat={<LessonChat lesson={lesson} />} />
       /* </div>
     </div> */
   );

@@ -71,6 +71,7 @@ export interface Lesson extends BaseModel {
   videoUrl: string | null;
   loomUrl: string | null;
   content: string | null;
+  
   module?: Module | null;
   assessment?: Assessment | null;
   lessonCompletions?: LessonCompletion[];
@@ -82,6 +83,7 @@ export interface LessonCompletion extends BaseModel {
   lessonId: string;
   topicId: string;
   userId: string | null;
+  chatId: string | null;
 }
 
 export interface Assessment extends BaseModel {
