@@ -54,7 +54,7 @@ export default async function CourseLayout({
     <div className="h-full ">
       <SidebarProvider defaultOpen={!false}>
         <Sidebar course={course} completedLessons={progress} />
-        <LessonLayout chat={<LessonChat lessonId={""} />}>
+        <LessonLayout >
           {children}
         </LessonLayout>
       </SidebarProvider>

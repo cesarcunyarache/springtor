@@ -342,18 +342,18 @@ function flattenSeed(seed: any) {
           icon: topic.icon,
         });
 
-        for (const module of topic.modules) {
+        for (const moduleObjec of topic.modules) {
           modules.push({
-            id: module.id,
+            id: moduleObjec.id,
             topicId: topic.id, // 🔑 relación
-            title: module.title,
-            level: module.level,
+            title: moduleObjec.title,
+            level: moduleObjec.level,
           });
 
-          for (const lesson of module.lessons) {
+          for (const lesson of moduleObjec.lessons) {
             lessons.push({
               id: lesson.id,
-              moduleId: module.id, // 🔑 relación
+              moduleId: moduleObjec.id, // 🔑 relación
               title: lesson.title,
               slug: lesson.slug,
               level: lesson.level,

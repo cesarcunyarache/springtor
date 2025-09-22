@@ -7,7 +7,7 @@ import dynamic from "next/dynamic"
 
 interface LessonLayoutProps {
   children: React.ReactNode
-  chat: React.ReactNode
+  chat?: React.ReactNode
 }
 
 

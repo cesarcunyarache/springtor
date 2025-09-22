@@ -31,12 +31,13 @@ function PureArtifactMessages({
   const {
     containerRef: messagesContainerRef,
     endRef: messagesEndRef,
-    onViewportEnter,
-    onViewportLeave,
+   /*  onViewportEnter,
+    onViewportLeave, */
     hasSentMessage,
   } = useMessages({
     chatId,
     status,
+    messagesLength: messages.length,
   });
 
   return (
@@ -71,8 +72,8 @@ function PureArtifactMessages({
       <motion.div
         ref={messagesEndRef}
         className="shrink-0 min-w-[24px] min-h-[24px]"
-        onViewportLeave={onViewportLeave}
-        onViewportEnter={onViewportEnter}
+       /*  onViewportLeave={onViewportLeave}
+        onViewportEnter={onViewportEnter} */
       />
     </div>
   );
