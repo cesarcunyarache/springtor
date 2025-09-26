@@ -152,6 +152,7 @@ export async function POST(request: Request) {
 
     const stream = createDataStream({
       execute: (dataStream) => {
+        console.log("STREAM");
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
           system: systemPrompt({ selectedChatModel, requestHints }),
@@ -178,6 +179,8 @@ export async function POST(request: Request) {
             }),
           },
           onFinish: async ({ response }) => {
+
+            console.log("ONFINISH");
             if (session.user?.id) {
               try {
                 const assistantId = getTrailingMessageId({
@@ -217,7 +220,11 @@ export async function POST(request: Request) {
             isEnabled: isProductionEnvironment,
             functionId: 'stream-text',
           },
+          onError: (error) => {
+          },
         });
+
+        console.log("STREAM RESULT");
 
         result.consumeStream();
 
@@ -230,7 +237,9 @@ export async function POST(request: Request) {
       },
     });
 
-    const streamContext = getStreamContext();
+    return new Response(stream);
+
+    /* const streamContext = getStreamContext();
 
     if (streamContext) {
       return new Response(
@@ -238,7 +247,7 @@ export async function POST(request: Request) {
       );
     } else {
       return new Response(stream);
-    }
+    } */
   } catch (error) {
     console.log(error);
     if (error instanceof ChatSDKError) {
