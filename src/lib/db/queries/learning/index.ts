@@ -119,7 +119,6 @@ export async function getTopicById(topicId: string): Promise<Topic | null> {
     if (!topic) return null;
     return topic;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }

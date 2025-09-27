@@ -383,7 +383,7 @@ export function ScrumRoadmap({ /* onTopicSelect */ /* completedTopics */ topics,
   ) */
 
     const onNodeClick = () => {
-      console.log("clicked");
+
     }
 
   // Update nodes with completion status

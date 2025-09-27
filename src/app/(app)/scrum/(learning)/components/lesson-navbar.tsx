@@ -35,8 +35,7 @@ export default function LessonNavbar({ lesson }: LessonNavbarProps) {
                         <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2"
                         
                         onClick={ () => {
-                                
-                                console.log("toggleChat")
+ 
                                 toggleChat()
                             }}
                             >

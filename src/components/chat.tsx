@@ -72,14 +72,14 @@ export function Chat({
     experimental_throttle: 100,
     sendExtraMessageFields: true,
     generateId: generateUUID,
-   /*  fetch: fetchWithErrorHandlers, */
+    /*  fetch: fetchWithErrorHandlers, */
     experimental_prepareRequestBody: (body) => ({
       id,
       message: body.messages.at(-1),
       selectedChatModel: initialChatModel,
       selectedVisibilityType: visibilityType,
     }),
-    onFinish: async() => {
+    onFinish: async () => {
       mutate(unstable_serialize(getChatHistoryPaginationKey));
 
       if (lesson && lesson.lessonCompletions?.[0]?.chatId == null) {
@@ -140,13 +140,17 @@ export function Chat({
   return (
     <>
       <div className="flex flex-col min-w-0 h-dvh bg-background">
-        <ChatHeader
-          chatId={id}
-          selectedModelId={initialChatModel}
-          selectedVisibilityType={initialVisibilityType}
-          isReadonly={isReadonly}
-          session={session}
-        />
+
+        {
+          isRedirect &&
+          <ChatHeader
+            chatId={id}
+            selectedModelId={initialChatModel}
+            selectedVisibilityType={initialVisibilityType}
+            isReadonly={isReadonly}
+            session={session}
+          />
+        }
 
         <div className="flex-1 overflow-y-auto">
           <Messages

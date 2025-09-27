@@ -35,7 +35,6 @@ export default async function Page() {
 
   const steps = await getStepsByRoadmapBySlug("scrum")
 
-  /*   console.log(topics); */
 
   /*   const totalTopics = 12
     const progress = (completedTopics.size / totalTopics) * 100 */

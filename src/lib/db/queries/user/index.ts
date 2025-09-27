@@ -193,7 +193,6 @@ export async function saveUserResponseTheoryAnswers(
 
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
@@ -224,7 +223,7 @@ export async function completeLesson(
     return false;
 
   } catch (error) {
-    console.log(error);
+
     return false;
   } 
 }

@@ -62,7 +62,6 @@ export default function ChatWithFiles() {
     const validFiles = selectedFiles.filter(
       (file) => file.type === "application/pdf" && file.size <= 5 * 1024 * 1024,
     );
-    console.log(validFiles);
 
     if (validFiles.length !== selectedFiles.length) {
       toast.error("Only PDF files under 5MB are allowed.");
@@ -124,7 +123,7 @@ export default function ChatWithFiles() {
       onDrop={(e) => {
         e.preventDefault();
         setIsDragging(false);
-        console.log(e.dataTransfer.files);
+
         handleFileChange({
           target: { files: e.dataTransfer.files },
         } as React.ChangeEvent<HTMLInputElement>);
