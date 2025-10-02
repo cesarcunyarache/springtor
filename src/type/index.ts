@@ -52,6 +52,16 @@ export interface Topic extends BaseModel {
   learningStep?: LearningStep | null;
   modules?: Module[];
   assessment?: Assessment | null;
+  progress: number;
+  topicCompletions?: TopicCompletion[];
+}
+
+export interface TopicCompletion extends BaseModel {
+  id: string;
+  userId: string;
+  topicId: string;
+  progress: number;
+  topic?: Topic;
 }
 
 export interface Module extends BaseModel {

@@ -21,6 +21,7 @@ export const getContext = async (message: string, namespace: string, maxTokens =
   const qualifyingDocs = matches.filter(m => m.score && m.score > minScore);
 
   if (!getOnlyText) {
+    console.log("matches", matches);
     // Use a map to deduplicate matches by URL
     return qualifyingDocs
   }

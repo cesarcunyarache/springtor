@@ -15,6 +15,7 @@ export interface CardFlipProps {
     icon: IconName;
     id: string;
     color: string;
+    progress: number;
 }
 
 export default function CardFlip2({
@@ -30,6 +31,7 @@ export default function CardFlip2({
     icon,
     id,
     color,
+    progress,
 }: CardFlipProps) {
     const [isFlipped, setIsFlipped] = useState(false);
 
@@ -129,7 +131,7 @@ export default function CardFlip2({
                                 />
                                 {/* <Zap className="text-primary relative z-10 h-5 w-5 transition-all duration-300 group-hover/icon:scale-110 group-hover/icon:rotate-12" /> */}
 
-                                <CircularProgress value={70} size={50} strokeWidth={5} />
+                                <CircularProgress value={progress} size={50} strokeWidth={5} />
                             </div>
                         </div>
                     </div>

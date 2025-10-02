@@ -47,7 +47,6 @@ export default function OnboardingForm({ onSubmit }: OnboardingFormProps) {
     (step === 1 && isFirstStepValid) || (step === 2 && isSecondStepValid) || (step === 3 && isThirdStepValid)
 
   const onHandleSubmit = (data: FormData) => {
-  /*   console.log("Form submitted:", data) */
     setFormData(data)
      onSubmit(data)
 

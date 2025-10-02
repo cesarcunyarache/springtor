@@ -5,7 +5,6 @@ import {
   smoothStream,
   streamText,
 } from "ai";
-/* import { auth, type UserType } from '@/app/(auth)/auth'; */
 import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
 import {
   createStreamId,
@@ -38,6 +37,7 @@ import { differenceInSeconds } from "date-fns";
 import { ChatSDKError } from "@/lib/errors";
 import { auth } from "@/auth";
 import { searchKnowledge } from "@/lib/ai/tools/search-knowledge";
+import { getContext } from "@/utils/context";
 
 export const maxDuration = 60;
 
@@ -148,11 +148,15 @@ export async function POST(request: Request) {
     const streamId = generateUUID();
     await createStreamId({ streamId, chatId: id });
 
+    const lastMessage = messages[messages.length - 1];
+
+    const context = await getContext(lastMessage.content, "", 3000, 0.7, true);
+
     const stream = createDataStream({
       execute: (dataStream) => {
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
-          system: systemPrompt({ selectedChatModel, requestHints }),
+          system: systemPrompt({ selectedChatModel, requestHints, context }),
           messages,
           maxSteps: 5,
           experimental_activeTools:
@@ -163,7 +167,6 @@ export async function POST(request: Request) {
                   "createDocument",
                   "updateDocument",
                   "requestSuggestions",
-                  "searchKnowledge",
                 ],
           experimental_transform: smoothStream({ chunking: "word" }),
           experimental_generateMessageId: generateUUID,
@@ -175,12 +178,8 @@ export async function POST(request: Request) {
               session,
               dataStream,
             }),
-            searchKnowledge,
           },
-         /*  toolChoice: {
-            type: "tool",
-            toolName: "searchKnowledge",
-          }, */
+      
           onFinish: async ({ response }) => {
             if (session.user?.id) {
               try {
@@ -222,7 +221,9 @@ export async function POST(request: Request) {
             isEnabled: isProductionEnvironment,
             functionId: "stream-text",
           },
-          onError: (error) => {},
+          onError: (error) => {
+            console.log(error);
+          },
         });
 
         result.consumeStream();
@@ -236,17 +237,15 @@ export async function POST(request: Request) {
       },
     });
 
-    return new Response(stream);
-
-    /* const streamContext = getStreamContext();
+    const streamContext = getStreamContext();
 
     if (streamContext) {
       return new Response(
-        await streamContext.resumableStream(streamId, () => stream),
+        await streamContext.resumableStream(streamId, () => stream)
       );
     } else {
       return new Response(stream);
-    } */
+    }
   } catch (error) {
     if (error instanceof ChatSDKError) {
       return error.toResponse();

@@ -10,10 +10,18 @@ import {
   lessons,
   modules,
   roadmaps,
+  topicCompletions,
   topics,
 } from "../../schema";
 import { and, asc, eq } from "drizzle-orm";
-import { Assessment, LearningStep, Lesson, LessonCompletion, Roadmap, Topic } from "@/type";
+import {
+  Assessment,
+  LearningStep,
+  Lesson,
+  LessonCompletion,
+  Roadmap,
+  Topic,
+} from "@/type";
 import * as schema from "../../schema";
 import { db } from "../..";
 import { auth } from "@/auth";
@@ -64,6 +72,11 @@ export async function getStepsByRoadmapBySlug(
   slug: string
 ): Promise<LearningStep[]> {
   try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return [];
+
     return await db.query.learningSteps.findMany({
       where: (steps, { eq }) =>
         eq(
@@ -77,6 +90,12 @@ export async function getStepsByRoadmapBySlug(
       with: {
         topics: {
           orderBy: [asc(topics.level)],
+          with: {
+            topicCompletions: {
+              where: eq(topicCompletions.userId, userId),
+              limit: 1,
+            },
+          },
         },
       },
       orderBy: [asc(learningSteps.level)],
@@ -136,7 +155,7 @@ export async function getLessionById(lessonId: string): Promise<Lesson | null> {
       with: {
         module: true,
         lessonCompletions: {
-            where: eq(lessonCompletions.userId, userId),
+          where: eq(lessonCompletions.userId, userId),
         },
         assessment: {
           with: {
@@ -172,7 +191,9 @@ export async function getAssessmentBySlug(
   }
 }
 
-export async function getCompletedLessonsByUserId(topicId: string): Promise<LessonCompletion[]> {
+export async function getCompletedLessonsByUserId(
+  topicId: string
+): Promise<LessonCompletion[]> {
   try {
     const session = await auth();
     const userId = session?.user?.id;
@@ -194,7 +215,6 @@ export async function getCompletedLessonsByUserId(topicId: string): Promise<Less
     if (!foundLessons) return [];
 
     return foundLessons;
-
   } catch (error) {
     return [];
   }

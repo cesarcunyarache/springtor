@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "unique_lesson_completion" ON "lessonCompletions" USING btree ("userId","moduleId","lessonId","topicId");

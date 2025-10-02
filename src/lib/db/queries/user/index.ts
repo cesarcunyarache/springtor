@@ -13,6 +13,7 @@ import {
   theoryLessonAnswers,
   theoryAnswers,
   lessonCompletions,
+  topicCompletions,
 } from "../../schema";
 import { asc, eq, exists, sql } from "drizzle-orm";
 import {
@@ -151,8 +152,6 @@ export async function saveUserResponseLessonAnswers(
   }
 }
 
-
-
 export async function saveUserResponseTheoryAnswers(
   lessonAnswers: QuizResult[],
   assessmentId?: string
@@ -197,33 +196,70 @@ export async function saveUserResponseTheoryAnswers(
   }
 }
 
-
-export async function completeLesson(
-  lesson: { 
-      moduleId: string;
-      lessonId: string;
-      topicId: string;
-      userId?: string;
-      chatId?: string;
-  },
-): Promise<boolean> {
-  try { 
-    const session = await auth(); 
+export async function completeLesson(lesson: {
+  moduleId: string;
+  lessonId: string;
+  topicId: string;
+  userId?: string;
+  chatId?: string;
+}): Promise<boolean> {
+  try {
+    const session = await auth();
     const userId = session?.user?.id;
 
-     if (!userId) return false;
+    if (!userId) return false;
 
-     lesson.userId = userId;
+    lesson.userId = userId;
 
-    const result = await db.insert(lessonCompletions).values(lesson).returning();
+    const result = await db
+      .insert(lessonCompletions)
+      .values(lesson)
+      .onConflictDoNothing({
+        target: [
+          lessonCompletions.userId,
+          lessonCompletions.moduleId,
+          lessonCompletions.lessonId,
+          lessonCompletions.topicId,
+        ],
+      })
+      .returning();
+
+    if (result.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function updateTopicProgress(topicId: string, progress: number) {
+  try {
+     const session = await auth();
+  const userId = session?.user?.id;
+
+  if (!userId) return null;
+
+  console.log(progress)
+  const result = await db
+    .insert(topicCompletions)
+    .values({
+      userId,
+      topicId,
+      progress,
+    })
+    .onConflictDoUpdate({
+      target: [topicCompletions.userId, topicCompletions.topicId],
+      set: { progress, updatedAt: new Date() },
+    })
+    .returning();
 
     if (result.length > 0) {
       return true;
     }
     return false;
-
   } catch (error) {
-
     return false;
-  } 
+  }
 }

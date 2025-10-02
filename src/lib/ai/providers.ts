@@ -23,7 +23,7 @@ export const myProvider = isTestEnvironment
     })
   : customProvider({
       languageModels: {
-        'chat-model':  google('gemini-2.0-flash-lite')/* xai('grok-2-vision-1212') */,
+        'chat-model':  google('gemini-2.5-pro')/* xai('grok-2-vision-1212') */,
         'chat-model-reasoning': wrapLanguageModel({
           model:  google('gemini-2.0-flash-lite'), /*  xai('grok-3-mini-beta')*/
           middleware: extractReasoningMiddleware({ tagName: 'think' }),

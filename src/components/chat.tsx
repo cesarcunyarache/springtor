@@ -181,6 +181,7 @@ export function Chat({
               append={append}
               selectedVisibilityType={visibilityType}
               isRedirect={isRedirect}
+              
 
             />
           )}

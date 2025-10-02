@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSidebar } from "@/components/providers/sidebar-provider";
 import { useEffect, useState } from "react";
 import {
@@ -41,6 +41,7 @@ import { LessonCompletion, Topic } from "@/type";
 import { CourseProgress } from "../CourseProgress";
 import DarkModeToggle from "../DarkModeToggle";
 import { calculateCourseProgress } from "@/lib/courseProgress";
+import { updateTopicProgress } from "@/lib/db/queries/user";
 
 
 
@@ -55,8 +56,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [openModules, setOpenModules] = useState<string[]>([]);
 
-  console.log(isOpen);
-
+  const router = useRouter();
   useEffect(() => {
     if (pathname && course?.modules) {
       const currentModuleId = course.modules.find((module) =>
@@ -81,7 +81,19 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
     return null;
   } */
 
-  const progress = 10 /* calculateCourseProgress(course!.modules!, completedLessons); */
+  const progress = calculateCourseProgress(course!.modules!, completedLessons);
+
+ useEffect(() => {
+    const updateProgress = async () => {
+
+      if (progress !== course.topicCompletions?.[0]?.progress) {
+        await updateTopicProgress(course.id, progress);
+        router.refresh();
+      }
+    };
+
+    updateProgress();
+  }, [progress, course.id, course.progress, router]); 
 
   const SidebarContent = () => (
     <div className="h-full flex flex-col">
@@ -94,10 +106,10 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
             <ArrowLeft className="h-4 w-4" />
             <div className="flex items-center gap-x-2">
               <Library className="h-4 w-4" />
-              <span>Ruta de Aprendizaje</span>
+              <span>Ruta de aprendizaje</span>
             </div>
           </Link>
-          <div className="space-x-2">
+          {/*  <div className="space-x-2">
             <DarkModeToggle />
             <Button
               onClick={close}
@@ -107,14 +119,14 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
             >
               <X className="h-4 w-4" />
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className="space-y-4">
           <h1 className="font-semibold text-2xl">{course.title}</h1>
           <CourseProgress
             progress={progress}
             variant="success"
-            label="Progreso del Tema"
+            label="Progreso del tema"
           />
         </div>
       </div>
@@ -147,7 +159,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
                         {module.title}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {module?.lessons?.length} lessons
+                        {module?.lessons?.length} lecciones
                       </p>
                     </div>
                   </div>
@@ -178,7 +190,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
                             {String(lessonIndex + 1).padStart(2, "0")}
                           </span>
                           {isCompleted ? (
-                            <Check className="h-4 w-4 shrink-0 text-green-500" />
+                            <Check className="h-4 w-4 shrink-0 text-primary" />
                           ) : (
                             <PlayCircle
                               className={cn(
@@ -193,7 +205,7 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
                             className={cn(
                               "text-sm line-clamp-2 min-w-0",
                               isCompleted &&
-                              "text-muted-foreground line-through decoration-green-500/50"
+                              "text-muted-foreground line-through decoration-primary/50"
                             )}
                           >
                             {lesson.title}

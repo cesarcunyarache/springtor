@@ -6,7 +6,6 @@ import { LearningStep } from "@/type";
 import { IconName } from "lucide-react/dynamic";
 
 export function TimelineDemo({ steps }: { steps: LearningStep[] }) {
-
   const dataFound = steps.map((step) => ({
     title: step.name,
     content: (
@@ -22,6 +21,7 @@ export function TimelineDemo({ steps }: { steps: LearningStep[] }) {
               icon={topic.icon as IconName ?? "rocket"}
               id={topic.id}
               color={topic.color ?? "blue"}
+              progress={topic.topicCompletions?.[0]?.progress ?? 0}
             />
           ))
 
@@ -42,6 +42,7 @@ export function TimelineDemo({ steps }: { steps: LearningStep[] }) {
             icon="rocket"
             id="intro-scrum"
             color="blue"
+            progress={0}
           />
         </div>
 

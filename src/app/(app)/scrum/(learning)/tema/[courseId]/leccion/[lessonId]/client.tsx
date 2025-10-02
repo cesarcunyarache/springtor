@@ -116,13 +116,9 @@ export default function ClientLessonPage({ lesson, chat }: LessonPageProps) {
           <div className="flex flex-col flex-1 w-full ml-1 overflow-auto h-[92vh]">
 
             {/*     <ClientLessonPage lesson={lesson} /> */}
-            <div className="mt-20 m-10">
+            <div className="m-6">
 
-              <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2" onClick={handleCompleteLesson}>
-                <Check className="h-4 w-4" />
-                <span className="hidden md:inline">Completar</span>
-              </Button>
-
+              
               <section className="">
                 <MarkdownView content={lesson!.content!} />
               </section>

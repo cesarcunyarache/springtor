@@ -68,19 +68,19 @@ const Icons = {
 
 const DATA = {
   navbar: [
-    { href: "/panel", icon: HomeIcon, label: "Home" },
-    { href: "/notes", icon: PencilIcon, label: "Notes" },
+    { href: "/scrum/panel", icon: HomeIcon, label: "Home" },
+    { href: "/scrum/notes", icon: PencilIcon, label: "Notes" },
   ],
   contact: {
     social: {
       Chat: {
         name: "chat",
-        url: "/",
+        url: "/scrum/chat",
         icon: MessageCircleMore,
       },
       Roadmap: {
         name: "Ruta de Aprendizaje",
-        url: "/roadmap",
+        url: "/scrum/roadmap",
         icon: GitMerge,
       },
       Calendar: {

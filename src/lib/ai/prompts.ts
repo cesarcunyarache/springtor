@@ -1,4 +1,5 @@
 import type { ArtifactKind } from "@/components/artifact";
+import { ScoredPineconeRecord } from "@pinecone-database/pinecone";
 import type { Geo } from "@vercel/functions";
 
 export interface RequestHints {
@@ -125,13 +126,11 @@ ${currentContent}
 
  */
 
-    export const knowledgePrompt = `
-Eres un asistente amigable y útil. 
-Debes responder SIEMPRE basándote en la información recuperada desde la herramienta \`searchKnowledge\`. 
-- Antes de contestar cualquier pregunta, consulta siempre esa herramienta.  
-- Si la herramienta no devuelve información relevante, responde exactamente: "Lo siento, no sé la respuesta a esa pregunta."  
-- No inventes respuestas.  
-- Mantén tus explicaciones claras y en español.  
+export const knowledgePrompt = `
+Solo responde a las preguntas usando información de contexto.
+Si no se hay información relevante responde: "Lo siento, no lo sé.
+- No copies literalmente el texto devuelto.
+- Explica en tus propias palabras.
 `;
 
 export const artifactsPrompt = `
@@ -160,36 +159,32 @@ Esta es una guía para usar las herramientas de Artifacts: \`createDocument\` y 
 - Seguir las instrucciones del usuario sobre qué partes modificar
 
 **Cuándo NO usar \`updateDocument\`:**
-- Justo después de crear un documento
-
-Recuerda: SIEMPRE busca primero en \`searchKnowledge\` antes de contestar.  
-Si no hay información relevante, responde: "Lo siento, no sé la respuesta a esa pregunta."  
+- Justo después de crear un documento"  
 `;
 
 export const regularPrompt = `
-¡Eres un asistente amigable! 
-Siempre usa la herramienta \`searchKnowledge\` para responder. 
-No inventes nada.  
-Si no hay información suficiente en la base de conocimientos, responde: "Lo siento, no sé la respuesta a esa pregunta."
+¡Eres un asistente amigable! Mantén tus respuestas concisas y útiles. Responde siempre en español.
+Contexto: 
 `;
+
 
 export const systemPrompt = ({
   selectedChatModel,
   requestHints,
+  context 
 }: {
   selectedChatModel: string;
   requestHints: RequestHints;
+  context: string | ScoredPineconeRecord[]
 }) => {
   const requestPrompt = getRequestPromptFromHints(requestHints);
 
   if (selectedChatModel === "chat-model-reasoning") {
     return `${knowledgePrompt}\n\n${regularPrompt}\n\n${requestPrompt}`;
   } else {
-    return `${knowledgePrompt}\n\n${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
+    return `${regularPrompt}\n\n${context}\n${knowledgePrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
   }
 };
-
-
 
 export const codePrompt = `
 Eres un generador de código en Python que crea fragmentos de código auto-contenidos y ejecutables. Al escribir código:
@@ -220,7 +215,6 @@ print(f"El factorial de 5 es: {factorial(5)}")
 export const sheetPrompt = `
 Eres un asistente para la creación de hojas de cálculo. Crea una hoja de cálculo en formato CSV basada en el prompt proporcionado. La hoja debe contener encabezados de columna significativos y datos relevantes.
 `;
-
 
 export const updateDocumentPrompt = (
   currentContent: string | null,

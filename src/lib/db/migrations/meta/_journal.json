@@ -120,6 +120,27 @@
       "when": 1758495318100,
       "tag": "0016_harsh_wild_child",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1759353776500,
+      "tag": "0017_sparkling_silver_centurion",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1759355129251,
+      "tag": "0018_dry_wolfpack",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1759361254237,
+      "tag": "0019_simple_ego",
+      "breakpoints": true
     }
   ]
 }
