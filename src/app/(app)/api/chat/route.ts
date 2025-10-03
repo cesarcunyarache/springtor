@@ -4,6 +4,7 @@ import {
   createDataStream,
   smoothStream,
   streamText,
+  tool,
 } from "ai";
 import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
 import {
@@ -38,6 +39,7 @@ import { ChatSDKError } from "@/lib/errors";
 import { auth } from "@/auth";
 import { searchKnowledge } from "@/lib/ai/tools/search-knowledge";
 import { getContext } from "@/utils/context";
+import z from "zod";
 
 export const maxDuration = 60;
 
@@ -156,7 +158,8 @@ export async function POST(request: Request) {
       execute: (dataStream) => {
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
-          system: systemPrompt({ selectedChatModel, requestHints, context }),
+          system:
+            systemPrompt({ selectedChatModel, requestHints, context }),
           messages,
           maxSteps: 5,
           experimental_activeTools:
@@ -167,6 +170,7 @@ export async function POST(request: Request) {
                   "createDocument",
                   "updateDocument",
                   "requestSuggestions",
+                  "sugerencias",
                 ],
           experimental_transform: smoothStream({ chunking: "word" }),
           experimental_generateMessageId: generateUUID,
@@ -178,8 +182,29 @@ export async function POST(request: Request) {
               session,
               dataStream,
             }),
+            sugerencias: tool({
+              description: "Sugerencias para el chat",
+              parameters: z.object({
+                response: z.string().describe("Respuesta de la API"),
+              }),
+              execute: async ( { response }) => {
+                const suggestions = [
+                  `¿Puedes explicarme  con un ejemplo práctico?`,
+                  `¿Qué ventajas tiene aplicar esto?`,
+                  `¿Cuáles son los errores más comunes en esto?`,
+                ];
+
+                dataStream.writeData(
+                   {
+                     type: "suggestions",
+                     content: suggestions,
+                   }     
+                );
+              
+              },
+            }),
           },
-      
+
           onFinish: async ({ response }) => {
             if (session.user?.id) {
               try {

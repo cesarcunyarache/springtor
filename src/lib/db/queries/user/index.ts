@@ -241,7 +241,6 @@ export async function updateTopicProgress(topicId: string, progress: number) {
 
   if (!userId) return null;
 
-  console.log(progress)
   const result = await db
     .insert(topicCompletions)
     .values({

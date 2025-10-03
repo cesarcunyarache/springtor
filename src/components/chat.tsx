@@ -79,6 +79,7 @@ export function Chat({
       selectedChatModel: initialChatModel,
       selectedVisibilityType: visibilityType,
     }),
+
     onFinish: async () => {
       mutate(unstable_serialize(getChatHistoryPaginationKey));
 
@@ -181,7 +182,7 @@ export function Chat({
               append={append}
               selectedVisibilityType={visibilityType}
               isRedirect={isRedirect}
-              
+              suggestions={(data as { type: string; content: string[] }[])?.[0]?.content ?? []}
 
             />
           )}

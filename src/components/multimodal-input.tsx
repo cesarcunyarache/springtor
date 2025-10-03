@@ -27,6 +27,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import { useScrollToBottom } from '@/hooks/use-scroll-to-bottom';
 import type { VisibilityType } from './visibility-selector';
+import { Suggestion, Suggestions } from './ai-elements/suggestion';
 
 function PureMultimodalInput({
   chatId,
@@ -43,6 +44,7 @@ function PureMultimodalInput({
   className,
   selectedVisibilityType,
   isRedirect = true,
+  suggestions = [],
 }: {
   chatId: string;
   input: UseChatHelpers['input'];
@@ -58,6 +60,7 @@ function PureMultimodalInput({
   className?: string;
   selectedVisibilityType: VisibilityType;
   isRedirect: boolean;
+  suggestions: string[];
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { width } = useWindowSize();
@@ -197,6 +200,24 @@ function PureMultimodalInput({
     }
   }, [status, scrollToBottom]);
 
+
+
+
+  const [suggestionsList, setSuggestionsList] = useState<Array<string>>(
+    suggestions || []
+  );
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setInput(suggestion);
+  };
+
+
+/*   useEffect(() => {
+    dataStream.on("suggestions", ({ suggestions }) => {
+      setSuggestedQuestions(suggestions);
+    });
+  }, []); */
+
   return (
     <div className="relative w-full flex flex-col gap-4">
       <AnimatePresence>
@@ -223,8 +244,8 @@ function PureMultimodalInput({
           </motion.div>
         )}
       </AnimatePresence>
-
-      {messages.length === 0 &&
+      
+     {/*  {messages.length === 0 &&
         attachments.length === 0 &&
         uploadQueue.length === 0 && (
           <SuggestedActions
@@ -232,7 +253,17 @@ function PureMultimodalInput({
             chatId={chatId}
             selectedVisibilityType={selectedVisibilityType}
           />
-        )}
+        )} */}
+
+     {/*  <Suggestions>
+        {suggestionsList.map((suggestion) => (
+          <Suggestion
+            key={suggestion}
+            onClick={handleSuggestionClick}
+            suggestion={suggestion}
+          />
+        ))}
+      </Suggestions> */}
 
       <input
         type="file"
@@ -295,9 +326,9 @@ function PureMultimodalInput({
         }}
       />
 
-      <div className="absolute bottom-0 p-2 w-fit flex flex-row justify-start">
+      {/* <div className="absolute bottom-0 p-2 w-fit flex flex-row justify-start">
         <AttachmentsButton fileInputRef={fileInputRef} status={status} />
-      </div>
+      </div> */}
 
       <div className="absolute bottom-0 right-0 p-2 w-fit flex flex-row justify-end">
         {status === 'submitted' ? (

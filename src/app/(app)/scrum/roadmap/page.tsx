@@ -39,6 +39,22 @@ export default async function Page() {
   /*   const totalTopics = 12
     const progress = (completedTopics.size / totalTopics) * 100 */
 
+  let totalTopics = 0;
+  let completedTopics = 0;
+  let totalProgress = 0;
+
+  steps.forEach((step) => {
+    step?.topics?.forEach((topic) => {
+      const progress = topic.topicCompletions?.[0]?.progress ?? 0;
+      totalTopics++;
+      totalProgress += progress;
+      if (progress >= 100) completedTopics++;
+    });
+  });
+
+  const overallPercentage = totalTopics > 0 ? totalProgress / totalTopics : 0;
+
+
   return (
     <div className=" ">
       <div className=" backdrop-blur-sm border-b bg-background/30 sticky top-0 z-50">
@@ -54,16 +70,16 @@ export default async function Page() {
             </div>
             <div className="flex items-center space-x-4">
               <Trophy className="w-5 h-5 text-yellow-500" />
-              <span className="text-sm font-medium ">
-                10/100
+              <span className="text-sm font-medium text-muted-foreground">
+                {completedTopics}/{totalTopics}
               </span>
-              <Progress value={10} className="w-32" />
-              <span className="text-sm font-bold ">{Math.round(10)}%</span>
+              <Progress value={overallPercentage} className="w-32" />
+              <span className="text-sm font-bold ">{Math.round(overallPercentage)}%</span>
             </div>
           </div>
         </div>
       </div>
-      
+
       <div className="max-w-full mb-24">
 
         <TimelineDemo
