@@ -342,6 +342,7 @@ function PureArtifact({
                     className="bg-background dark:bg-muted"
                     setMessages={setMessages}
                     selectedVisibilityType={selectedVisibilityType}
+                    suggestions={[]}
                   />
                 </form>
               </div>

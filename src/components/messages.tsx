@@ -44,7 +44,7 @@ function PureMessages({
   return (
     <div
       ref={messagesContainerRef}
-      className="flex flex-col min-w-0 gap-6 pt-4 relative overflow-y-auto flex-1 "
+      className="flex flex-col min-w-0 gap-6 pt-4 relative overflow-y-auto flex-1 h-full"
     >
       {messages.length === 0 && <Greeting />}
 

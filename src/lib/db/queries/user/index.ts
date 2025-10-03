@@ -214,13 +214,16 @@ export async function completeLesson(lesson: {
     const result = await db
       .insert(lessonCompletions)
       .values(lesson)
-      .onConflictDoNothing({
+      .onConflictDoUpdate({
         target: [
           lessonCompletions.userId,
           lessonCompletions.moduleId,
           lessonCompletions.lessonId,
           lessonCompletions.topicId,
         ],
+        set: {
+          chatId: lesson.chatId, 
+        },
       })
       .returning();
 
@@ -236,23 +239,23 @@ export async function completeLesson(lesson: {
 
 export async function updateTopicProgress(topicId: string, progress: number) {
   try {
-     const session = await auth();
-  const userId = session?.user?.id;
+    const session = await auth();
+    const userId = session?.user?.id;
 
-  if (!userId) return null;
+    if (!userId) return null;
 
-  const result = await db
-    .insert(topicCompletions)
-    .values({
-      userId,
-      topicId,
-      progress,
-    })
-    .onConflictDoUpdate({
-      target: [topicCompletions.userId, topicCompletions.topicId],
-      set: { progress, updatedAt: new Date() },
-    })
-    .returning();
+    const result = await db
+      .insert(topicCompletions)
+      .values({
+        userId,
+        topicId,
+        progress,
+      })
+      .onConflictDoUpdate({
+        target: [topicCompletions.userId, topicCompletions.topicId],
+        set: { progress, updatedAt: new Date() },
+      })
+      .returning();
 
     if (result.length > 0) {
       return true;

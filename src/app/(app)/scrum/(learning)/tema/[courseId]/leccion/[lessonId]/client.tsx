@@ -123,10 +123,10 @@ export default function ClientLessonPage({ lesson, chat }: LessonPageProps) {
                 <MarkdownView content={lesson!.content!} />
               </section>
 
-              <section>
+              {/* <section>
                 <AnimatedAIChat />
               </section>
-
+ */}
               <section>
                 <Quiz title={"Quiz"} questions={lesson?.assessment?.questions ?? []}
                   isOmitted={false}

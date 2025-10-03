@@ -32,7 +32,6 @@ export default async function LessonChat({ lesson }: { lesson: Lesson }) {
 
     const hasCompletionForChat = lesson?.lessonCompletions?.some(c => c.chatId === id);
 
-    
 
 
     function convertToUIMessages(messages: Array<DBMessage>): Array<UIMessage> {
