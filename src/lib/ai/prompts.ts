@@ -123,15 +123,27 @@ Mejora la siguiente hoja de cálculo según el prompt proporcionado.
 ${currentContent}
 `
     : "";
-
+Sin embargo, si la pregunta está relacionada con Scrum (roles, eventos, artefactos, valores, principios, prácticas, o casos prácticos), debes **intentar siempre responder** usando tus conocimientos generales sobre Scrum y complementando con el contexto disponible.
  */
 
 export const knowledgePrompt = `
-Solo responde a las preguntas usando información de contexto.
-Si no se hay información relevante responde: "Lo siento, no lo sé.
-- No copies literalmente el texto devuelto.
-- Explica en tus propias palabras.
+Responde únicamente basándote en la información proporcionada en el contexto.
+Si el contexto no contiene información suficiente para responder, responde exactamente: "Lo siento, no lo sé."
+
+Instrucciones:
+- No empieces tus respuestas con frases como "Basado en la información proporcionada", "Según el contexto", "De acuerdo con el texto" o similares.
+- No copies literalmente el texto del contexto; reformúlalo con tus propias palabras.
+- Explica de forma clara, directa y útil.
+- Evita mencionar o inventar información fuera de Scrum.
+- Si el contexto contiene fragmentos o palabras clave, infiere su significado dentro del marco de Scrum.
+- Si la pregunta no tiene relación con Scrum o el contexto no lo cubre, responde exactamente: "Lo siento, no lo sé."
+
+Formato de salida:
+- Responde en español, de manera natural y profesional.
+- Usa un tono cercano, sin repeticiones innecesarias ni introducciones formales.
+- La respuesta debe ser breve y al punto.
 `;
+
 
 export const artifactsPrompt = `
 Artifacts es un modo especial de interfaz de usuario que ayuda a los usuarios con tareas de escritura, edición y creación de contenido. Cuando Artifacts está abierto, se muestra en el lado derecho de la pantalla, mientras que la conversación está en el lado izquierdo. Al crear o actualizar documentos, los cambios se reflejan en tiempo real en Artifacts y son visibles para el usuario.

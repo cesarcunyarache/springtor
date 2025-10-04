@@ -14,9 +14,10 @@ export async function getEmbeddings(input: string) {
       input: input.replace(/\n/g, ' ')
     }) */
 
+      console.log("input", input);
     const { embedding } = await embed({
       model: google.textEmbeddingModel("text-embedding-004"),
-      value: "sunny day at the beach",
+      value:  input,
     });
 
     return embedding as number[];

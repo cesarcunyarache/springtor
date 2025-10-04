@@ -18,7 +18,18 @@ export const getContext = async (message: string, namespace: string, maxTokens =
   const matches = await getMatchesFromEmbeddings(embedding, 3, namespace);
 
   // Filter out the matches that have a score lower than the minimum score
-  const qualifyingDocs = matches.filter(m => m.score && m.score > minScore);
+/*   const qualifyingDocs = matches.filter(m => m.score && m.score > minScore); */
+
+   console.log("🔍 Resultados encontrados:", matches.length);
+  console.log("Scores:", matches.map(m => m.score));
+
+  const qualifyingDocs = matches.filter(m => m.score && m.score >= minScore);
+
+  if (qualifyingDocs.length === 0) {
+    console.warn("⚠️ No se encontraron coincidencias relevantes.");
+    return "";
+  }
+
 
   if (!getOnlyText) {
     console.log("matches", matches);

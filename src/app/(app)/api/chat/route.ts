@@ -152,7 +152,7 @@ export async function POST(request: Request) {
 
     const lastMessage = messages[messages.length - 1];
 
-    const context = await getContext(lastMessage.content, "", 3000, 0.7, true);
+    const context = await getContext(lastMessage.content, "", 3000, 0.4, true);
 
     const stream = createDataStream({
       execute: (dataStream) => {
