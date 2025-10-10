@@ -78,6 +78,7 @@ export function Chat({
       message: body.messages.at(-1),
       selectedChatModel: initialChatModel,
       selectedVisibilityType: visibilityType,
+      context: lesson?.content ?? "",
     }),
 
     onFinish: async () => {

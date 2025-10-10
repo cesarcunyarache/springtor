@@ -20,9 +20,6 @@ export const getContext = async (message: string, namespace: string, maxTokens =
   // Filter out the matches that have a score lower than the minimum score
 /*   const qualifyingDocs = matches.filter(m => m.score && m.score > minScore); */
 
-   console.log("🔍 Resultados encontrados:", matches.length);
-  console.log("Scores:", matches.map(m => m.score));
-
   const qualifyingDocs = matches.filter(m => m.score && m.score >= minScore);
 
   if (qualifyingDocs.length === 0) {

@@ -4,12 +4,21 @@ import z from "zod";
 
 export const searchKnowledge = tool({
   description:
-    "Obtiene información de tu base de conocimiento para responder preguntas.",
+    "Busca información relevante en la base de conocimiento vectorial según la consulta del usuario.",
   parameters: z.object({
-    question: z.string(),
+    query: z
+      .string()
+      .describe("Texto o pregunta para buscar en la base vectorial"),
   }),
-  execute: async ({ question }) => {
-    const context = await getContext(question, "", 3000, 0.7, true);
-    return context;
+  execute: async ({ query }) => {
+    const result = await getContext(query, "", 3000, 0.4, true);
+
+   /*  console.log("PINECOME CONTEXT", result);
+     dataStream.writeData({
+        type: "context",
+        content: result,
+      }); */
+
+
   },
 });

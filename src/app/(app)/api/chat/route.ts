@@ -6,7 +6,7 @@ import {
   streamText,
   tool,
 } from "ai";
-import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
+import { systemPrompt } from "@/lib/ai/prompts";
 import {
   createStreamId,
   deleteChatById,
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { id, message, selectedChatModel, selectedVisibilityType } =
+    const { id, message, selectedChatModel, selectedVisibilityType, context } =
       requestBody;
 
     const session = await auth();
@@ -124,7 +124,7 @@ export async function POST(request: Request) {
       messages: previousMessages,
       message,
     });
-
+    /* 
     const { longitude, latitude, city, country } = geolocation(request);
 
     const requestHints: RequestHints = {
@@ -133,7 +133,7 @@ export async function POST(request: Request) {
       city,
       country,
     };
-
+ */
     await saveMessages({
       messages: [
         {
@@ -151,57 +151,33 @@ export async function POST(request: Request) {
     await createStreamId({ streamId, chatId: id });
 
     const lastMessage = messages[messages.length - 1];
-
-    const context = await getContext(lastMessage.content, "", 3000, 0.4, true);
+    const contextRetrieved = await getContext(lastMessage.content, "", 3000, 0.4, true); 
 
     const stream = createDataStream({
       execute: (dataStream) => {
+
+
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
-          system:
-            systemPrompt({ selectedChatModel, requestHints, context }),
+          system: systemPrompt({
+            selectedChatModel,
+            lessonContext: context,
+            contextRetrieved,
+          }),
           messages,
           maxSteps: 5,
           experimental_activeTools:
             selectedChatModel === "chat-model-reasoning"
               ? []
-              : [
-                  "getWeather",
-                  "createDocument",
-                  "updateDocument",
-                  "requestSuggestions",
-                  "sugerencias",
-                ],
+              : ["createDocument", "updateDocument", "requestSuggestions"],
           experimental_transform: smoothStream({ chunking: "word" }),
           experimental_generateMessageId: generateUUID,
           tools: {
-            getWeather,
             createDocument: createDocument({ session, dataStream }),
             updateDocument: updateDocument({ session, dataStream }),
             requestSuggestions: requestSuggestions({
               session,
               dataStream,
-            }),
-            sugerencias: tool({
-              description: "Sugerencias para el chat",
-              parameters: z.object({
-                response: z.string().describe("Respuesta de la API"),
-              }),
-              execute: async ( { response }) => {
-                const suggestions = [
-                  `¿Puedes explicarme  con un ejemplo práctico?`,
-                  `¿Qué ventajas tiene aplicar esto?`,
-                  `¿Cuáles son los errores más comunes en esto?`,
-                ];
-
-                dataStream.writeData(
-                   {
-                     type: "suggestions",
-                     content: suggestions,
-                   }     
-                );
-              
-              },
             }),
           },
 
@@ -237,7 +213,6 @@ export async function POST(request: Request) {
                   ],
                 });
               } catch (error) {
-                console.log(error);
                 console.error("Failed to save chat");
               }
             }
@@ -257,7 +232,7 @@ export async function POST(request: Request) {
           sendReasoning: true,
         });
       },
-      onError: () => {
+      onError: (error) => {
         return "Oops, an error occurred!";
       },
     });

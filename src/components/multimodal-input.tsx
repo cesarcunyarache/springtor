@@ -119,7 +119,7 @@ function PureMultimodalInput({
     if (isRedirect) {
       window.history.replaceState({}, '', `/scrum/chat/${chatId}`);
     }
-    handleSubmit(undefined, {
+    void handleSubmit(undefined, {
       experimental_attachments: attachments,
     });
 

@@ -2,7 +2,7 @@
 /* import { useState } from "react" */
 import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { Trophy, Bird, Target, FileIcon, CogIcon, HelpCircleIcon, Home, MessageCircleMore, GitMerge, Calendar } from "lucide-react"
+import { Trophy, Bird, Target, FileIcon, CogIcon, HelpCircleIcon, Home, MessageCircleMore, GitMerge, Calendar, BookCheck } from "lucide-react"
 
 import { ScrumRoadmap } from "@/components/roadmap/scrum-roadmap"
 import { TopicDetail } from "@/components/roadmap/topic-detail"
@@ -23,6 +23,9 @@ import { TimelineDemo } from "@/components/roadmap/timeline-scrum"
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { isUserResponsePreTest } from "@/lib/db/queries/user"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export default async function Page() {
   /* const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
@@ -68,13 +71,32 @@ export default async function Page() {
                 Springtor
               </h1>
             </div>
-            <div className="flex items-center space-x-4">
-              <Trophy className="w-5 h-5 text-yellow-500" />
-              <span className="text-sm font-medium text-muted-foreground">
-                {completedTopics}/{totalTopics}
-              </span>
-              <Progress value={overallPercentage} className="w-32" />
-              <span className="text-sm font-bold ">{Math.round(overallPercentage)}%</span>
+            <div className="flex items-center space-x-4 gap-4">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link href="/scrum/evaluacion-practica" className="" >
+
+                    <Button variant="ghost"  size="icon" className="hidden sm:flex items-center gap-2">
+                      <BookCheck className="h-5 w-5" />
+                  </Button>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Examen Práctico</p>
+                </TooltipContent>
+              </Tooltip>
+
+
+
+              <div className="flex items-center space-x-4">
+
+                <Trophy className="w-5 h-5 text-yellow-500" />
+                <span className="text-sm font-medium text-muted-foreground">
+                  {completedTopics}/{totalTopics}
+                </span>
+                <Progress value={overallPercentage} className="w-32" />
+                <span className="text-sm font-bold ">{Math.round(overallPercentage)}%</span>
+              </div>
             </div>
           </div>
         </div>

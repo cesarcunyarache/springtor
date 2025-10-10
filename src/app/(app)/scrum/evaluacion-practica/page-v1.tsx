@@ -1,158 +1,58 @@
 "use client";
+import React, { useState } from 'react';
+import { Target, Plus, Trash2, ArrowRight, CheckCircle } from 'lucide-react';
 
-import { useState } from "react";
-
-
-
-// Tipos para el examen de Sprint Planning
-
-export type Priority = 'Alta' | 'Media' | 'Baja';
-
-export interface AcceptanceCriterion {
-  id: number;
-  description: string;
-}
-
-export interface UserStory {
+interface UserStory {
   id: number;
   title: string;
   asA: string;
   iWant: string;
   soThat: string;
   acceptanceCriteria: string[];
-  priority: Priority;
+  priority: 'Alta' | 'Media' | 'Baja';
   priorityJustification: string;
 }
 
-export interface SprintGoalSMART {
-  specific: string;
-  measurable: string;
-  achievable: string;
-  relevant: string;
-  timeBound: string;
-}
-
-export interface Task {
+interface Task {
   id: number;
   name: string;
   responsible: string;
-  estimation: number | null;
 }
 
-export type ImpedimentStatus = 'Abierto' | 'En Progreso' | 'Resuelto';
-
-export interface Impediment {
+interface Impediment {
   id: number;
   description: string;
   responsible: string;
   action: string;
   deadline: string;
-  status: ImpedimentStatus;
+  status: 'Abierto' | 'En Progreso' | 'Resuelto';
 }
 
-export interface SprintReview {
-  incrementDelivered: string;
-  feedback: string[];
-  goalComparison: string;
-  dodComparison: string;
-}
-
-export interface Retrospective {
-  learnings: string[];
-  improvements: string[];
-}
-
-export interface Question {
+interface Question {
   id: number;
   question: string;
   type: 'multiple' | 'text';
   options?: string[];
 }
 
-export interface Answer {
-  questionId: number;
-  answer: string;
-}
+type StoryPoints = 1 | 2 | 3 | 5 | 8 | 13 | 21 | '?';
 
-export interface ExamData {
-  metadata: {
-    examName: string;
-    projectName: string;
-    sprintNumber: number;
-    sprintDuration: string;
-    previousVelocity: number;
-    submittedAt: string;
-  };
-  userStories: UserStory[];
-  productBacklog: UserStory[];
-  sprintPlanning: {
-    sprintGoal: string;
-    sprintGoalSMART: SprintGoalSMART;
-    selectedStoryIds: number[];
-    sprintBacklog: {
-      storyId: number;
-      story: UserStory;
-      tasks: Task[];
-    }[];
-  };
-  estimations: {
-    stories: {
-      storyId: number;
-      storyPoints: number | string;
-    }[];
-    tasks: {
-      taskId: number;
-      hours: number;
-    }[];
-    totalStoryPoints: number;
-    totalTaskHours: number;
-  };
-  impediments: Impediment[];
-  sprintReview: SprintReview;
-  retrospective: Retrospective;
-  theoreticalQuestions: {
-    question: string;
-    answer: string;
-  }[];
-  summary: {
-    totalStoriesCreated: number;
-    totalStoriesSelected: number;
-    totalTasksCreated: number;
-    totalImpediments: number;
-    questionsAnswered: number;
-    totalQuestions: number;
-    completionPercentage: number;
-  };
-}
-
-import { Target, Plus, Trash2, ArrowRight, CheckCircle, Download, X } from 'lucide-react';
-
-
-function App() {
-  // Lista de miembros del equipo
+const App: React.FC = () => {
   const teamMembers: string[] = ['Thalia', 'César', 'María', 'Pedro', 'Ana', 'Luis'];
 
-  // Estado para mostrar el JSON
-  const [showJsonModal, setShowJsonModal] = useState<boolean>(false);
-  const [generatedJson, setGeneratedJson] = useState<string>('');
-
-  // Estado para historias de usuario
-  const [newStory, setNewStory] = useState<Omit<UserStory, 'id'>>({
+  const [newStory, setNewStory] = useState({
     title: '',
     asA: '',
     iWant: '',
     soThat: '',
     acceptanceCriteria: [''],
-    priority: 'Media' as Priority,
+    priority: 'Media' as 'Alta' | 'Media' | 'Baja',
     priorityJustification: ''
   });
 
-  // Product Backlog
   const [productBacklog, setProductBacklog] = useState<UserStory[]>([]);
-
-  // Sprint Planning
-  const [sprintGoal, setSprintGoal] = useState<string>('');
-  const [sprintGoalSMART, setSprintGoalSMART] = useState<SprintGoalSMART>({
+  const [sprintGoal, setSprintGoal] = useState('');
+  const [sprintGoalSMART, setSprintGoalSMART] = useState({
     specific: '',
     measurable: '',
     achievable: '',
@@ -160,37 +60,29 @@ function App() {
     timeBound: ''
   });
   const [selectedStories, setSelectedStories] = useState<number[]>([]);
-  const [storyEstimations, setStoryEstimations] = useState<Record<number, number | string>>({});
+  const [storyEstimations, setStoryEstimations] = useState<Record<number, StoryPoints>>({});
   const [storyTasks, setStoryTasks] = useState<Record<number, Task[]>>({});
   const [taskEstimations, setTaskEstimations] = useState<Record<number, number>>({});
-
-  // Impedimentos
   const [impediments, setImpediments] = useState<Impediment[]>([]);
-  const [newImpediment, setNewImpediment] = useState<Omit<Impediment, 'id' | 'status'>>({
+  const [newImpediment, setNewImpediment] = useState({
     description: '',
     responsible: '',
     action: '',
     deadline: ''
   });
-
-  // Sprint Review
-  const [sprintReview, setSprintReview] = useState<SprintReview>({
+  const [sprintReview, setSprintReview] = useState({
     incrementDelivered: '',
     feedback: [''],
     goalComparison: '',
     dodComparison: ''
   });
-
-  // Retrospective
-  const [retrospective, setRetrospective] = useState<Retrospective>({
+  const [retrospective, setRetrospective] = useState({
     learnings: ['', '', '', ''],
     improvements: ['', '']
   });
-
-  // Preguntas
   const [answers, setAnswers] = useState<Record<number, string>>({});
 
-  const questions: { id: number; question: string; type: 'multiple' | 'text'; options?: string[] }[] = [
+  const questions: Question[] = [
     {
       id: 1,
       question: "¿Cuál es la duración recomendada para un Sprint en un equipo nuevo?",
@@ -215,25 +107,24 @@ function App() {
     }
   ];
 
-  // Funciones para historias de usuario
-  const addCriterion = (): void => {
+  const addCriterion = () => {
     setNewStory({ ...newStory, acceptanceCriteria: [...newStory.acceptanceCriteria, ''] });
   };
 
-  const updateCriterion = (index: number, value: string): void => {
+  const updateCriterion = (index: number, value: string) => {
     const updated = [...newStory.acceptanceCriteria];
     updated[index] = value;
     setNewStory({ ...newStory, acceptanceCriteria: updated });
   };
 
-  const removeCriterion = (index: number): void => {
+  const removeCriterion = (index: number) => {
     const updated = newStory.acceptanceCriteria.filter((_, i) => i !== index);
     setNewStory({ ...newStory, acceptanceCriteria: updated });
   };
 
-  const addStoryToBacklog = (): void => {
+  const addStoryToBacklog = () => {
     if (newStory.title && newStory.asA && newStory.iWant && newStory.soThat && newStory.priorityJustification) {
-      const story = {
+      const story: UserStory = {
         id: Date.now(),
         ...newStory,
         acceptanceCriteria: newStory.acceptanceCriteria.filter(c => c.trim() !== '')
@@ -251,32 +142,29 @@ function App() {
     }
   };
 
-  // Funciones para Sprint Planning
-  const addStoryToSprint = (storyId: number): void => {
+  const addStoryToSprint = (storyId: number) => {
     if (!selectedStories.includes(storyId)) {
       setSelectedStories([...selectedStories, storyId]);
       setStoryTasks({ ...storyTasks, [storyId]: [] });
     }
   };
 
-  const removeStoryFromSprint = (storyId: number): void => {
+  const removeStoryFromSprint = (storyId: number) => {
     setSelectedStories(selectedStories.filter(id => id !== storyId));
     const newEstimations = { ...storyEstimations };
     delete newEstimations[storyId];
     setStoryEstimations(newEstimations);
-
     const newTasks = { ...storyTasks };
     delete newTasks[storyId];
     setStoryTasks(newTasks);
   };
 
-  const addTask = (storyId: number, taskName: string, responsible: string = ''): void => {
+  const addTask = (storyId: number, taskName: string) => {
     if (taskName.trim()) {
-      const task = {
+      const task: Task = {
         id: Date.now(),
         name: taskName,
-        responsible: responsible,
-        estimation: null
+        responsible: ''
       };
       setStoryTasks({
         ...storyTasks,
@@ -285,7 +173,7 @@ function App() {
     }
   };
 
-  const updateTaskResponsible = (storyId: number, taskId: number, responsible: string): void => {
+  const updateTaskResponsible = (storyId: number, taskId: number, responsible: string) => {
     setStoryTasks({
       ...storyTasks,
       [storyId]: storyTasks[storyId].map(t =>
@@ -294,7 +182,7 @@ function App() {
     });
   };
 
-  const removeTask = (storyId: number, taskId: number): void => {
+  const removeTask = (storyId: number, taskId: number) => {
     setStoryTasks({
       ...storyTasks,
       [storyId]: storyTasks[storyId].filter(t => t.id !== taskId)
@@ -304,32 +192,31 @@ function App() {
     setTaskEstimations(newTaskEst);
   };
 
-  const setStoryEstimation = (storyId: number, points: number | string): void => {
+  const setStoryEstimation = (storyId: number, points: StoryPoints) => {
     setStoryEstimations({ ...storyEstimations, [storyId]: points });
   };
 
-  const setTaskEstimation = (taskId: number, hours: number): void => {
+  const setTaskEstimation = (taskId: number, hours: number) => {
     setTaskEstimations({ ...taskEstimations, [taskId]: hours });
   };
 
-  const getTotalStoryPoints = (): number => {
+  const getTotalStoryPoints = () => {
     return Object.values(storyEstimations)
-      .filter((p): p is number => p !== '?' && typeof p === 'number')
-      .reduce((sum, points) => sum + points, 0);
+      .filter(p => p !== '?')
+      .reduce((sum, points) => sum + (typeof points === 'number' ? points : 0), 0);
   };
 
-  const getTotalTaskHours = (): number => {
+  const getTotalTaskHours = () => {
     return Object.values(taskEstimations)
-      .reduce((sum, hours) => sum + hours, 0);
+      .reduce((sum, hours) => sum + (typeof hours === 'number' ? hours : 0), 0);
   };
 
-  // Funciones para impedimentos
-  const addImpediment = (): void => {
+  const addImpediment = () => {
     if (newImpediment.description && newImpediment.responsible && newImpediment.action && newImpediment.deadline) {
       const impediment: Impediment = {
         id: Date.now(),
         ...newImpediment,
-        status: 'Abierto' as const
+        status: 'Abierto'
       };
       setImpediments([...impediments, impediment]);
       setNewImpediment({
@@ -341,170 +228,61 @@ function App() {
     }
   };
 
-  const updateImpedimentStatus = (id: number, status: ImpedimentStatus): void => {
+  const updateImpedimentStatus = (id: number, status: 'Abierto' | 'En Progreso' | 'Resuelto') => {
     setImpediments(impediments.map(imp =>
       imp.id === id ? { ...imp, status } : imp
     ));
   };
 
-  const removeImpediment = (id: number): void => {
+  const removeImpediment = (id: number) => {
     setImpediments(impediments.filter(imp => imp.id !== id));
   };
 
-  // Funciones para Sprint Review
-  const addFeedbackItem = (): void => {
+  const addFeedbackItem = () => {
     setSprintReview({
       ...sprintReview,
       feedback: [...sprintReview.feedback, '']
     });
   };
 
-  const updateFeedback = (index: number, value: string): void => {
+  const updateFeedback = (index: number, value: string) => {
     const updated = [...sprintReview.feedback];
     updated[index] = value;
     setSprintReview({ ...sprintReview, feedback: updated });
   };
 
-  const removeFeedback = (index: number): void => {
+  const removeFeedback = (index: number) => {
     const updated = sprintReview.feedback.filter((_, i) => i !== index);
     setSprintReview({ ...sprintReview, feedback: updated });
   };
 
-  // Funciones para Retrospective
-  const updateLearning = (index: number, value: string): void => {
+  const updateLearning = (index: number, value: string) => {
     const updated = [...retrospective.learnings];
     updated[index] = value;
     setRetrospective({ ...retrospective, learnings: updated });
   };
 
-  const addLearning = (): void => {
+  const addLearning = () => {
     setRetrospective({
       ...retrospective,
       learnings: [...retrospective.learnings, '']
     });
   };
 
-  const updateImprovement = (index: number, value: string): void => {
+  const updateImprovement = (index: number, value: string) => {
     const updated = [...retrospective.improvements];
     updated[index] = value;
     setRetrospective({ ...retrospective, improvements: updated });
   };
 
-  const addImprovement = (): void => {
+  const addImprovement = () => {
     setRetrospective({
       ...retrospective,
       improvements: [...retrospective.improvements, '']
     });
   };
 
-  // Función para generar el JSON completo del examen
-  const generateExamJson = (): ExamData => {
-    const now = new Date().toISOString();
-
-    // Construir Sprint Backlog detallado
-    const sprintBacklog = selectedStories.map(storyId => {
-      const story = productBacklog.find(s => s.id === storyId);
-      return {
-        storyId,
-        story: story!,
-        tasks: storyTasks[storyId] || []
-      };
-    });
-
-    // Construir estimaciones de historias
-    const storyEstimationsArray = Object.entries(storyEstimations).map(([storyId, points]) => ({
-      storyId: parseInt(storyId),
-      storyPoints: typeof points === 'number' ? points : 0
-    }));
-
-    // Construir estimaciones de tareas
-    const taskEstimationsArray = Object.entries(taskEstimations).map(([taskId, hours]) => ({
-      taskId: parseInt(taskId),
-      hours
-    }));
-
-    // Construir preguntas con respuestas
-    const theoreticalQuestionsAnswered = questions.map(q => ({
-      question: q.question,
-      answer: answers[q.id] || ''
-    }));
-
-    // Calcular estadísticas de resumen
-    const totalTasksCreated = Object.values(storyTasks).reduce((sum, tasks) => sum + tasks.length, 0);
-    const questionsAnswered = Object.keys(answers).length;
-    const completionPercentage = Math.round(
-      ((questionsAnswered / questions.length) * 100 +
-        (selectedStories.length > 0 ? 100 : 0) +
-        (sprintGoal ? 100 : 0)) / 3
-    );
-
-    const examData: ExamData = {
-      metadata: {
-        examName: "Examen Práctico: Sprint Planning Completo",
-        projectName: "EcoMarket",
-        sprintNumber: 3,
-        sprintDuration: "2 semanas",
-        previousVelocity: 34,
-        submittedAt: now
-      },
-      userStories: productBacklog,
-      productBacklog: productBacklog,
-      sprintPlanning: {
-        sprintGoal,
-        sprintGoalSMART,
-        selectedStoryIds: selectedStories,
-        sprintBacklog
-      },
-      estimations: {
-        stories: storyEstimationsArray,
-        tasks: taskEstimationsArray,
-        totalStoryPoints: getTotalStoryPoints(),
-        totalTaskHours: getTotalTaskHours()
-      },
-      impediments,
-      sprintReview,
-      retrospective,
-      theoreticalQuestions: theoreticalQuestionsAnswered,
-      summary: {
-        totalStoriesCreated: productBacklog.length,
-        totalStoriesSelected: selectedStories.length,
-        totalTasksCreated,
-        totalImpediments: impediments.length,
-        questionsAnswered,
-        totalQuestions: questions.length,
-        completionPercentage
-      }
-    };
-
-    return examData;
-  };
-
-  const handleSubmitExam = (): void => {
-    const examData = generateExamJson();
-    const jsonString = JSON.stringify(examData, null, 2);
-    setGeneratedJson(jsonString);
-    setShowJsonModal(true);
-  };
-
-  const downloadJson = (): void => {
-    const examData = generateExamJson();
-    const jsonString = JSON.stringify(examData, null, 2);
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `sprint-planning-exam-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const copyToClipboard = (): void => {
-    navigator.clipboard.writeText(generatedJson);
-    alert('JSON copiado al portapapeles');
-  };
-
+  
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -518,110 +296,14 @@ function App() {
                 <p className="text-sm text-gray-600">Metodología Scrum - EcoMarket • Sprint 3 • 2 semanas</p>
               </div>
             </div>
-            <button
-              onClick={handleSubmitExam}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center space-x-2"
-            >
-              <Download className="w-4 h-4" />
-              <span>Enviar Examen</span>
+            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+              Enviar Examen
             </button>
           </div>
         </div>
       </div>
 
       <div className="container mx-auto px-6 py-8 max-w-7xl">
-        {/* CASO PRÁCTICO */}
-        <div className="bg-gradient-to-br from-green-50 to-blue-50 border-2 border-green-200 rounded-lg shadow-lg p-8 mb-8">
-          <div className="flex items-start space-x-4">
-            <div className="bg-green-600 text-white rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
-              <Target className="w-6 h-6" />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">Caso Práctico: EcoMarket</h2>
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-green-700 mb-3">Contexto del Proyecto</h3>
-                <p className="text-gray-700 mb-4 leading-relaxed">
-                  <strong>EcoMarket</strong> es una startup que está desarrollando una plataforma de e-commerce enfocada en productos sostenibles y ecológicos.
-                  El equipo ha completado 2 sprints exitosos y ahora se prepara para el <strong>Sprint 3</strong>, que tiene una duración de <strong>2 semanas</strong>.
-                </p>
-
-                <h3 className="text-lg font-semibold text-green-700 mb-3">Problemática Central</h3>
-                <div className="bg-orange-50 border-l-4 border-orange-400 p-4 mb-4">
-                  <p className="text-gray-800 leading-relaxed">
-                    Durante los sprints anteriores, el equipo ha tenido problemas con la <strong>planificación y seguimiento</strong>:
-                  </p>
-                  <ul className="mt-3 space-y-2 text-gray-700">
-                    <li className="flex items-start">
-                      <span className="text-orange-600 mr-2">•</span>
-                      <span>Las historias de usuario no tenían criterios de aceptación claros</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-orange-600 mr-2">•</span>
-                      <span>La priorización del backlog no estaba justificada</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-orange-600 mr-2">•</span>
-                      <span>El Sprint Goal no era específico ni medible</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-orange-600 mr-2">•</span>
-                      <span>No se identificaban impedimentos hasta que era demasiado tarde</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-orange-600 mr-2">•</span>
-                      <span>No había un proceso formal de Review y Retrospective</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <h3 className="text-lg font-semibold text-green-700 mb-3">Tu Misión</h3>
-                <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
-                  <p className="text-gray-800 leading-relaxed mb-3">
-                    Como <strong>Scrum Master</strong> del equipo, debes planificar el Sprint 3 aplicando la metodología Scrum de manera profesional y completa:
-                  </p>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-2">✓</span>
-                      <span>Crear historias de usuario bien definidas con criterios de aceptación</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-2">✓</span>
-                      <span>Justificar la priorización basándote en valor, riesgo y dependencias</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-2">✓</span>
-                      <span>Definir un Sprint Goal SMART (Específico, Medible, Alcanzable, Relevante, Temporal)</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-2">✓</span>
-                      <span>Descomponer historias en tareas con responsables asignados</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-2">✓</span>
-                      <span>Gestionar impedimentos proactivamente</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-blue-600 mr-2">✓</span>
-                      <span>Realizar Sprint Review y Retrospective documentados</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="mt-4 flex items-center space-x-6 text-sm">
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-700 mr-2">Equipo:</span>
-                    <span className="text-gray-600">6 personas (Thalia, César, María, Pedro, Ana, Luis)</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="font-semibold text-gray-700 mr-2">Velocidad previa:</span>
-                    <span className="text-gray-600">34 story points</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* PASO 1: Crear Historias de Usuario */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
@@ -684,7 +366,7 @@ function App() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Prioridad</label>
                 <select
                   value={newStory.priority}
-                  onChange={(e) => setNewStory({ ...newStory, priority: e.target.value as Priority })}
+                  onChange={(e) => setNewStory({ ...newStory, priority: e.target.value as 'Alta' | 'Media' | 'Baja' })}
                   className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="Alta">Alta</option>
@@ -907,7 +589,7 @@ function App() {
               </div>
             ) : (
               <div className="space-y-3 max-h-96 overflow-y-auto">
-                {productBacklog.map((story) => (
+                {productBacklog.map(story => (
                   <div
                     key={story.id}
                     className={`border-2 rounded-lg p-3 transition-all ${
@@ -958,12 +640,11 @@ function App() {
               <div className="space-y-4 max-h-96 overflow-y-auto">
                 {selectedStories.map(storyId => {
                   const story = productBacklog.find(s => s.id === storyId);
-                  if (!story) return null;
                   const tasks = storyTasks[storyId] || [];
                   return (
                     <div key={storyId} className="border-2 border-green-200 bg-green-50 rounded-lg p-3">
                       <div className="flex items-start justify-between mb-2">
-                        <h3 className="font-semibold text-gray-900 text-sm flex-1">{story.title}</h3>
+                        <h3 className="font-semibold text-gray-900 text-sm flex-1">{story!.title}</h3>
                         <button
                           onClick={() => removeStoryFromSprint(storyId)}
                           className="text-red-600 hover:text-red-800 ml-2"
@@ -979,10 +660,9 @@ function App() {
                           placeholder="Agregar tarea técnica (Enter para agregar)..."
                           className="w-full p-2 border border-green-300 rounded text-xs"
                           onKeyDown={(e) => {
-                            const target = e.target as HTMLInputElement;
-                            if (e.key === 'Enter' && target.value.trim()) {
-                              addTask(storyId, target.value);
-                              target.value = '';
+                            if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+                              addTask(storyId, e.currentTarget.value);
+                              e.currentTarget.value = '';
                             }
                           }}
                         />
@@ -1042,13 +722,10 @@ function App() {
             <div className="space-y-6">
               {selectedStories.map(storyId => {
                 const story = productBacklog.find(s => s.id === storyId);
-                if (!story) return null;
                 return (
                   <div key={storyId} className="border border-gray-200 rounded-lg p-5">
-                    <h3 className="font-semibold text-gray-900 mb-1">{story.title}</h3>
-                    <p className="text-sm text-gray-600 mb-4 italic">
-                      Como {story.asA}, quiero {story.iWant} para {story.soThat}
-                    </p>
+                    <h3 className="font-semibold text-gray-900 mb-1">{story!.title}</h3>
+                  {/*   <p className="text-sm text-gray-600 mb-4">{story!.description}</p> */}
 
                     <div className="flex items-center space-x-2 mb-3">
                       <span className="text-sm font-medium text-gray-700">Story Points:</span>
@@ -1056,7 +733,7 @@ function App() {
                         {[1, 2, 3, 5, 8, 13, 21, '?'].map(point => (
                           <button
                             key={point}
-                            onClick={() => setStoryEstimation(storyId, point)}
+                            onClick={() => setStoryEstimation(storyId, point as StoryPoints)}
                             className={`w-10 h-12 rounded-lg border-2 font-bold transition-all ${
                               storyEstimations[storyId] === point
                                 ? 'border-blue-600 bg-blue-600 text-white scale-110 shadow-lg'
@@ -1212,7 +889,7 @@ function App() {
                     <div className="flex items-center space-x-2 ml-3">
                       <select
                         value={imp.status}
-                        onChange={(e) => updateImpedimentStatus(imp.id, e.target.value as ImpedimentStatus)}
+                        onChange={(e) => updateImpedimentStatus(imp.id, e.target.value as 'Abierto' | 'En Progreso' | 'Resuelto')}
                         className="text-xs border border-gray-300 rounded px-2 py-1"
                       >
                         <option value="Abierto">Abierto</option>
@@ -1392,9 +1069,9 @@ function App() {
                   <h3 className="text-base font-medium text-gray-900 flex-1">{question.question}</h3>
                 </div>
 
-                {question.type === 'multiple' && question.options ? (
+                {question.type === 'multiple' ? (
                   <div className="space-y-2 ml-10">
-                    {question.options.map((option, optionIndex) => (
+                    {question?.options?.map((option, optionIndex) => (
                       <label key={optionIndex} className="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50">
                         <input
                           type="radio"
@@ -1443,59 +1120,19 @@ function App() {
               <div className="text-sm mt-1">Preguntas Respondidas</div>
             </div>
           </div>
-          <button
-            onClick={handleSubmitExam}
-            className="w-full bg-white text-blue-600 py-3 px-6 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-          >
+          <button className="w-full bg-white text-blue-600 py-3 px-6 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors">
             Enviar Examen Completo
           </button>
         </div>
       </div>
-
-      {/* Modal para mostrar el JSON */}
-      {showJsonModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col">
-            <div className="flex items-center justify-between p-6 border-b">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">Examen Completado</h2>
-                <p className="text-sm text-gray-600 mt-1">JSON generado con todos los datos del examen</p>
-              </div>
-              <button
-                onClick={() => setShowJsonModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-6">
-              <pre className="bg-gray-900 text-green-400 p-4 rounded-lg text-xs overflow-x-auto">
-                {generatedJson}
-              </pre>
-            </div>
-
-            <div className="flex space-x-3 p-6 border-t bg-gray-50">
-              <button
-                onClick={copyToClipboard}
-                className="flex-1 bg-gray-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-700 transition-colors flex items-center justify-center"
-              >
-                <CheckCircle className="w-5 h-5 mr-2" />
-                Copiar al Portapapeles
-              </button>
-              <button
-                onClick={downloadJson}
-                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center"
-              >
-                <Download className="w-5 h-5 mr-2" />
-                Descargar JSON
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
 
 export default App;
+
+
+
+
+
+

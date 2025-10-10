@@ -22,7 +22,6 @@ export const chunkedUpsert = async (
         try {
           await index.namespace(namespace).upsert(vectors);
         } catch (e) {
-          console.log('Error upserting chunk', e);
         }
       })
     );
