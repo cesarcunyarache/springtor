@@ -35,6 +35,8 @@ import { SprintRetrospectiveSection } from "./components/sprint-retrospective-se
 import SprintTheoreticalQuestionsSection from "./components/questions-section";
 import SprintExamSummary from "./components/sprint-summary-section";
 import { Button } from "@/components/ui/button";
+import { evaluateScrumPractice } from "../../api/practice/actions";
+import { savePrestestPracticeResponses } from "@/lib/db/queries/user";
 
 
 
@@ -57,48 +59,85 @@ function App() {
   const completationPractice = completePracticeCase;
 
   // Product Backlog
-  const [productBacklog, setProductBacklog] = useState<UserStory[]>(completationPractice.productBacklog as UserStory[]);
+  const [productBacklog, setProductBacklog] = useState<UserStory[]>(
+    /* completationPractice.productBacklog as UserStory[] */
+  []
+  );
 
   // Sprint Planning
   const [sprintGoal, setSprintGoal] = useState<string>('');
-  const [sprintGoalSMART, setSprintGoalSMART] = useState<SprintGoalSMART>(completationPractice.sprintPlanning.sprintGoalSMART);
+  const [sprintGoalSMART, setSprintGoalSMART] = useState<SprintGoalSMART>(
+    /* completationPractice.sprintPlanning.sprintGoalSMART */
+   {
+     specific: '',
+     measurable: '',
+     achievable: '',
+     relevant: '',
+     timeBound: '',
+   }
+  );
   ;
-  const [selectedStories, setSelectedStories] = useState<number[]>(completationPractice.sprintPlanning.selectedStoryIds);
+  const [selectedStories, setSelectedStories] = useState<number[]>(
+    /* completationPractice.sprintPlanning.selectedStoryIds */ 
+    []
+  );
 
 
-  const [storyEstimations, setStoryEstimations] = useState<Record<number, number | string>>(completationPractice.estimations.stories.reduce((acc, story) => ({ ...acc, [story.storyId]: story.storyPoints }), {}));
-  const [storyTasks, setStoryTasks] = useState<Record<number, Task[]>>(completationPractice.sprintPlanning.sprintBacklog.reduce((acc, story) => ({ ...acc, [story.storyId]: story.tasks }), {}));
-  const [taskEstimations, setTaskEstimations] = useState<Record<number, number>>(completationPractice.estimations.tasks.reduce((acc, task) => ({ ...acc, [task.taskId]: task.hours || 0 }), {}));
+  const [storyEstimations, setStoryEstimations] = useState<Record<number, number | string>>(
+    
+    /* completationPractice.estimations.stories.reduce((acc, story) => ({ ...acc, [story.storyId]: story.storyPoints }), {}) */
+    []
+  
+  );
+  const [storyTasks, setStoryTasks] = useState<Record<number, Task[]>>(
+    
+    /* completationPractice.sprintPlanning.sprintBacklog.reduce((acc, story) => ({ ...acc, [story.storyId]: story.tasks }), {}) */
+    []
+
+);
+  
+  const [taskEstimations, setTaskEstimations] = useState<Record<number, number>>(
+    
+    /* completationPractice.estimations.tasks.reduce((acc, task) => ({ ...acc, [task.taskId]: task.hours || 0 }), {}) */
+    []
+  
+  );
 
   // Impedimentos
-  const [impediments, setImpediments] = useState<Impediment[]>(completationPractice.impediments.map(impediment => ({
+  const [impediments, setImpediments] = useState<Impediment[]>(
+    []
+    /* completationPractice.impediments.map(impediment => ({
     ...impediment,
     status: impediment.status as ImpedimentStatus
-  })));
+  })) */
+
+);
   const [newImpediment, setNewImpediment] = useState<Omit<Impediment, 'id' | 'status'>>({
     description: '',
     responsible: '',
     action: '',
     deadline: '',
-    
+
   });
 
   // Sprint Review
-  const [sprintReview, setSprintReview] = useState<SprintReview>(/* {
+  const [sprintReview, setSprintReview] = useState<SprintReview>(
+    {
     incrementDelivered: '',
     feedback: [''],
     goalComparison: '',
     dodComparison: ''
-  } */
-    completationPractice.sprintReview
+  }
+/*     completationPractice.sprintReview */
   );
 
   // Retrospective
-  const [retrospective, setRetrospective] = useState<Retrospective>(/* {
+  const [retrospective, setRetrospective] = useState<Retrospective>(
+    {
     learnings: ['', '', '', ''],
     improvements: ['', '']
-  } */
-    completationPractice.retrospective
+  }
+   /*  completationPractice.retrospective */
   );
 
   // Preguntas
@@ -189,16 +228,16 @@ function App() {
         responsible: '',
         action: '',
         deadline: '',
-       
+
       });
     }
   };
 
   const updateImpedimentStatus = (id: number, status: ImpedimentStatus): void => {
-     setImpediments(impediments.map(imp =>
-       imp.id === id ? { ...imp, status } : imp
-     ));
-   }; 
+    setImpediments(impediments.map(imp =>
+      imp.id === id ? { ...imp, status } : imp
+    ));
+  };
 
   const removeImpediment = (id: number): void => {
     setImpediments(impediments.filter(imp => imp.id !== id));
@@ -324,10 +363,12 @@ function App() {
     return examData;
   };
 
-  const handleSubmitExam = (): void => {
+  const handleSubmitExam = async () => {
     const response = generateResult();
 
-    console.log(response);
+    const evaluation = await evaluateScrumPractice(response);
+
+    await savePrestestPracticeResponses(response, evaluation.rubricScore, evaluation.checklistScore, evaluation.feedback, evaluation.justification);
 
   };
 

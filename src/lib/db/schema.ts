@@ -289,7 +289,9 @@ export const topicCompletions = pgTable(
     id: text("id")
       .primaryKey()
       .$defaultFn(() => crypto.randomUUID()),
-    userId: text("userId").notNull().references(() => users.id),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id),
     topicId: text("topicId")
       .notNull()
       .references(() => topics.id),
@@ -582,3 +584,43 @@ export const theoryQuestionRelations = relations(
     }),
   })
 );
+
+export const preTestPracticeResponses = pgTable(
+  "preTestPracticeResponses",
+  {
+    id: uuid("id").primaryKey().notNull().defaultRandom(),
+    userId: text("user_id").notNull(),
+    answers: jsonb("answers").notNull(),
+    rubricScore: integer(), 
+    checklistScore: integer(),
+    feedback: text("feedback"),
+    justification: text("justification")
+  },
+  (table) => ({
+    uniqueUserQuestion: unique().on(table.userId),
+  })
+);
+
+export type PreTestPracticeResponse = InferSelectModel<
+  typeof preTestPracticeResponses
+>;
+
+export const postTestPracticeResponses = pgTable(
+  "postTestPracticeResponses",
+  {
+    id: uuid("id").primaryKey().notNull().defaultRandom(),
+    userId: text("user_id").notNull(),
+    answers: jsonb("answers").notNull(),
+    rubricScore: integer(), 
+    checklistScore: integer(),
+    feedback: text("feedback"),
+    justification: text("justification")
+  },
+  (table) => ({
+    uniqueUserQuestion: unique().on(table.userId),
+  })
+);
+
+export type PostTestPracticeResponse = InferSelectModel<
+  typeof postTestPracticeResponses
+>;

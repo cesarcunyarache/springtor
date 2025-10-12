@@ -14,6 +14,7 @@ import {
   theoryAnswers,
   lessonCompletions,
   topicCompletions,
+  preTestPracticeResponses,
 } from "../../schema";
 import { asc, eq, exists, sql } from "drizzle-orm";
 import {
@@ -222,7 +223,7 @@ export async function completeLesson(lesson: {
           lessonCompletions.topicId,
         ],
         set: {
-          chatId: lesson.chatId, 
+          chatId: lesson.chatId,
         },
       })
       .returning();
@@ -260,6 +261,53 @@ export async function updateTopicProgress(topicId: string, progress: number) {
     if (result.length > 0) {
       return true;
     }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function savePrestestPracticeResponses(
+  answers: any,
+  rubricScore: number,
+  checklistScore: number,
+  feedback: string,
+  justification: string
+) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+   
+    if (!userId) return false;
+
+    console.log(userId);
+    const results = await db
+      .insert(preTestPracticeResponses)
+      .values({
+        userId,
+        answers,
+        rubricScore,
+        checklistScore,
+        feedback,
+        justification,
+      })
+      .onConflictDoUpdate({
+        target: [preTestPracticeResponses.userId],
+        set: {
+          answers,
+          rubricScore,
+          checklistScore,
+          feedback,
+          justification,
+        },
+      })
+      .returning();
+
+    if (results.length > 0) {
+      return true;
+    }
+
     return false;
   } catch (error) {
     return false;
