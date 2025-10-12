@@ -49,129 +49,207 @@ export const questions: {
 export const assesmentPractice: PracticeCase = {
   id: "60be01ff-2d07-459f-8da1-9b18299ae43b",
   slug: "sprint-planning-practice",
-  title: "Examen Práctico: Problemas en la Gestión de un Proyecto Scrum",
+  title: "Examen Práctico: Problemas en la Gestión de Proyecto en una Empresa de Desarrollo Tecnológico.",
   description: "Metodología Scrum",
-  context: `Una **empresa de software en Piura** fue contratada para crear un **sistema de gestión de inventarios** para un **restaurante local**. El cliente necesita una solución que le permita **registrar productos**, **controlar el inventario**, **generar reportes automáticos** y **facilitar las compras**.  
-El cliente desea que el sistema esté listo en **6 meses**.
+  context: ``,
+  content: `
+>
+> 📘 **Proyecto:** Sistema de Gestión de Inventarios  
+> 📍 **Ubicación:** Piura, Perú  
+> 🕓 **Duración estimada:** 6 meses
 
-La empresa decidió usar la **metodología Scrum** para asegurarse de que el proyecto avance **rápidamente**, con **buena comunicación** y **entregas constantes**.  
-El equipo está compuesto por **desarrolladores**, **diseñadores**, **personas encargadas de las pruebas** y un **Scrum Master**, quien se asegura de que todos sigan el proceso.  
-El **Product Owner** es el responsable de **representar al cliente** y **establecer las prioridades del proyecto**.
-`,
 
-  content: `# 🧩 Fase de Implementación
+Una **empresa de software en Piura** fue contratada para crear un **sistema de gestión de inventarios** para un **restaurante local**.  
+El cliente necesita una solución que le permita:
 
-Durante las primeras etapas del proyecto, el equipo comenzó a trabajar en las **funcionalidades básicas del sistema**, como **registrar productos** y **diseñar la interfaz**.  
-Sin embargo, a pesar de seguir la metodología **Scrum**, comenzaron a surgir varios **problemas** que hicieron que el proyecto no avanzara como se esperaba.
+- 📦 Registrar productos  
+- 📉 Controlar el inventario  
+- 📊 Generar reportes automáticos  
+- 🛒 Facilitar las compras  
+
+El cliente espera que el sistema esté **listo en 6 meses**.
+
+---
+---
+
+## ⚙️ **Metodología Adoptada: Scrum**
+
+> La empresa decidió usar **Scrum** para garantizar:  
+> - ✅ Avance rápido  
+> - 🗣️ Buena comunicación  
+> - 🔁 Entregas constantes
+
+### 👥 Equipo del Proyecto
+
+| Rol | Responsabilidad principal |
+|------|-----------------------------|
+| **Scrum Master** | Asegurar el cumplimiento del proceso Scrum |
+| **Product Owner** | Representar al cliente y definir prioridades |
+| **Desarrolladores** | Implementar las funcionalidades del sistema |
+| **Diseñadores** | Crear la interfaz de usuario |
+| **QA/Testers** | Validar la calidad del producto |
 
 ---
 
-## ⚠️ Problema 1: Prioridades Confusas y No Alineadas con el Cliente
+## 🚀 **Fase de Implementación**
 
-El equipo empezó a trabajar en varias tareas, pero **no tenían claro qué era lo más importante para el cliente**.  
-Aunque el **Product Owner** entregó una lista de cosas por hacer (**Product Backlog**), **no se discutieron adecuadamente las prioridades**.
+Durante las primeras etapas, el equipo comenzó con:
 
-Por ejemplo, el equipo mejoró el **rendimiento del sistema**, pero el cliente necesitaba con urgencia la **función para generar reportes automáticos**.  
-Al final del sprint, el reporte no estaba listo, lo que **molestó y frustró al cliente**.
+- 🧱 Funcionalidades básicas (registro de productos)  
+- 🎨 Diseño de la interfaz  
 
----
-
-## ⚠️ Problema 2: Estimaciones de Tiempo Incorrectas
-
-El equipo tuvo **problemas al estimar el tiempo de cada tarea**.  
-Aunque se asignaron puntos a cada una, las **estimaciones fueron poco precisas**.
-
-Por ejemplo, conectar el sistema con una base de datos externa se estimó en **5 días**, pero tomó **el doble de tiempo** debido a la complejidad técnica.  
-Esto causó **retrasos y presión** para cumplir con los plazos.
+> A pesar de seguir la metodología Scrum, **surgieron varios problemas** que impidieron el avance esperado.
 
 ---
 
-## ⚠️ Problema 3: Falta de Claridad en los Objetivos del Sprint
-
-El equipo realizó reuniones de planificación, pero el **Sprint Goal** no estaba bien definido.  
-Durante la **revisión del sprint**, se dieron cuenta de que **no existía un objetivo específico** para medir el éxito del trabajo.
-
-Además, el **Definition of Done (DoD)** no era comprendido por todos, lo que causó **entregas incompletas y confusión**.  
-El cliente, por tanto, **no quedó satisfecho con los resultados**.
+# ⚠️ **Principales Problemas Identificados**
 
 ---
 
-## ⚠️ Problema 4: No se Resuelven los Bloqueos Rápidamente
+## ❌ **Problema 1: Prioridades Confusas y No Alineadas con el Cliente**
+  
+> El Product Owner entregó una lista de tareas (Product Backlog), pero no se discutieron las prioridades correctamente.
 
-Durante los **Daily Stand-ups**, el equipo mencionaba bloqueos, pero **no se resolvían a tiempo**.  
-Por ejemplo, el equipo de diseño no tenía especificaciones completas para avanzar con la interfaz, y aun así el desarrollo continuó con otras tareas, generando **tiempos muertos y tareas incompletas**.
+**Consecuencias:**
 
----
-
-## ⚠️ Problema 5: Poca Reflexión y Mejora Continua
-
-En la **retrospectiva**, el equipo reconoció problemas como la **mala priorización** y las **estimaciones erróneas**,  
-pero **no se definieron acciones concretas** para mejorar en el siguiente sprint.  
-Como resultado, **los mismos errores se repitieron** en los sprints posteriores.
+- Se trabajó en tareas no urgentes (como optimización del rendimiento).  
+- Se descuidaron funciones prioritarias (como generación de reportes automáticos).  
+- 🧾 El cliente se mostró **molesto** al final del sprint por no obtener lo que más necesitaba.
 
 ---
 
-## ⚠️ Problema 6: Roles Confusos y Mala Coordinación
+## ⏱️ **Problema 2: Estimaciones de Tiempo Incorrectas**
 
-El equipo no tiene **claridad en la asignación de roles**, lo que genera **desorganización**.
+> Las tareas fueron mal estimadas en duración y complejidad, lo que afectó los plazos.
 
-- El **Product Owner** realiza tareas técnicas, como **revisar código**, en lugar de **priorizar el trabajo del cliente**.  
-- Los **desarrolladores** se comunican directamente con el cliente, lo cual **rompe el flujo de comunicación de Scrum**.  
-- El **Scrum Master** no interviene adecuadamente para corregir estas desviaciones ni mejorar la organización del equipo.
+**Ejemplo:**
+
+| Tarea | Estimación | Tiempo real | Diferencia |
+|-------|-------------|-------------|-------------|
+| Conectar base de datos externa | 5 días | 10 días | +100% |
+
+**Efecto:**  
+⏳ Retrasos en las entregas → 😣 Presión por cumplir los plazos.
 
 ---
 
-## ⚠️ Problema 7: Historias de Usuario Mal Definidas
+## 🎯 **Problema 3: Falta de Claridad en los Objetivos del Sprint**
 
-Las **historias de usuario** entregadas por el Product Owner son **demasiado generales** o **carecen de detalles**.  
+- No se definió un **Sprint Goal** claro.  
+- El equipo no tenía una referencia para medir el éxito del sprint.  
+- ❌ El **Definition of Done** era ambiguo y no comprendido por todos.  
 
-Ejemplo:  
+> Resultado: El cliente recibió entregas **incompletas** y **fuera de sus expectativas**.
+
+---
+
+## 🧱 **Problema 4: No se Resuelven los Bloqueos Rápidamente**
+
+> Los bloqueos se mencionaban en los *daily stand-ups*, pero no se solucionaban de inmediato.
+
+**Ejemplo:**  
+🎨 El equipo de diseño no podía avanzar sin las especificaciones,  
+pero los desarrolladores continuaron con otras tareas sin resolver el problema.
+
+**Consecuencia:**  
+- ⏰ Tiempos muertos  
+- 🧩 Tareas incompletas  
+
+---
+
+## 🔁 **Problema 5: Poca Reflexión y Mejora Continua**
+
+> Durante la **retrospectiva**, el equipo identificó problemas, pero **no tomó acciones concretas** para solucionarlos.
+
+➡️ Los mismos errores se repitieron en los siguientes sprints.
+
+---
+
+## 👥 **Problema 6: Roles Confusos y Mala Coordinación**
+
+| Situación | Problema |
+|------------|-----------|
+| 🧑‍💼 El Product Owner revisa código | Está haciendo tareas técnicas en lugar de priorizar |
+| 👨‍💻 Desarrolladores hablan directamente con el cliente | Descoordinación en expectativas |
+| 🧭 Scrum Master pasivo | No corrige la mala asignación de roles |
+
+> Resultado: **Confusión, desorganización y pérdida de enfoque**.
+
+---
+
+## 🧩 **Problema 7: Historias de Usuario Mal Definidas**
+
+> Las historias de usuario carecen de detalles y contexto técnico, dificultando el desarrollo correcto.
+
+**Ejemplo de historia deficiente:**
 > “Como usuario, quiero registrar un producto en el sistema.”
 
-No se especifican **validaciones, flujos de acción** o **comportamientos esperados**.  
-Esto causa **confusión y retrabajos** en el desarrollo, afectando la calidad de las entregas.
+**Faltó especificar:**
+- 🔢 Validaciones de datos  
+- ⚙️ Comportamiento ante errores  
+- 🔁 Flujo cuando el producto ya existe  
+
+**Consecuencia:**  
+- 🔄 Confusión y retrabajo  
+- 🚫 Implementaciones incompletas
 
 ---
 
-## ⚠️ Problema 8: Falta de Uso de Herramientas de Gestión
+## 🧰 **Problema 8: Falta de Uso de Herramientas de Gestión**
 
-El equipo no utiliza **herramientas de gestión de proyectos** como **Jira o Trello**.  
-Esto impide tener una **visión clara del avance**, los **plazos** y las **tareas pendientes**.  
-Como consecuencia, se pierden asignaciones y **no se hace seguimiento adecuado al progreso**.
+> El equipo **no utiliza herramientas como Jira o Trello**, lo que genera desorganización.
 
----
-
-## ⚠️ Problema 9: Omisión de Fases de Scrum
-
-El equipo no está aplicando correctamente **todas las fases de Scrum**.  
-Las **retrospectivas** se realizan de forma incompleta o se omiten.  
-Además, las **reuniones de planificación** carecen de estructura, lo que genera **falta de claridad sobre las prioridades del sprint**.
+**Efectos:**
+- 🔍 Dificultad para seguir el progreso  
+- 📋 Tareas olvidadas o mal asignadas  
+- ❌ Falta de visibilidad general del sprint
 
 ---
 
-## ⚠️ Problema 10: Falta de Comprensión del Propósito
+## 📆 **Problema 9: Omisión de Fases de Scrum**
 
-Los **desarrolladores no comprenden el propósito de las funcionalidades**.  
-Trabajan de forma mecánica, sin entender **por qué** o **para qué** se implementan ciertas tareas.  
+> Aunque existen reuniones, **no se cumplen correctamente** las fases de Scrum.
 
-Por ejemplo, se enfocan en detalles técnicos sin valor para el cliente, mientras **funciones críticas** como la gestión de inventarios y reportes **quedan incompletas**.  
-Esto provoca **productos finales que no satisfacen las necesidades reales del cliente**.
+| Fase de Scrum | Estado Actual | Problema |
+|----------------|----------------|-----------|
+| 📅 Sprint Planning | Incompleta | No se definen objetivos claros |
+| ☀️ Daily Stand-up | Presente | No se resuelven bloqueos |
+| 🧪 Sprint Review | Presente | Falta de criterios de aceptación claros |
+| 🔄 Retrospectiva | Parcial | No se generan acciones de mejora |
 
 ---
 
-# 🧭 Conclusión del Caso
+## 💭 **Problema 10: Falta de Comprensión del Propósito**
 
-Aunque el equipo intenta implementar **Scrum**, enfrenta múltiples **problemas de comunicación, priorización y definición de roles**.  
-La **falta de herramientas**, la **mala definición de historias de usuario** y la **ausencia de mejora continua** han causado **retrasos y entregables incompletos**.
+> Los desarrolladores desconocen **el impacto de sus tareas** en el negocio.
 
-Para mejorar, el equipo debe:
-- **Usar herramientas de gestión** adecuadas (Jira, Trello).  
-- **Definir correctamente las historias de usuario**.  
-- **Establecer objetivos claros y medibles** por sprint.  
-- **Fortalecer la comunicación** entre los roles de Scrum.  
-- **Aplicar todas las ceremonias** del marco Scrum.
+**Ejemplo:**
+> Se desarrolla la función de registro sin saber cómo influye en la gestión del restaurante.
 
-Solo así podrán **organizar su trabajo** y **cumplir las expectativas del cliente**.
+**Consecuencias:**
+- 💻 Trabajo mecánico sin propósito  
+- 🧩 Funcionalidades irrelevantes  
+- 😞 Cliente insatisfecho con los resultados  
+
+---
+
+# 🧠 **Conclusión del Caso**
+
+> A pesar de implementar Scrum, el equipo enfrenta múltiples dificultades que limitan el éxito del proyecto.
+
+### 🔍 Principales causas:
+
+- ❌ Falta de comprensión del propósito del proyecto  
+- 🔄 Mala asignación de roles  
+- ⚠️ Priorización incorrecta  
+- 📋 Historias de usuario mal definidas  
+- 🧰 Ausencia de herramientas de gestión  
+- 🧩 Falta de adherencia a las fases de Scrum  
+
+---
+
+> **Conclusión final:**  
+> Si el equipo mejora la comunicación, organiza sus roles, utiliza herramientas adecuadas y sigue correctamente las fases de Scrum, podrá avanzar de forma más estructurada y cumplir con las expectativas del cliente.
 `,
 };
 

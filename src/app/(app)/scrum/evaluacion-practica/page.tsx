@@ -358,7 +358,7 @@ function App() {
   return (
     <div className="min-h-screen bg-background">
 
-      <HeaderPractice practice={practice} />
+    {/*   <HeaderPractice practice={practice} /> */}
 
       <div className="container mx-auto px-6 py-8 max-w-7xl space-y-6">
 
@@ -372,10 +372,8 @@ function App() {
         {/* PASO 2: Product Backlog */}
         <ProductBacklog productBacklog={productBacklog} />
 
-
         {/* PASO 3: Sprint Goal SMART */}
         <SprintGoalSection sprintGoalSMART={sprintGoalSMART} onChange={setSprintGoalSMART} />
-
 
         {/* PASO 4 y 5: Selección para Sprint Backlog */}
         <SprintBacklogSection
@@ -460,7 +458,7 @@ function App() {
          <Button
           onClick={handleSubmitExam}
           
-          className="w-full bg-primary text-white text-lg font-bold py-3 transition-colors"
+          className="w-full bg-primary text-white  text-lg font-bold py-3 transition-colors"
         >
           Enviar Examen
         </Button>

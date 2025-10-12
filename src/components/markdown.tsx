@@ -91,6 +91,36 @@ const components: Partial<Components> = {
       </h6>
     );
   },
+
+  table: ({ children }) => (
+    <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden my-4">
+      {children}
+    </table>
+  ),
+  thead: ({ children }) => (
+    <thead className="bg-gray-100 text-left">{children}</thead>
+  ),
+  tbody: ({ children }) => <tbody>{children}</tbody>,
+  tr: ({ children }) => (
+    <tr className="border-b border-gray-200 hover:bg-gray-50">{children}</tr>
+  ),
+  th: ({ children }) => (
+    <th className="px-4 py-2 font-semibold text-gray-700">{children}</th>
+  ),
+  td: ({ children }) => <td className="px-4 py-2">{children}</td>,
+
+  blockquote: ({ children }) => {
+    const text = String(children);
+    let color = 'blue';
+    if (text.startsWith('⚠️')) color = 'yellow';
+    if (text.startsWith('💡')) color = 'green';
+    return (
+      <blockquote className={`border-l-4 border-${color}-500 bg-${color}-50 p-4 my-4 rounded-r-lg`}>
+        {children}
+      </blockquote>
+    );
+  },
+
 };
 
 const remarkPlugins = [remarkGfm];
