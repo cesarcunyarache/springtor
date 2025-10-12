@@ -5,18 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Trash2, Plus } from 'lucide-react';
-import { Impediment } from '../types';
-
+import { Impediment, ImpedimentStatus } from '../types';
 
 interface SprintImpedimentsSectionProps {
   teamMembers: string[];
   impediments: Impediment[];
-  newImpediment: Omit<Impediment, 'id' >;
-  setNewImpediment: (value: Omit<Impediment, 'id'>) => void;
+  newImpediment: Omit<Impediment, 'id' | 'status'>;
+  setNewImpediment: (value: Omit<Impediment, 'id' | 'status'>) => void;
   addImpediment: () => void;
   removeImpediment: (id: number) => void;
- /*  updateImpedimentStatus,: (id: number, status: string) => void; */
+  updateImpedimentStatus: (id: number, status: ImpedimentStatus) => void;
 }
 
 export default function SprintImpedimentsSection({
@@ -26,7 +26,7 @@ export default function SprintImpedimentsSection({
   setNewImpediment,
   addImpediment,
   removeImpediment,
-/*   updateImpedimentStatus, */
+  updateImpedimentStatus,
 }: SprintImpedimentsSectionProps) {
   return (
     <Card className="mb-6 shadow-sm">
@@ -61,20 +61,23 @@ export default function SprintImpedimentsSection({
 
             <div>
               <Label className="text-xs font-medium mb-1">Responsable*</Label>
-              <select
+              <Select
                 value={newImpediment.responsible}
-                onChange={(e) =>
-                  setNewImpediment({ ...newImpediment, responsible: e.target.value })
+                onValueChange={(value) =>
+                  setNewImpediment({ ...newImpediment, responsible: value })
                 }
-                className="w-full border border-input rounded-md text-sm h-9 px-2"
               >
-                <option value="">Seleccionar...</option>
-                {teamMembers.map((member) => (
-                  <option key={member} value={member}>
-                    {member}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Seleccionar responsable..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {teamMembers.map((member) => (
+                    <SelectItem key={member} value={member}>
+                      {member}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -131,9 +134,30 @@ export default function SprintImpedimentsSection({
                       <p className="text-xs text-gray-600 mb-1">
                         <strong>Acción:</strong> {imp.action}
                       </p>
-                      <p className="text-xs text-gray-600">
+                      <p className="text-xs text-gray-600 mb-2">
                         <strong>Plazo:</strong> {imp.deadline}
                       </p>
+
+                      {/* Select para el status */}
+                      <div className="w-40">
+                        <Label className="text-xs font-medium mb-1">Estado</Label>
+                        <Select
+                          value={imp.status}
+                          defaultValue='pendiente'
+                          onValueChange={(value: ImpedimentStatus) =>
+                            updateImpedimentStatus(imp.id, value)
+                          }
+                        >
+                          <SelectTrigger className="h-8 text-xs">
+                            <SelectValue placeholder="Seleccionar estado" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Pendiente">Pendiente</SelectItem>
+                            <SelectItem value="En progreso">En progreso</SelectItem>
+                            <SelectItem value="Resuelto">Resuelto</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
 
                     <Button

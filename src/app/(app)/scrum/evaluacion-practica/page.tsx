@@ -61,40 +61,45 @@ function App() {
 
   // Sprint Planning
   const [sprintGoal, setSprintGoal] = useState<string>('');
-  const [sprintGoalSMART, setSprintGoalSMART] = useState<SprintGoalSMART>({
-    specific: '',
-    measurable: '',
-    achievable: '',
-    relevant: '',
-    timeBound: ''
-  });
-  const [selectedStories, setSelectedStories] = useState<number[]>([]);
-  const [storyEstimations, setStoryEstimations] = useState<Record<number, number | string>>({});
-  const [storyTasks, setStoryTasks] = useState<Record<number, Task[]>>({});
-  const [taskEstimations, setTaskEstimations] = useState<Record<number, number>>({});
+  const [sprintGoalSMART, setSprintGoalSMART] = useState<SprintGoalSMART>(completationPractice.sprintPlanning.sprintGoalSMART);
+  ;
+  const [selectedStories, setSelectedStories] = useState<number[]>(completationPractice.sprintPlanning.selectedStoryIds);
+
+
+  const [storyEstimations, setStoryEstimations] = useState<Record<number, number | string>>(completationPractice.estimations.stories.reduce((acc, story) => ({ ...acc, [story.storyId]: story.storyPoints }), {}));
+  const [storyTasks, setStoryTasks] = useState<Record<number, Task[]>>(completationPractice.sprintPlanning.sprintBacklog.reduce((acc, story) => ({ ...acc, [story.storyId]: story.tasks }), {}));
+  const [taskEstimations, setTaskEstimations] = useState<Record<number, number>>(completationPractice.estimations.tasks.reduce((acc, task) => ({ ...acc, [task.taskId]: task.hours || 0 }), {}));
 
   // Impedimentos
-  const [impediments, setImpediments] = useState<Impediment[]>([]);
-  const [newImpediment, setNewImpediment] = useState<Omit<Impediment, 'id'>>({
+  const [impediments, setImpediments] = useState<Impediment[]>(completationPractice.impediments.map(impediment => ({
+    ...impediment,
+    status: impediment.status as ImpedimentStatus
+  })));
+  const [newImpediment, setNewImpediment] = useState<Omit<Impediment, 'id' | 'status'>>({
     description: '',
     responsible: '',
     action: '',
-    deadline: ''
+    deadline: '',
+    
   });
 
   // Sprint Review
-  const [sprintReview, setSprintReview] = useState<SprintReview>({
+  const [sprintReview, setSprintReview] = useState<SprintReview>(/* {
     incrementDelivered: '',
     feedback: [''],
     goalComparison: '',
     dodComparison: ''
-  });
+  } */
+    completationPractice.sprintReview
+  );
 
   // Retrospective
-  const [retrospective, setRetrospective] = useState<Retrospective>({
+  const [retrospective, setRetrospective] = useState<Retrospective>(/* {
     learnings: ['', '', '', ''],
     improvements: ['', '']
-  });
+  } */
+    completationPractice.retrospective
+  );
 
   // Preguntas
   const [answers, setAnswers] = useState<Record<number, string>>({});
@@ -183,16 +188,17 @@ function App() {
         description: '',
         responsible: '',
         action: '',
-        deadline: ''
+        deadline: '',
+       
       });
     }
   };
 
-  /*  const updateImpedimentStatus = (id: number, status: ImpedimentStatus): void => {
+  const updateImpedimentStatus = (id: number, status: ImpedimentStatus): void => {
      setImpediments(impediments.map(imp =>
        imp.id === id ? { ...imp, status } : imp
      ));
-   }; */
+   }; 
 
   const removeImpediment = (id: number): void => {
     setImpediments(impediments.filter(imp => imp.id !== id));
@@ -245,7 +251,7 @@ function App() {
   };
 
   // Función para generar el JSON completo del examen
-  const generateExamJson = (): ExamData => {
+  const generateResult = (): ExamData => {
     const now = new Date().toISOString();
 
     // Construir Sprint Backlog detallado
@@ -286,14 +292,6 @@ function App() {
     );
 
     const examData: ExamData = {
-      metadata: {
-        examName: "Examen Práctico: Sprint Planning Completo",
-        projectName: "EcoMarket",
-        sprintNumber: 3,
-        sprintDuration: "2 semanas",
-        previousVelocity: 34,
-        submittedAt: now
-      },
       userStories: productBacklog,
       productBacklog: productBacklog,
       sprintPlanning: {
@@ -311,14 +309,14 @@ function App() {
       impediments,
       sprintReview,
       retrospective,
-      theoreticalQuestions: theoreticalQuestionsAnswered,
+      /* theoreticalQuestions: theoreticalQuestionsAnswered, */
       summary: {
         totalStoriesCreated: productBacklog.length,
         totalStoriesSelected: selectedStories.length,
         totalTasksCreated,
         totalImpediments: impediments.length,
-        questionsAnswered,
-        totalQuestions: questions.length,
+        /*  questionsAnswered, */
+        /*  totalQuestions: questions.length, */
         completionPercentage
       }
     };
@@ -327,30 +325,10 @@ function App() {
   };
 
   const handleSubmitExam = (): void => {
-    const examData = generateExamJson();
-    const jsonString = JSON.stringify(examData, null, 2);
-    setGeneratedJson(jsonString);
-    console.log(generatedJson);
-   /*  setShowJsonModal(true); */
-  };
+    const response = generateResult();
 
-  const downloadJson = (): void => {
-    const examData = generateExamJson();
-    const jsonString = JSON.stringify(examData, null, 2);
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `sprint-planning-exam-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+    console.log(response);
 
-  const copyToClipboard = (): void => {
-    navigator.clipboard.writeText(generatedJson);
-    alert('JSON copiado al portapapeles');
   };
 
   const practice = assesmentPractice;
@@ -358,7 +336,7 @@ function App() {
   return (
     <div className="min-h-screen bg-background">
 
-    {/*   <HeaderPractice practice={practice} /> */}
+      {/*   <HeaderPractice practice={practice} /> */}
 
       <div className="container mx-auto px-6 py-8 max-w-7xl space-y-6">
 
@@ -410,6 +388,7 @@ function App() {
           setNewImpediment={setNewImpediment}
           addImpediment={addImpediment}
           removeImpediment={removeImpediment}
+          updateImpedimentStatus={updateImpedimentStatus}
         />
 
 
@@ -455,17 +434,17 @@ function App() {
           onSubmitExam={handleSubmitExam}
         /> */}
 
-         <Button
+        <Button
           onClick={handleSubmitExam}
-          
+
           className="w-full bg-primary text-white  text-lg font-bold py-3 transition-colors"
         >
           Enviar Examen
         </Button>
-        
+
       </div>
 
-    
+
     </div>
   );
 }

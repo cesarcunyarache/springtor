@@ -39,7 +39,7 @@ export interface Impediment {
   responsible: string;
   action: string;
   deadline: string;
-/*   status: ImpedimentStatus; */
+  status?: ImpedimentStatus; 
 }
 
 export interface SprintReview {
@@ -67,14 +67,7 @@ export interface Answer {
 }
 
 export interface ExamData {
-  metadata: {
-    examName: string;
-    projectName: string;
-    sprintNumber: number;
-    sprintDuration: string;
-    previousVelocity: number;
-    submittedAt: string;
-  };
+  
   userStories: UserStory[];
   productBacklog: UserStory[];
   sprintPlanning: {
@@ -102,17 +95,17 @@ export interface ExamData {
   impediments: Impediment[];
   sprintReview: SprintReview;
   retrospective: Retrospective;
-  theoreticalQuestions: {
+  /* theoreticalQuestions: {
     question: string;
     answer: string;
-  }[];
+  }[]; */
   summary: {
     totalStoriesCreated: number;
     totalStoriesSelected: number;
     totalTasksCreated: number;
     totalImpediments: number;
-    questionsAnswered: number;
-    totalQuestions: number;
+   /*  questionsAnswered: number;
+    totalQuestions: number; */
     completionPercentage: number;
   };
 }

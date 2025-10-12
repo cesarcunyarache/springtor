@@ -1,12 +1,9 @@
 import { PracticeCase } from "../types";
 
 export const teamMembers: string[] = [
-  "Thalia",
-  "César",
-  "María",
-  "Pedro",
-  "Ana",
-  "Luis",
+   "Product Owner",
+  "Scrum Master",
+  "Development Team",
 ];
 
 export const questions: {
@@ -342,62 +339,142 @@ export const completePracticeCase = {
         "Es una mejora de usabilidad, no bloquea el flujo principal.",
     },
   ],
+
   sprintPlanning: {
-    sprintGoal: "",
+    sprintGoal: "Implementar la autenticación y el registro de usuarios junto con la creación de tareas básicas para el sistema EcoMarket.",
     sprintGoalSMART: {
-      specific: "",
-      measurable: "",
-      achievable: "",
-      relevant: "",
-      timeBound: "",
+      specific: "Desarrollar el módulo de autenticación y creación de tareas principales.",
+      measurable: "Entrega funcional con autenticación activa y 2 historias completadas.",
+      achievable: "El equipo tiene la capacidad técnica y tiempo disponible para implementarlo.",
+      relevant: "Permite al usuario acceder y empezar a usar el sistema, base para futuras funciones.",
+      timeBound: "Deberá completarse en un sprint de 2 semanas.",
     },
-    selectedStoryIds: [],
-    sprintBacklog: [],
+    selectedStoryIds: [1760213776213, 1760213776214],
+    sprintBacklog: [
+      {
+        storyId: 1760213776213,
+        story: {
+          id: 1760213776213,
+          title: "Autenticación de usuarios",
+          asA: "usuario nuevo",
+          iWant: "registrarme con correo y contraseña",
+          soThat: "pueda acceder al sistema de forma segura",
+          acceptanceCriteria: [
+            "Debe validar que el correo sea único",
+            "La contraseña debe tener mínimo 8 caracteres",
+            "Debe mostrar mensaje de confirmación tras el registro",
+          ],
+          priority: "Alta",
+        },
+        tasks: [
+          {
+            id: 1760298486001,
+            name: "Diseñar formulario de registro",
+            responsible: "Development Team",
+            estimation: 3,
+          },
+          {
+            id: 1760298486002,
+            name: "Implementar validación del correo y contraseña",
+            responsible: "Product Owner",
+            estimation: 4,
+          },
+          {
+            id: 1760298486003,
+            name: "Configurar autenticación con base de datos",
+            responsible: "Development Team",
+            estimation: 5,
+          },
+        ],
+      },
+      {
+        storyId: 1760213776214,
+        story: {
+          id: 1760213776214,
+          title: "Creación de tareas",
+          asA: "usuario autenticado",
+          iWant: "crear nuevas tareas con título y descripción",
+          soThat: "pueda organizar mis pendientes",
+          acceptanceCriteria: [
+            "El título es obligatorio",
+            "La descripción es opcional",
+            "Debe guardar automáticamente en la base de datos",
+          ],
+          priority: "Media",
+        },
+        tasks: [
+          {
+            id: 1760298486004,
+            name: "Diseñar interfaz para creación de tareas",
+            responsible: "Development Team",
+            estimation: 3,
+          },
+          {
+            id: 1760298486005,
+            name: "Programar lógica de guardado de tareas",
+            responsible: "Development Team",
+            estimation: 5,
+          },
+        ],
+      },
+    ],
   },
+
   estimations: {
-    stories: [],
-    tasks: [],
-    totalStoryPoints: 0,
-    totalTaskHours: 0,
+    stories: [
+      { storyId: 1760213776213, storyPoints: 8 },
+      { storyId: 1760213776214, storyPoints: 5 },
+    ],
+    tasks: [
+      { taskId: 1760298486001, hours: 3 },
+      { taskId: 1760298486002, hours: 4 },
+      { taskId: 1760298486003, hours: 5 },
+      { taskId: 1760298486004, hours: 3 },
+      { taskId: 1760298486005, hours: 5 },
+    ],
+    totalStoryPoints: 13,
+    totalTaskHours: 20,
   },
-  impediments: [],
-  sprintReview: {
-    incrementDelivered: "",
-    feedback: [""],
-    goalComparison: "",
-    dodComparison: "",
-  },
-  retrospective: {
-    learnings: ["", "", "", ""],
-    improvements: ["", ""],
-  },
-  theoreticalQuestions: [
+
+  impediments: [
     {
-      question:
-        "¿Cuál es la duración recomendada para un Sprint en un equipo nuevo?",
-      answer: "",
-    },
-    {
-      question: "Explica la diferencia entre Product Backlog y Sprint Backlog",
-      answer: "",
-    },
-    {
-      question: "¿Quién es responsable de priorizar el Product Backlog?",
-      answer: "",
-    },
-    {
-      question:
-        "¿Por qué es importante descomponer las historias de usuario en tareas técnicas?",
-      answer: "",
+      id: 1760298524400,
+      description: "Retraso en la configuración del servidor de autenticación.",
+      responsible: "Product Owner",
+      action: "Solicitar soporte al área de infraestructura.",
+      deadline: "2025-10-14",
+      status: "Resuelto",
     },
   ],
+
+  sprintReview: {
+    incrementDelivered: "Se entregó un módulo funcional de autenticación con registro y login de usuarios, además de la funcionalidad básica de creación de tareas.",
+    feedback: [
+      "Mejorar la validación de contraseñas para incluir caracteres especiales.",
+      "Agregar mensaje de confirmación más visible al crear tareas.",
+    ],
+    goalComparison: "El Sprint Goal se cumplió parcialmente; se completó el registro y las tareas, pero faltó la pantalla de recuperación de contraseña.",
+    dodComparison: "Se cumplieron los criterios de aceptación y pruebas unitarias para las historias implementadas.",
+  },
+
+  retrospective: {
+    learnings: [
+      "La planificación detallada ayudó a reducir errores.",
+      "Se mejoró la comunicación entre desarrolladores y QA.",
+      "El uso de historias pequeñas permitió avanzar más rápido.",
+      "Se identificó la necesidad de automatizar las pruebas.",
+    ],
+    improvements: [
+      "Implementar integración continua para el siguiente sprint.",
+      "Asignar revisiones de código cruzadas entre los miembros del equipo.",
+    ],
+  },
+
   summary: {
-    totalStoriesCreated: 1,
-    totalStoriesSelected: 0,
-    totalTasksCreated: 0,
-    totalImpediments: 0,
-    questionsAnswered: 0,
-    totalQuestions: 4,
-    completionPercentage: 0,
+    totalStoriesCreated: 3,
+    totalStoriesSelected: 2,
+    totalTasksCreated: 5,
+    totalImpediments: 1,
+    completionPercentage: 85,
   },
 };

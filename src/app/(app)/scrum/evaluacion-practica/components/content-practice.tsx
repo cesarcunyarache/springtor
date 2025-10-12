@@ -10,9 +10,6 @@ export default function ContentPractice(
 ) {
     return (
         <Card className=" rounded-lg shadow-lg p-8 mb-8">
-
-
-
             <div className="flex-1">
                 <CardHeader className="p-0 mb-3 flex flex-row items-center gap-4">
                     <div className="bg-green-600 text-white rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
