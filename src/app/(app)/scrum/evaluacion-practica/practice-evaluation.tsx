@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Target, Plus, Trash2, ArrowRight, CheckCircle, Download, X } from 'lucide-react';
+import { Target, Plus, Trash2, ArrowRight, CheckCircle, Download, X, BookOpenCheck, AlertTriangle, Loader2 } from 'lucide-react';
 
 import {
   UserStory,
@@ -37,10 +37,19 @@ import SprintExamSummary from "./components/sprint-summary-section";
 import { Button } from "@/components/ui/button";
 import { evaluateScrumPractice } from "../../api/practice/actions";
 import { savePrestestPracticeResponses } from "@/lib/db/queries/user";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from "@/components/ui/alert-dialog";
+import { AlertDialogAction, AlertDialogCancel, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
 
 
+interface PracticeEvaluationProps {
+  onSubmit: (answers: any) => void;
+  isCompleted: boolean;
+  isInitialized: boolean;
+}
 
-function App() {
+export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialized }: PracticeEvaluationProps) {
 
   const [showJsonModal, setShowJsonModal] = useState<boolean>(false);
   const [generatedJson, setGeneratedJson] = useState<string>('');
@@ -61,46 +70,46 @@ function App() {
   // Product Backlog
   const [productBacklog, setProductBacklog] = useState<UserStory[]>(
     /* completationPractice.productBacklog as UserStory[] */
-  []
+    []
   );
 
   // Sprint Planning
   const [sprintGoal, setSprintGoal] = useState<string>('');
   const [sprintGoalSMART, setSprintGoalSMART] = useState<SprintGoalSMART>(
     /* completationPractice.sprintPlanning.sprintGoalSMART */
-   {
-     specific: '',
-     measurable: '',
-     achievable: '',
-     relevant: '',
-     timeBound: '',
-   }
+    {
+      specific: '',
+      measurable: '',
+      achievable: '',
+      relevant: '',
+      timeBound: '',
+    }
   );
   ;
   const [selectedStories, setSelectedStories] = useState<number[]>(
-    /* completationPractice.sprintPlanning.selectedStoryIds */ 
+    /* completationPractice.sprintPlanning.selectedStoryIds */
     []
   );
 
 
   const [storyEstimations, setStoryEstimations] = useState<Record<number, number | string>>(
-    
+
     /* completationPractice.estimations.stories.reduce((acc, story) => ({ ...acc, [story.storyId]: story.storyPoints }), {}) */
     []
-  
+
   );
   const [storyTasks, setStoryTasks] = useState<Record<number, Task[]>>(
-    
+
     /* completationPractice.sprintPlanning.sprintBacklog.reduce((acc, story) => ({ ...acc, [story.storyId]: story.tasks }), {}) */
     []
 
-);
-  
+  );
+
   const [taskEstimations, setTaskEstimations] = useState<Record<number, number>>(
-    
+
     /* completationPractice.estimations.tasks.reduce((acc, task) => ({ ...acc, [task.taskId]: task.hours || 0 }), {}) */
     []
-  
+
   );
 
   // Impedimentos
@@ -111,7 +120,7 @@ function App() {
     status: impediment.status as ImpedimentStatus
   })) */
 
-);
+  );
   const [newImpediment, setNewImpediment] = useState<Omit<Impediment, 'id' | 'status'>>({
     description: '',
     responsible: '',
@@ -123,21 +132,21 @@ function App() {
   // Sprint Review
   const [sprintReview, setSprintReview] = useState<SprintReview>(
     {
-    incrementDelivered: '',
-    feedback: [''],
-    goalComparison: '',
-    dodComparison: ''
-  }
-/*     completationPractice.sprintReview */
+      incrementDelivered: '',
+      feedback: [''],
+      goalComparison: '',
+      dodComparison: ''
+    }
+    /*     completationPractice.sprintReview */
   );
 
   // Retrospective
   const [retrospective, setRetrospective] = useState<Retrospective>(
     {
-    learnings: ['', '', '', ''],
-    improvements: ['', '']
-  }
-   /*  completationPractice.retrospective */
+      learnings: ['', '', '', ''],
+      improvements: ['', '']
+    }
+    /*  completationPractice.retrospective */
   );
 
   // Preguntas
@@ -364,15 +373,27 @@ function App() {
   };
 
   const handleSubmitExam = async () => {
+    setIsLoading(true);
     const response = generateResult();
 
-    const evaluation = await evaluateScrumPractice(response);
+    onSubmit(response);
+    /*  const evaluation = await evaluateScrumPractice(response);
+ 
+     await savePrestestPracticeResponses(response, evaluation.rubricScore, evaluation.checklistScore, evaluation.feedback, evaluation.justification); */
 
-    await savePrestestPracticeResponses(response, evaluation.rubricScore, evaluation.checklistScore, evaluation.feedback, evaluation.justification);
-
+    setIsLoading(false);
   };
 
   const practice = assesmentPractice;
+
+  const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isInitial, setIsInitial] = useState(isInitialized);
+/* 
+  const [ isLoadingState, setIsLoading ] = useState(isLoading);
+  const [ isCompleted, setIsCompleted ] = useState(false);*/
 
   return (
     <div className="min-h-screen bg-background">
@@ -486,8 +507,84 @@ function App() {
       </div>
 
 
-    </div>
+      <AlertDialog open={isInitial}>
+       
+        <AlertDialogContent>
+          <div className="flex flex-col justify-center items-center">
+            <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center mb-4">
+              <AlertTriangle className="w-8 h-8 text-center text-amber-500" />
+            </div>
+          </div>
+
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center">¿Deseas iniciar el examen?</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              El examen tiene una duración de <strong>2 horas</strong>.
+              Y evalua de manera practica tus conocimientos de Scrum.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              onClick={() => {
+                router.back();
+              }}
+            >Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setIsInitial(false);
+              }}
+            >Comenzar examen</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+    
+      <AlertDialog open={isCompleted}>
+        <AlertDialogContent>
+          <div className="flex flex-col justify-center items-center">
+            <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center mb-4">
+              <BookOpenCheck className="w-8 h-8 text-center text-green-600" />
+            </div>
+          </div>
+
+          <AlertDialogHeader className="text-center">
+            <AlertDialogTitle className="text-center">¡Ya desarrollaste este examen!</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              Has completado este examen previamente.
+
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => {
+              router.back();
+            }}>Entendido</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+
+
+      <AlertDialog open={isLoading}>
+        <AlertDialogContent className="flex flex-col justify-center items-center text-center space-y-4">
+          <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+          </div>
+
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center">Evaluando tus respuestas...</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              La IA está analizando y evaluando tus respuestas.
+              Este proceso puede tardar unos segundos.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+        </AlertDialogContent>
+      </AlertDialog>
+    
+
+
+    </div >
   );
 }
 
-export default App;

@@ -21,11 +21,11 @@ import FlowWithProvider from "@/providers/reactflow-provider"
 import { getLearningSteps, getStepsByRoadmapBySlug, getTopicsByRoadmapId } from "@/lib/db/queries/learning"
 import { TimelineDemo } from "@/components/roadmap/timeline-scrum"
 import { auth } from "@/auth"
-import { redirect } from "next/navigation"
 import { isUserResponsePreTest } from "@/lib/db/queries/user"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export default async function Page() {
   /* const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
@@ -72,20 +72,73 @@ export default async function Page() {
               </h1>
             </div>
             <div className="flex items-center space-x-4 gap-4">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link href="/scrum/evaluacion-practica" className="" >
 
-                    <Button variant="ghost"  size="icon" className="hidden sm:flex items-center gap-2">
-                      <BookCheck className="h-5 w-5" />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost">
+                     <BookCheck className="h-5 w-5" />
+                     Evaluaciones
                   </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="start">
+                  <DropdownMenuLabel>Mis evaluaciones</DropdownMenuLabel>
+                  <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>Evaluación Teorica</DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem asChild>
+                            <Link href="/theoretical-evaluation-pre-test" className="" >
+                              Pre Test
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link href="/theoretical-evaluation-post-test" className="" >
+                              Post Test
+                            </Link>
+                            </DropdownMenuItem>
+
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>Evaluación Practica</DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem asChild>
+                            <Link href="/practice-evaluation-pre-test" className="" >
+                              Pre Test
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link href="/practice-evaluation-post-test" className="" >
+                              Post Test
+                            </Link>
+                          </DropdownMenuItem>
+
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                  </DropdownMenuGroup>
+
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+            {/*   <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link href="/practice-evaluation-post-test" className="" >
+
+                    <Button variant="ghost" size="icon" className="hidden sm:flex items-center gap-2">
+                      <BookCheck className="h-5 w-5" />
+                    </Button>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Examen Práctico</p>
                 </TooltipContent>
               </Tooltip>
-
+ */}
 
 
               <div className="flex items-center space-x-4">

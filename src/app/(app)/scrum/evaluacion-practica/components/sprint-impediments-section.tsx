@@ -110,7 +110,7 @@ export default function SprintImpedimentsSection({
         {/* Botón agregar */}
         <Button
           onClick={addImpediment}
-          className="w-full bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium flex items-center justify-center mb-4"
+          className="w-full text-white text-sm font-medium flex items-center justify-center mb-4"
         >
           <Plus className="w-4 h-4 mr-2" />
           Agregar Impedimento
