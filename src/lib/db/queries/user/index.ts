@@ -15,6 +15,8 @@ import {
   lessonCompletions,
   topicCompletions,
   preTestPracticeResponses,
+  postTestPracticeResponses,
+  postTestResponses,
 } from "../../schema";
 import { asc, eq, exists, sql } from "drizzle-orm";
 import {
@@ -34,6 +36,21 @@ export async function isUserResponsePreTest(userId: string): Promise<boolean> {
   try {
     const foundUser = await db.query.preTestResponses.findFirst({
       where: eq(preTestResponses.userId, userId),
+    });
+
+    if (foundUser) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function isUserResponsePostTest(userId: string): Promise<boolean> {
+  try {
+    const foundUser = await db.query.postTestResponses.findFirst({
+      where: eq(postTestResponses.userId, userId),
     });
 
     if (foundUser) {
@@ -75,6 +92,35 @@ export async function saveUserResponsePreTest(
 
     const results = await db
       .insert(preTestResponses)
+      .values(prepareDate)
+      .returning();
+
+    if (results.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function saveUserResponsePostTest(
+  quizzResults: QuizResult[]
+) {
+   try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return false;
+
+    const prepareDate = quizzResults.map((q) => ({
+      ...q,
+      userId,
+    }));
+
+    const results = await db
+      .insert(postTestResponses)
       .values(prepareDate)
       .returning();
 
@@ -267,6 +313,38 @@ export async function updateTopicProgress(topicId: string, progress: number) {
   }
 }
 
+
+export async function isUserResponsePracticePreTest(userId: string): Promise<boolean> {
+  try {
+    const foundUser = await db.query.preTestPracticeResponses.findFirst({
+      where: eq(preTestPracticeResponses.userId, userId),
+    });
+
+    if (foundUser) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function isUserResponsePracticePostTest(userId: string): Promise<boolean> {
+  try {
+    const foundUser = await db.query.postTestPracticeResponses.findFirst({
+      where: eq(postTestPracticeResponses.userId, userId),
+    });
+
+    if (foundUser) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+
 export async function savePrestestPracticeResponses(
   answers: any,
   rubricScore: number,
@@ -310,6 +388,55 @@ export async function savePrestestPracticeResponses(
 
     return false;
   } catch (error) {
+    return false;
+  }
+}
+
+export async function savePostTestPracticeResponses(
+  answers: any,
+  rubricScore: number,
+  checklistScore: number,
+  feedback: string,
+  justification: string
+) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+   
+    if (!userId) return false;
+
+    console.log(userId);
+    const results = await db
+      .insert(postTestPracticeResponses)
+      .values({
+        userId,
+        answers,
+        rubricScore,
+        checklistScore,
+        feedback,
+        justification,
+      })
+      .onConflictDoUpdate({
+        target: [
+          postTestPracticeResponses.userId,
+        ],
+        set: {
+          answers,
+          rubricScore,
+          checklistScore,
+          feedback,
+          justification,
+        },
+      })
+      .returning(); 
+
+    if (results.length > 0) {
+      return true;
+    }
+    return false;
+  }
+  catch (error) {
     return false;
   }
 }

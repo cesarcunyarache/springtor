@@ -88,12 +88,12 @@ export default async function Page() {
                       <DropdownMenuPortal>
                         <DropdownMenuSubContent>
                           <DropdownMenuItem asChild>
-                            <Link href="/theoretical-evaluation-pre-test" className="" >
+                            <Link href="/evaluacion-teorica-pre-test" className="" >
                               Pre Test
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link href="/theoretical-evaluation-post-test" className="" >
+                            <Link href="/evaluacion-teorica-post-test" className="" >
                               Post Test
                             </Link>
                             </DropdownMenuItem>
@@ -107,12 +107,12 @@ export default async function Page() {
                       <DropdownMenuPortal>
                         <DropdownMenuSubContent>
                           <DropdownMenuItem asChild>
-                            <Link href="/practice-evaluation-pre-test" className="" >
+                            <Link href="/evaluacion-practica-pre-test" className="" >
                               Pre Test
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link href="/practice-evaluation-post-test" className="" >
+                            <Link href="/evaluacion-practica-post-test" className="" >
                               Post Test
                             </Link>
                           </DropdownMenuItem>

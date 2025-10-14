@@ -181,6 +181,7 @@ export async function getAssessmentBySlug(
       where: eq(assessments.slug, slug),
       with: {
         questions: true,
+      
       },
     });
 

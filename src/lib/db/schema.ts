@@ -501,6 +501,21 @@ export const preTestResponses = pgTable("preTestResponses", {
 
 export type PreTestResponse = InferSelectModel<typeof preTestResponses>;
 
+export const postTestResponses = pgTable("postTestResponses", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id").notNull(),
+  questionId: text("question_id")
+    .notNull()
+    .references(() => questions.id),
+  selectedOption: text("selected_option"),
+  isCorrect: boolean("is_correct").notNull(),
+  ...timestamps,
+});
+
+export type PostTestResponse = InferSelectModel<typeof postTestResponses>;
+
 export const theoryLessonAnswers = pgTable(
   "theoryLessonAnswers",
   {

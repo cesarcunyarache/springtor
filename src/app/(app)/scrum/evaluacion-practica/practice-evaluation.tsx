@@ -44,7 +44,7 @@ import { useRouter } from "next/navigation";
 
 
 interface PracticeEvaluationProps {
-  onSubmit: (answers: any) => void;
+  onSubmit: (answers: any) =>  Promise<void>;
   isCompleted: boolean;
   isInitialized: boolean;
 }
@@ -53,6 +53,15 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
 
   const [showJsonModal, setShowJsonModal] = useState<boolean>(false);
   const [generatedJson, setGeneratedJson] = useState<string>('');
+
+  const practice = assesmentPractice;
+
+  const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isInitial, setIsInitial] = useState(isInitialized);
+
 
   // Estado para historias de usuario
   const [newStory, setNewStory] = useState<Omit<UserStory, 'id'>>({
@@ -372,11 +381,13 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     return examData;
   };
 
-  const handleSubmitExam = async () => {
+  const handleSubmitExam = async  () => {
     setIsLoading(true);
+
+    console.log("se envió", isLoading);
     const response = generateResult();
 
-    onSubmit(response);
+    await onSubmit(response);
     /*  const evaluation = await evaluateScrumPractice(response);
  
      await savePrestestPracticeResponses(response, evaluation.rubricScore, evaluation.checklistScore, evaluation.feedback, evaluation.justification); */
@@ -384,13 +395,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     setIsLoading(false);
   };
 
-  const practice = assesmentPractice;
-
-  const router = useRouter();
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [isInitial, setIsInitial] = useState(isInitialized);
+  
 /* 
   const [ isLoadingState, setIsLoading ] = useState(isLoading);
   const [ isCompleted, setIsCompleted ] = useState(false);*/
@@ -498,7 +503,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
 
         <Button
           onClick={handleSubmitExam}
-
+          disabled={isLoading}
           className="w-full bg-primary text-white  text-lg font-bold py-3 transition-colors"
         >
           Enviar Examen
@@ -566,7 +571,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
 
 
 
-      <AlertDialog open={isLoading}>
+      <AlertDialog open={isLoading} onOpenChange={setIsLoading} >
         <AlertDialogContent className="flex flex-col justify-center items-center text-center space-y-4">
           <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-500" />

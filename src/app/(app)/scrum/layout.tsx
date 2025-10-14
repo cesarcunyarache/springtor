@@ -23,11 +23,11 @@ export default async function Layout({
     redirect('/onboarding');
   }
 
-  const assement = await getAssessmentBySlug("pre-test")
+  /* const assement = await getAssessmentBySlug("pre-test")
 
   if (assement) {
     if (!await isUserResponsePreTest(session.user.id)) redirect('/pre-test');
-  }
+  } */
 
   const cookieStore = await cookies();
   const isCollapsed = cookieStore.get('sidebar:state')?.value !== 'true';

@@ -1,7 +1,7 @@
 "use client";
 
 import Quiz, { QuizResult } from "@/components/quizz";
-import { saveUserResponsePreTest } from "@/lib/db/queries/user";
+import { saveUserResponsePostTest, saveUserResponsePreTest } from "@/lib/db/queries/user";
 import { Question } from "@/type";
 import { redirect } from "next/navigation";
 import { toast } from "sonner";
@@ -16,7 +16,7 @@ export default function ClientPage({ questions }: { questions: Question[] }) {
     ]
 
     const handleSubmit = async (answers: QuizResult[]) => {
-        toast.promise(saveUserResponsePreTest(answers), {
+        toast.promise(saveUserResponsePostTest(answers), {
             loading: 'Enviando...',
             success: (res: boolean) => {
 
@@ -31,10 +31,10 @@ export default function ClientPage({ questions }: { questions: Question[] }) {
 
     return (
         <Quiz
-            title="Evalución Inicial"
+            title="Evalució Inicial"
             questions={questions}
             isViewingResults={false}
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit}   
         />
     );
 }

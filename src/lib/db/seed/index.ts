@@ -13,8 +13,9 @@ import { PgTable } from "drizzle-orm/pg-core";
 import { SQLiteTable } from "drizzle-orm/sqlite-core";
 import { sl } from "date-fns/locale";
 
-const assessmentPreTest = {
+const assessment = {
   id: "60be81ff-2d07-4599-8da1-9b18099ae43b",
+  slug: "pre-post-test",
   title: "Examen de Conocimientos Scrum",
   description:
     "Pre-Test/Post-Test sobre comprensión de roles, eventos y artefactos del marco Scrum.",
@@ -26,7 +27,7 @@ const assessmentLesson = {
   description: "Lession test",
 };
 
-/* const questionsData = [
+const questionsData = [
   {
     assessmentId: assessment.id,
     question: "¿Quién facilita el cumplimiento de las reglas de Scrum y ayuda a eliminar impedimentos?",
@@ -170,9 +171,9 @@ const assessmentLesson = {
 ].map((q) => ({
   ...q,
   id: crypto.randomUUID(),
-})); */
+})); 
 
-const questionsData = [
+/* const questionsData = [
   {
     question: "¿Cuál es el rol principal del Scrum Master en un equipo Scrum?",
     options: [
@@ -219,7 +220,7 @@ const questionsData = [
     answer: "C",
     assessmentId: assessmentLesson.id,
   },
-];
+]; */
 
 const seed = [
   {
@@ -1330,15 +1331,15 @@ async function main() {
       set: buildConflictUpdateAllExceptIdAndCreatedAt(schema.lessons),
     });
 
-  /* 
-  await db.insert(schema.assessments).values(assessmentLesson).onConflictDoUpdate({
+  
+  await db.insert(schema.assessments).values(assessment)/* .onConflictDoUpdate({
     target: schema.assessments.id,
     set: buildConflictUpdateAllExceptId(schema.assessments),
-  });;
-  await db.insert(schema.questions).values(questionsData).onConflictDoUpdate({
+  });; */
+  await db.insert(schema.questions).values(questionsData)/* .onConflictDoUpdate({
     target: schema.questions.id,
     set: buildConflictUpdateAllExceptId(schema.questions),
-  }); */
+  });  */
 
   console.log("✅ Seed successful");
   /* await client.end(); */
