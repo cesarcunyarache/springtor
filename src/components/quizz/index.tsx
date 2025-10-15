@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader, RefreshCw } from "lucide-react";
 import QuizScore from "./quzz-score";
 import QuizReview from "./quiz-overview";
 import { Question } from "@/type";
@@ -19,11 +19,12 @@ export type QuizResult = {
 type QuizProps = {
   title?: string;
   questions: Question[];
-  onSubmit: (answers: QuizResult[]) => void;
+  onSubmit: (answers: QuizResult[]) => Promise<void>;
   isViewingResults?: boolean;
   questionResults?: QuizResult[];
   allowReset?: boolean;
   isOmitted?: boolean;
+  isLoader?: boolean;
 };
 
 export default function Quiz({
@@ -34,6 +35,7 @@ export default function Quiz({
   questionResults,
   allowReset = false,
   isOmitted = true,
+  isLoader = false,
 }: QuizProps) {
 
   const initialAnswers =
@@ -50,6 +52,9 @@ export default function Quiz({
   const [isSubmitted, setIsSubmitted] = useState(
     questionResults && questionResults.length > 0
   );
+
+  const [isLoading, setIsLoading] = useState(false); 
+
 
   const [score, setScore] = useState<number | null>(
     questionResults ? questionResults.filter((a) => a.isCorrect).length : null
@@ -90,17 +95,21 @@ export default function Quiz({
     }
   };
 
-  const handleSubmit = () => {
-    setIsSubmitted(true);
+  const handleSubmit = async () => {
+    
     const correctAnswers = answers.filter((a) => a.isCorrect).length;
     setScore(correctAnswers);
-    onSubmit?.(answers);
+    await onSubmit?.(answers);
+    setIsSubmitted(true);
+  
   };
 
-  const handleOmit = () => {
+  const handleOmit = async () => {
+
     const correctAnswers = answers.filter((a) => a.isCorrect).length;
     setScore(correctAnswers);
-    onSubmit?.(answers);
+    await onSubmit?.(answers);
+
   };
 
   const handleReset = () => {
@@ -136,9 +145,16 @@ export default function Quiz({
                 variant="ghost"
                 className="absolute right-0 top-0 flex items-center"
                 title="Saltar al final"
+                disabled={isLoading}
               >
                 <span className="mr-1">Omitir</span>
-                <ChevronRight className="h-6 w-6" />
+                {
+                  isLoading ? (
+                    <Loader className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <ChevronRight className="h-6 w-6" />)
+                }
+
               </Button>
             )}
           </div>
@@ -176,9 +192,15 @@ export default function Quiz({
                       </span>
                       <Button
                         onClick={handleNextQuestion}
-                        disabled={!currentAnswer}
+                        disabled={!currentAnswer || isLoading}
+                        
                         variant="ghost"
                       >
+                        {
+                          isLoading && (
+                            <Loader className="mr-2 h-4 w-4 animate-spin" />
+                          )
+                        }
                         {currentQuestionIndex === questions.length - 1
                           ? "Enviar"
                           : "Siguiente"}{" "}

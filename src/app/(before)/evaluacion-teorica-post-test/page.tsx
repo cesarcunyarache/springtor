@@ -3,6 +3,8 @@ import ClientPage from "./client";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isUserResponsePostTest } from "@/lib/db/queries/user";
+import { toast } from "sonner";
+
 
 export default async function Page() {
 
@@ -14,10 +16,6 @@ export default async function Page() {
 
   const isCompleted = await isUserResponsePostTest(session.user.id);
 
-  if (isCompleted) {
-    return <h1>Assessment already completed</h1>
-  }
-
   const assement = await getAssessmentBySlug("pre-post-test")
 
   if (!assement) {
@@ -25,6 +23,6 @@ export default async function Page() {
   }
 
   return (
-    <ClientPage questions={assement?.questions ?? []} />
+    <ClientPage questions={assement?.questions ?? []} isCompleted={isCompleted} />
   );
 }

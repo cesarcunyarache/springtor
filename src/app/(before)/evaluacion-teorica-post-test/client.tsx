@@ -4,9 +4,10 @@ import Quiz, { QuizResult } from "@/components/quizz";
 import { saveUserResponsePreTest } from "@/lib/db/queries/user";
 import { Question } from "@/type";
 import { redirect } from "next/navigation";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
-export default function ClientPage({ questions }: { questions: Question[] }) {
+export default function ClientPage({ questions, isCompleted }: { questions: Question[], isCompleted: boolean }) {
 
     const result: QuizResult[] = [
         { questionId: "1", selectedOption: "D", isCorrect: false },
@@ -14,6 +15,16 @@ export default function ClientPage({ questions }: { questions: Question[] }) {
         { questionId: "3", selectedOption: "C", isCorrect: false },
         { questionId: "4", selectedOption: "C", isCorrect: true },
     ]
+
+
+   
+    useEffect (() => {
+        if (isCompleted) {
+            toast.success("Este examen ya se ha completado");
+            redirect('/scrum/roadmap');
+        }
+    }, [isCompleted]);
+
 
     const handleSubmit = async (answers: QuizResult[]) => {
         toast.promise(saveUserResponsePreTest(answers), {
@@ -34,7 +45,7 @@ export default function ClientPage({ questions }: { questions: Question[] }) {
             title="Evalución Final"
             questions={questions}
             isViewingResults={false}
-            onSubmit={handleSubmit}   
+            onSubmit={handleSubmit}
         />
     );
 }

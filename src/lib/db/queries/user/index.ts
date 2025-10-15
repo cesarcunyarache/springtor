@@ -101,6 +101,7 @@ export async function saveUserResponsePreTest(
 
     return false;
   } catch (error) {
+    console.log(error);
     return false;
   }
 }

@@ -103,7 +103,7 @@ export default function ChatWithFiles() {
   if (questions.length === 4) {
     return (
       <Quiz title={title ?? "Quiz"} questions={[]}
-        onSubmit={() => {
+        onSubmit={ async (answers) => {
           toast.success("Quiz submitted");
         }}
       />
