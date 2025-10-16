@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Target, Plus, Trash2, ArrowRight, CheckCircle, Download, X, BookOpenCheck, AlertTriangle, Loader2 } from 'lucide-react';
 
@@ -41,18 +41,20 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from "@/components/ui/alert-dialog";
 import { AlertDialogAction, AlertDialogCancel, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
+import { useExamTimer } from "./store";
+import ExamTimerDisplay from "./components/exam-timer";
+import { toast } from "sonner";
+import { useProctoring } from "./hooks/useProctoring";
 
 
 interface PracticeEvaluationProps {
-  onSubmit: (answers: any) =>  Promise<void>;
+  onSubmit: (answers: any) => Promise<void>;
   isCompleted: boolean;
   isInitialized: boolean;
 }
 
 export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialized }: PracticeEvaluationProps) {
 
-  const [showJsonModal, setShowJsonModal] = useState<boolean>(false);
-  const [generatedJson, setGeneratedJson] = useState<string>('');
 
   const practice = assesmentPractice;
 
@@ -94,7 +96,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
       timeBound: '',
     }
   );
-  ;
+
   const [selectedStories, setSelectedStories] = useState<number[]>(
     /* completationPractice.sprintPlanning.selectedStoryIds */
     []
@@ -381,7 +383,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     return examData;
   };
 
-  const handleSubmitExam = async  () => {
+  const handleSubmitExam = async () => {
     setIsLoading(true);
 
     console.log("se envió", isLoading);
@@ -395,17 +397,88 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     setIsLoading(false);
   };
 
-  
-/* 
-  const [ isLoadingState, setIsLoading ] = useState(isLoading);
-  const [ isCompleted, setIsCompleted ] = useState(false);*/
+  const { start, pause, resume, reset, status, finish } = useExamTimer();
+
+  const [isHideExamen, setIsHideExamen] = useState(false);
+
+  const proctoringData = useProctoring({
+     forceFullScreen: true,
+     preventTabSwitch: true,
+     preventContextMenu: true,
+     preventUserSelection: true,
+     preventCopy: true,
+  });
+
+  /* 
+    const [ isLoadingState, setIsLoading ] = useState(isLoading);
+    const [ isCompleted, setIsCompleted ] = useState(false);*/
+
+
+  useEffect(() => {
+
+    if (!isCompleted && !isInitial && (status != "running")) {
+      start(5400);
+      proctoringData.fullScreen.trigger();
+    }
+    if (status === "finished" && !isCompleted) {
+      toast.success("⏰ ¡Tiempo terminado!", {
+        description: "El examen ha finalizado automáticamente.",
+      });
+      handleSubmitExam();
+      reset();
+
+    }
+
+    if (proctoringData.fullScreen.status == 'off'
+      || proctoringData.tabFocus.status === false
+    ) {
+      setIsHideExamen(true);
+
+    }
+
+    console.log(proctoringData.fullScreen.status, proctoringData.tabFocus.status);
+
+  }, [status, isCompleted, isInitial, proctoringData.fullScreen.status, proctoringData.tabFocus.status]);
+
+
+
+
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background"
+    >
 
-      {/*   <HeaderPractice practice={practice} /> */}
 
-      <div className="container mx-auto px-6 py-8 max-w-7xl space-y-6">
+
+
+      {/*  <HeaderPractice practice={practice} />  */}
+
+      <div className="bg-background  border-b sticky top-0 z-10 ">
+        <div className="flex flex-row container mx-auto px-6 py-4 justify-between">
+          <div className="flex justify-between">
+            <div className="flex items-center space-x-4">
+
+              <div>
+                <h1 className="text-2xl font-bold ">Evaluación Practica</h1>
+              </div>
+            </div>
+          </div>
+
+          <ExamTimerDisplay />
+
+          <Button
+            onClick={() => {
+
+              reset();
+            }}
+          >
+            Reset
+          </Button>
+        </div>
+      </div>
+
+
+      <div className="container mx-auto px-6 py-8 max-w-5xl space-y-6">
 
         <ContentPractice practice={practice} />
 
@@ -512,8 +585,8 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
       </div>
 
 
-      <AlertDialog open={isInitial}>
-       
+      <AlertDialog open={isInitial && status !== "running"}>
+
         <AlertDialogContent>
           <div className="flex flex-col justify-center items-center">
             <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center mb-4">
@@ -524,7 +597,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
           <AlertDialogHeader>
             <AlertDialogTitle className="text-center">¿Deseas iniciar el examen?</AlertDialogTitle>
             <AlertDialogDescription className="text-center">
-              El examen tiene una duración de <strong>2 horas</strong>.
+              El examen tiene una duración de <strong>1 hora con 30 minutos</strong>.
               Y evalua de manera practica tus conocimientos de Scrum.
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -544,7 +617,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
         </AlertDialogContent>
       </AlertDialog>
 
-    
+
       <AlertDialog open={isCompleted}>
         <AlertDialogContent>
           <div className="flex flex-col justify-center items-center">
@@ -586,7 +659,38 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
           </AlertDialogHeader>
         </AlertDialogContent>
       </AlertDialog>
-    
+
+
+      <AlertDialog open={isHideExamen}>
+
+        <AlertDialogContent>
+          <div className="flex flex-col justify-center items-center">
+            <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center mb-w">
+              <AlertTriangle className="w-8 h-8 text-center text-amber-500" />
+            </div>
+          </div>
+
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center"> El examen está temporalmente oculto</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              El examen ha sido bloqueado por el sistema de supervisión.
+              No podrás continuar hasta que se restablezcan las condiciones requeridas.
+              
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+
+            <AlertDialogAction
+              onClick={() => {
+                setIsHideExamen(false);
+                proctoringData.fullScreen.trigger();
+              }}
+            >Continuar examen</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
 
 
     </div >
