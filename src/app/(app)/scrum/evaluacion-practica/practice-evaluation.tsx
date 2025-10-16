@@ -466,14 +466,14 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
 
           <ExamTimerDisplay />
 
-          <Button
+        {/*   <Button
             onClick={() => {
 
               reset();
             }}
           >
             Reset
-          </Button>
+          </Button> */}
         </div>
       </div>
 
