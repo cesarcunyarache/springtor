@@ -34,9 +34,9 @@ export async function middleware(request: NextRequest) {
   const isGuest = guestRegex.test(token?.email ?? "");
 
   // Si el usuario ya está autenticado y no es guest, redirigir fuera de las auth pages
-  if (token && !isGuest && isAuthPage) {
+  /* if (token && !isGuest && isAuthPage) {
     return NextResponse.redirect(new URL("/", request.url));
-  }
+  } */
 
   return NextResponse.next();
 }

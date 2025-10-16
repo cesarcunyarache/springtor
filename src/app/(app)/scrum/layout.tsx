@@ -36,7 +36,7 @@ export default async function Layout({
   return (
 /*     <SidebarProvider defaultOpen={!isCollapsed}> */
     <main>
-      <DockDemo />
+      {/* <DockDemo /> */}
       {children}
     </main>
   /*   </SidebarProvider> */

@@ -26,6 +26,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Separator } from "@/components/ui/separator"
 
 export default async function Page() {
   /* const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
@@ -64,20 +65,21 @@ export default async function Page() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-primary  rounded-xl flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
                 <Bird className="w-6 h-6 text-white" />
               </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r bg-clip-text">
+              <h1 className="hidden sm:block text-xl font-bold bg-gradient-to-r bg-clip-text">
                 Springtor
               </h1>
+
             </div>
             <div className="flex items-center space-x-4 gap-4">
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost">
-                     <BookCheck className="h-5 w-5" />
-                     Evaluaciones
+                    <BookCheck className="h-5 w-5" />
+                    Evaluaciones
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="start">
@@ -96,7 +98,7 @@ export default async function Page() {
                             <Link href="/evaluacion-teorica-post-test" className="" >
                               Post Test
                             </Link>
-                            </DropdownMenuItem>
+                          </DropdownMenuItem>
 
                         </DropdownMenuSubContent>
                       </DropdownMenuPortal>
@@ -125,7 +127,7 @@ export default async function Page() {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-            {/*   <Tooltip>
+              {/*   <Tooltip>
                 <TooltipTrigger asChild>
                   <Link href="/practice-evaluation-post-test" className="" >
 
@@ -141,7 +143,7 @@ export default async function Page() {
  */}
 
 
-              <div className="flex items-center space-x-4">
+              {/*  <div className="flex items-center space-x-4">
 
                 <Trophy className="w-5 h-5 text-yellow-500" />
                 <span className="text-sm font-medium text-muted-foreground">
@@ -149,7 +151,30 @@ export default async function Page() {
                 </span>
                 <Progress value={overallPercentage} className="w-32" />
                 <span className="text-sm font-bold ">{Math.round(overallPercentage)}%</span>
+              </div> */}
+
+               <Separator orientation="vertical"  />
+
+              <div className="flex items-center space-x-4">
+               
+                <div className="hidden sm:flex items-center space-x-2">
+                  <Trophy className="w-5 h-5 text-yellow-500" />
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {completedTopics}/{totalTopics}
+                  </span>
+                </div>
+
+             
+                <Progress value={overallPercentage} className="w-32" />
+
+              
+                <span className="hidden sm:block text-sm font-bold">
+                  {Math.round(overallPercentage)}%
+                </span>
               </div>
+
+
+
             </div>
           </div>
         </div>
