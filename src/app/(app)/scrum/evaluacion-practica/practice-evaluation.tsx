@@ -47,6 +47,8 @@ import { toast } from "sonner";
 import { useProctoring } from "./hooks/useProctoring";
 import CamaraFeed from "./components/camara-feed";
 
+import FaceMonitor from "./components/face-monitor";
+
 
 interface PracticeEvaluationProps {
   onSubmit: (answers: any) => Promise<void>;
@@ -450,7 +452,11 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     >
 
 
-      <CamaraFeed />
+     {/*  <CamaraFeed /> */}
+
+     {/*  <ProctoringCamera /> */}
+
+     <FaceMonitor />
 
 
       {/*  <HeaderPractice practice={practice} />  */}
@@ -480,7 +486,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
       </div>
 
 
-      <div className="container mx-auto px-6 py-8 max-w-5xl space-y-6">
+      <div className="container mx-auto px-6 py-8 max-w-4xl space-y-6">
 
         <ContentPractice practice={practice} />
 
