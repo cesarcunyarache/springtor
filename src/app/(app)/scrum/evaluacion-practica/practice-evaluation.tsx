@@ -45,6 +45,7 @@ import { useExamTimer } from "./store";
 import ExamTimerDisplay from "./components/exam-timer";
 import { toast } from "sonner";
 import { useProctoring } from "./hooks/useProctoring";
+import CamaraFeed from "./components/camara-feed";
 
 
 interface PracticeEvaluationProps {
@@ -402,11 +403,11 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
   const [isHideExamen, setIsHideExamen] = useState(false);
 
   const proctoringData = useProctoring({
-     forceFullScreen: true,
-     preventTabSwitch: true,
-     preventContextMenu: true,
-     preventUserSelection: true,
-     preventCopy: true,
+    forceFullScreen: true,
+    preventTabSwitch: true,
+    preventContextMenu: true,
+    preventUserSelection: true,
+    preventCopy: true,
   });
 
   /* 
@@ -449,6 +450,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     >
 
 
+      <CamaraFeed />
 
 
       {/*  <HeaderPractice practice={practice} />  */}
@@ -466,7 +468,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
 
           <ExamTimerDisplay />
 
-        {/*   <Button
+          {/*   <Button
             onClick={() => {
 
               reset();
@@ -675,7 +677,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
             <AlertDialogDescription className="text-center">
               El examen ha sido bloqueado por el sistema de supervisión.
               No podrás continuar hasta que se restablezcan las condiciones requeridas.
-              
+
             </AlertDialogDescription>
           </AlertDialogHeader>
 
