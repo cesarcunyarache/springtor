@@ -73,13 +73,28 @@ export default async function Page() {
               </h1>
 
             </div>
-            <div className="flex items-center space-x-4 gap-4">
+            <div className="flex items-center space-x-3">
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link href="/scrum/chat" className="" >
+
+                    <Button variant="ghost" size="icon" className="items-center gap-2">
+                      <MessageCircleMore className="h-5 w-5" />
+                    </Button>
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Chat con Springtor</p>
+                </TooltipContent>
+              </Tooltip>
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost">
                     <BookCheck className="h-5 w-5" />
-                    Evaluaciones
+        
+                    <p className="hidden sm:flex">Evaluaciones</p>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="start">
@@ -127,20 +142,8 @@ export default async function Page() {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              {/*   <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link href="/practice-evaluation-post-test" className="" >
 
-                    <Button variant="ghost" size="icon" className="hidden sm:flex items-center gap-2">
-                      <BookCheck className="h-5 w-5" />
-                    </Button>
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Examen Práctico</p>
-                </TooltipContent>
-              </Tooltip>
- */}
+
 
 
               {/*  <div className="flex items-center space-x-4">
@@ -153,10 +156,11 @@ export default async function Page() {
                 <span className="text-sm font-bold ">{Math.round(overallPercentage)}%</span>
               </div> */}
 
-               <Separator orientation="vertical"  />
+
+
 
               <div className="flex items-center space-x-4">
-               
+
                 <div className="hidden sm:flex items-center space-x-2">
                   <Trophy className="w-5 h-5 text-yellow-500" />
                   <span className="text-sm font-medium text-muted-foreground">
@@ -164,10 +168,10 @@ export default async function Page() {
                   </span>
                 </div>
 
-             
+
                 <Progress value={overallPercentage} className="w-32" />
 
-              
+
                 <span className="hidden sm:block text-sm font-bold">
                   {Math.round(overallPercentage)}%
                 </span>

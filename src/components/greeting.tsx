@@ -19,7 +19,7 @@ export const Greeting = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            <div className="space-y-3 text-center">
+            <div className="space-y-3 text-center flex flex-col items-center justify-center">
               <Bird className="inline-block w-12 h-12 text-primary" />
               
               <motion.div
