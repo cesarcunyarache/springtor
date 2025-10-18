@@ -19,9 +19,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Scrum Agent AI",
-  description: "Scrum Agent AI is a chatbot that helps you to improve your Scrum team.",
-  keywords: "scrum, ai, agent, scrum agent, scrum agent ai",
+  title: "Springtor",
+  description:
+    "Springtor es un tutor inteligente basado en IA que te guía paso a paso para dominar Scrum. Aprende roles, artefactos y eventos de Scrum con prácticas interactivas y evaluaciones personalizadas.",
+  keywords:
+    "scrum, tutor scrum, inteligencia artificial, scrum master, agile, aprendizaje scrum, prácticas scrum, evaluaciones scrum, springtor",
 };
 
 
@@ -95,6 +97,7 @@ export default async function RootLayout({
             __html: THEME_COLOR_SCRIPT,
           }}
         />
+        <link rel="icon" href="/favicon.ico" />
       </head>
       <body className="antialiased w-full h-screen">
         <ThemeProvider
