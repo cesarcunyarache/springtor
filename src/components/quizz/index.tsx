@@ -25,6 +25,7 @@ type QuizProps = {
   allowReset?: boolean;
   isOmitted?: boolean;
   isLoader?: boolean;
+  isTerminated?: boolean;
 };
 
 export default function Quiz({
@@ -36,6 +37,7 @@ export default function Quiz({
   allowReset = false,
   isOmitted = true,
   isLoader = false,
+  isTerminated = false,
 }: QuizProps) {
 
   const initialAnswers =
@@ -53,7 +55,7 @@ export default function Quiz({
     questionResults && questionResults.length > 0
   );
 
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const [score, setScore] = useState<number | null>(
@@ -81,6 +83,14 @@ export default function Quiz({
     /*  } */
   };
 
+
+  useEffect(() => {
+    if (isTerminated) {
+      handleOmit();
+    }
+  }, [isTerminated]);
+
+
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -96,12 +106,12 @@ export default function Quiz({
   };
 
   const handleSubmit = async () => {
-    
+
     const correctAnswers = answers.filter((a) => a.isCorrect).length;
     setScore(correctAnswers);
     await onSubmit?.(answers);
     setIsSubmitted(true);
-  
+
   };
 
   const handleOmit = async () => {
@@ -132,7 +142,7 @@ export default function Quiz({
   if (questions.length === 0) return null;
 
   return (
-    <div className="bg-background text-foreground flex justify-center items-center">
+    <div className="w-full bg-background text-foreground flex justify-center items-center">
       <main className="container px-4 py-12 max-w-4xl">
         {title && (
           <div className="relative mb-8">
@@ -193,7 +203,7 @@ export default function Quiz({
                       <Button
                         onClick={handleNextQuestion}
                         disabled={!currentAnswer || isLoading}
-                        
+
                         variant="ghost"
                       >
                         {

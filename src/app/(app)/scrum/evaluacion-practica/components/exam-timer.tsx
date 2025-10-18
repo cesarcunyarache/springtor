@@ -1,8 +1,13 @@
 import React, { useEffect } from "react";
 import { useExamTimer } from "../store";
+import { cn } from "@/lib/utils";
 // ajusta la ruta según tu estructura
 
-const ExamTimerDisplay = () => {
+const ExamTimerDisplay = ( {
+  className = "",
+}: {
+  className?: string;
+}) => {
   const { timeLeft, status, tick } = useExamTimer();
 
   // Actualiza el temporizador cada segundo mientras esté corriendo
@@ -26,9 +31,7 @@ const ExamTimerDisplay = () => {
 
   return (
     <div
-      className="flex items-center justify-center px-4 py-2 rounded-xl font-semibold border-2
-        border-accent w-40
-      "
+      className={cn("flex items-center justify-center px-4 py-2 rounded-xl font-semibold border-2 border-accent w-40", className)}
     >
       ⏱ {" "} {formatTime(timeLeft)}
     </div>

@@ -389,7 +389,6 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
   const handleSubmitExam = async () => {
     setIsLoading(true);
 
-    console.log("se envió", isLoading);
     const response = generateResult();
 
     await onSubmit(response);
@@ -438,8 +437,6 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
       setIsHideExamen(true);
 
     }
-
-    console.log(proctoringData.fullScreen.status, proctoringData.tabFocus.status);
 
   }, [status, isCompleted, isInitial, proctoringData.fullScreen.status, proctoringData.tabFocus.status]);
 
