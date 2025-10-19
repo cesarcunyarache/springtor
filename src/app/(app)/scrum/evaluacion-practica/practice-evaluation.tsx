@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Target, Plus, Trash2, ArrowRight, CheckCircle, Download, X, BookOpenCheck, AlertTriangle, Loader2 } from 'lucide-react';
+import { Target, Plus, Trash2, ArrowRight, CheckCircle, Download, X, BookOpenCheck, AlertTriangle, Loader2, OctagonAlert } from 'lucide-react';
 
 import {
   UserStory,
@@ -54,9 +54,10 @@ interface PracticeEvaluationProps {
   onSubmit: (answers: any) => Promise<void>;
   isCompleted: boolean;
   isInitialized: boolean;
+  keyEvaluation: string;
 }
 
-export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialized }: PracticeEvaluationProps) {
+export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialized, keyEvaluation }: PracticeEvaluationProps) {
 
 
   const practice = assesmentPractice;
@@ -65,7 +66,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isInitial, setIsInitial] = useState(isInitialized);
+  const [isInitial, setIsInitial] = useState(false);
 
 
   // Estado para historias de usuario
@@ -399,7 +400,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     setIsLoading(false);
   };
 
-  const { start, pause, resume, reset, status, finish } = useExamTimer();
+  const { start, pause, resume, reset, status, finish, name } = useExamTimer();
 
   const [isHideExamen, setIsHideExamen] = useState(false);
 
@@ -416,10 +417,16 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     const [ isCompleted, setIsCompleted ] = useState(false);*/
 
 
+  const [showInitialAlert, setShowInitialAlert] = useState(false);
+
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSameExam, setIsSameExam] = useState(false);
+/* 
   useEffect(() => {
 
     if (!isCompleted && !isInitial && (status != "running")) {
-      start(5400);
+      start(5400, key);
       proctoringData.fullScreen.trigger();
     }
     if (status === "finished" && !isCompleted) {
@@ -438,9 +445,43 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
 
     }
 
-  }, [status, isCompleted, isInitial, proctoringData.fullScreen.status, proctoringData.tabFocus.status]);
+  }, [status, isCompleted, isInitial, proctoringData.fullScreen.status, proctoringData.tabFocus.status]); */
 
 
+
+
+
+  useEffect(() => {
+
+    setIsSameExam(name !== keyEvaluation && name !== "");
+    setShowInitialAlert((name === keyEvaluation || name === "") && !isCompleted && !isInitial);
+
+    if (status === "finished" && !isCompleted) {
+
+      handleSubmitExam();
+      reset();
+
+    }
+
+    const isHidden = proctoringData.fullScreen.status == 'off' || proctoringData.tabFocus.status === false
+
+    if (isHidden && !isCompleted && isInitial) {
+      setIsHideExamen(true);
+    }
+
+
+  }, [
+    name,
+    keyEvaluation,
+    status,
+    isCompleted,
+    isInitial,
+    proctoringData.fullScreen.status,
+    proctoringData.tabFocus.status,
+    reset,
+    showInitialAlert,
+    isHideExamen,
+  ]);
 
 
 
@@ -449,11 +490,11 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     >
 
 
-     {/*  <CamaraFeed /> */}
+      {/*  <CamaraFeed /> */}
 
-     {/*  <ProctoringCamera /> */}
+      {/*  <ProctoringCamera /> */}
 
-     <FaceMonitor />
+      <FaceMonitor />
 
 
       {/*  <HeaderPractice practice={practice} />  */}
@@ -590,7 +631,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
       </div>
 
 
-      <AlertDialog open={isInitial && status !== "running"}>
+      {/*   <AlertDialog open={isInitial && status !== "running"}>
 
         <AlertDialogContent>
           <div className="flex flex-col justify-center items-center">
@@ -620,9 +661,9 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
             >Comenzar examen</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog> */}
 
-
+      {/* 
       <AlertDialog open={isCompleted}>
         <AlertDialogContent>
           <div className="flex flex-col justify-center items-center">
@@ -646,7 +687,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
+ */}
 
 
       <AlertDialog open={isLoading} onOpenChange={setIsLoading} >
@@ -695,6 +736,123 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+
+
+      <AlertDialog open={showInitialAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader className="items-center">
+            <AlertDialogTitle>
+              <div className="mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10">
+                <AlertTriangle className="h-7 w-7 text-amber-500" />
+              </div>
+              ¿Deseas iniciar el examen?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-[15px] text-center">
+              El examen tiene una duración de <strong>1 hora con 30 minutos</strong>.
+              Y evalua de manera practica tus conocimientos de Scrum.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="">
+            <AlertDialogCancel
+              onClick={() => {
+                router.back();
+              }}
+            >Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setIsInitial(true);
+
+                start(5400, keyEvaluation);
+                proctoringData.fullScreen.trigger();
+              }}
+            >Comenzar examen</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+
+
+      <AlertDialog open={isCompleted} >
+        <AlertDialogContent>
+          <AlertDialogHeader className="items-center">
+            <AlertDialogTitle>
+              <div className="mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-600/10">
+                <BookOpenCheck className="w-8 h-8 text-center text-green-600" />
+              </div>
+              ¡Ya desarrollaste este examen!
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-[15px] text-center">
+              Has completado este examen previamente.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-2 sm:justify-center">
+
+            <AlertDialogAction
+              onClick={() => {
+                router.back();
+              }}
+            >
+              Entendido
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+
+
+
+      <AlertDialog open={isHideExamen}>
+        <AlertDialogContent>
+          <AlertDialogHeader className="items-center">
+            <AlertDialogTitle>
+              <div className="mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
+                <OctagonAlert className="h-7 w-7 text-destructive" />
+              </div>
+              El examen está temporalmente oculto
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-[15px] text-center">
+              El examen ha sido bloqueado por el sistema de supervisión.
+              No podrás continuar hasta que se restablezcan las condiciones requeridas.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="">
+
+            <AlertDialogAction
+              onClick={() => {
+                setIsHideExamen(false);
+                proctoringData.fullScreen.trigger();
+              }}
+            >Continuar examen</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+
+      <AlertDialog open={isSameExam}>
+        <AlertDialogContent>
+          <AlertDialogHeader className="items-center">
+            <AlertDialogTitle>
+              <div className="mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
+                <OctagonAlert className="h-7 w-7 text-destructive" />
+              </div>
+              Ya tienes un examen en curso
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-[15px] text-center">
+              Parece que tienes un examen activo. Finaliza o cierra el examen en curso antes de comenzar uno nuevo.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="">
+
+            <AlertDialogAction
+              onClick={() => {
+                router.back();
+              }}
+            >Entendido</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
 
 
 

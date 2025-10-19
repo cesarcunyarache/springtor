@@ -11,7 +11,7 @@ interface PracticeEvaluationClientProps {
 export default function PracticeEvaluationPreTestClient(
     { isCompleted }: PracticeEvaluationClientProps
 ) {
-
+    const keyEvaluation = "practica-pre-test";
     const router = useRouter();
     const handleSubmitExam = async (response: any) => {
 
@@ -27,7 +27,7 @@ export default function PracticeEvaluationPreTestClient(
             onSubmit={handleSubmitExam}
             isCompleted={isCompleted}
             isInitialized={!isCompleted}
-
+            keyEvaluation={keyEvaluation}
         />
     )
 }

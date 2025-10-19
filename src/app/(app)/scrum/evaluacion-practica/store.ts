@@ -4,13 +4,14 @@ import { persist } from "zustand/middleware";
 type TimerStatus = "idle" | "running" | "paused" | "finished";
 
 interface ExamTimerState {
-  duration: number; // duración total (en segundos)
-  timeLeft: number; // tiempo restante
+  name: string;
+  duration: number; 
+  timeLeft: number;
   startTime: number | null;
   endTime: number | null;
   status: TimerStatus;
 
-  start: (duration: number) => void;
+  start: (duration: number, name: string) => void;
   pause: () => void;
   resume: () => void;
   reset: () => void;
@@ -26,8 +27,9 @@ export const useExamTimer = create<ExamTimerState>()(
       startTime: null,
       endTime: null,
       status: "idle",
+      name: "",
 
-      start: (duration) => {
+      start: (duration, name  ) => {
         const now = Date.now();
         const end = now + duration * 1000;
         set({
@@ -36,6 +38,7 @@ export const useExamTimer = create<ExamTimerState>()(
           startTime: now,
           endTime: end,
           status: "running",
+          name,
         });
       },
 
@@ -59,6 +62,7 @@ export const useExamTimer = create<ExamTimerState>()(
         set({
           status: "finished",
           timeLeft: 0,
+          name: "",
         });
       },
 

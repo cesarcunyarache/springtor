@@ -12,6 +12,7 @@ export default function PracticeEvaluationPostTestClient(
     { isCompleted }: PracticeEvaluationClientProps
 ) {
 
+    const keyEvaluation = "practica-post-test";
     const router = useRouter();
     const handleSubmitExam = async (response: any) => {
         const evaluation = await evaluateScrumPractice(response);
@@ -26,6 +27,7 @@ export default function PracticeEvaluationPostTestClient(
             onSubmit={handleSubmitExam}
             isCompleted={isCompleted}
             isInitialized={!isCompleted}
+            keyEvaluation= {keyEvaluation}
 
         />
     )
