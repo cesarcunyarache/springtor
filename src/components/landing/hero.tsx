@@ -44,9 +44,10 @@ export function HeroSectionOne() {
                         duration: 0.3,
                         delay: 0.8,
                     }}
-                    className="relative z-10 mx-auto max-w-xl py-4 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
+                    className="relative z-10 mx-auto max-w-xl py-3 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
                 >
-                    Con nuestro agente de IA podrás aprender y aplicar Scrum de manera práctica en menos tiempo. Accede a una ruta de aprendizaje estructurada, toma notas en un chat integrado y recibe la guía de un mentor virtual que potencia tu formación.
+                    {/* Con nuestro agente de IA podrás aprender y aplicar Scrum de manera práctica en menos tiempo. Accede a una ruta de aprendizaje estructurada, toma notas en un chat integrado y recibe la guía de un mentor virtual que potencia tu formación. */}
+                    Aprende, practica y mejora con una ruta guiada y un chat de apoyo impulsado por IA.
                 </motion.p>
                 <motion.div
                     initial={{
