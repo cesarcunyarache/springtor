@@ -84,7 +84,7 @@ export default function LessonNavbar({ lesson }: LessonNavbarProps) {
                             </TooltipContent>
                         </Tooltip>
 
-                        <Tooltip>
+                       {/*  <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button variant="ghost" size="sm" className="hidden sm:flex items-center gap-2"
                                     onClick={() => {
@@ -97,7 +97,7 @@ export default function LessonNavbar({ lesson }: LessonNavbarProps) {
                             <TooltipContent>
                                 <p>Notas</p>
                             </TooltipContent>
-                        </Tooltip>
+                        </Tooltip> */}
                     </div>
                 </div>
             </nav>

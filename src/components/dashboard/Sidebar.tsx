@@ -223,21 +223,21 @@ export function Sidebar({ course, completedLessons = [] }: SidebarProps) {
           </Accordion>
         </div>
       </ScrollArea>
-
+{/* 
       <div className="flex flex-col">
-        {/* Evaluación práctica */}
+
         <Link href={`/scrum/tema/${course.id}/evaluacion-practica`} className="flex flex-1  gap-4 p-4 text-sm font-medium text-gray-700 hover:bg-gray-50 border">
           <ClipboardList className="w-5 h-5 text-blue-500" />
           <span>Evaluación práctica</span>
         </Link>
 
-        {/* Evaluación teórica */}
+
         <Link href={`/scrum/tema/${course.id}/evaluacion-teorica`} className="flex flex-1 gap-4 p-4 text-sm font-medium text-gray-700 hover:bg-gray-50  border">
           <BookOpen className="w-5 h-5 text-green-500" />
           <span>Evaluación teórica</span>
         </Link>
       </div>
-
+ */}
 
 
     </div>
