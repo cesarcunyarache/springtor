@@ -1,5 +1,6 @@
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+import remarkBreaks from "remark-breaks"
 import { CodeBlock } from "./markdown-codeblock"
 
 interface MarkdownRendererProps {
@@ -9,7 +10,7 @@ interface MarkdownRendererProps {
 export function MarkdownView({ content }: MarkdownRendererProps) {
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
+      remarkPlugins={[remarkGfm, remarkBreaks]}
       components={{
         img: ({ src, alt }) => <img src={src} alt={alt} className="max-w-full h-auto rounded-md" />,
         code: CodeBlock,
@@ -65,6 +66,7 @@ export function MarkdownView({ content }: MarkdownRendererProps) {
         ),
         th: ({ children }) => <th className="px-3 py-2 text-left font-semibold">{children}</th>,
         td: ({ children }) => <td className="px-3 py-2">{children}</td>,
+        hr: () => <hr className="my-6 border-t border-border/50" />
       }}
     >
       {content}
