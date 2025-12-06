@@ -5643,8 +5643,7 @@ Sin la DoD, el equipo no puede garantizar que el Incremento esté realmente list
                     slug: "integracion-continua",
                     level: 1,
                     content:
-                    `# 🤖 Integración Continua y Automatización
-
+                    `# 
 ## 🧠 Saberes Previos
 Antes de profundizar en este tema, es recomendable tener claro:
 - Qué es un **Incremento** en Scrum y por qué debe ser potencialmente liberable.  
