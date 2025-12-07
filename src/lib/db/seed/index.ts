@@ -5022,8 +5022,7 @@ El Product Owner usa estas herramientas para asegurar que cada Sprint contribuya
                     title: "Propósito",
                     slug: "sprint-backlog-proposito",
                     level: 1,
-                    content:
-                     `![Sprint Backlog](https://www.visual-paradigm.com/servlet/editor-content/scrum/what-is-sprint-backlog-in-scrum/sites/7/2018/12/sprint-backlog.png)
+                    content: `![Sprint Backlog](https://www.visual-paradigm.com/servlet/editor-content/scrum/what-is-sprint-backlog-in-scrum/sites/7/2018/12/sprint-backlog.png)
 
 ## 🧠 Saberes Previos
 Para comprender este tema, se recomienda conocer:
@@ -5153,8 +5152,7 @@ Aporta claridad, enfoque y transparencia sobre el trabajo necesario para alcanza
                     title: "Selección de ítems",
                     slug: "sprint-backlog-seleccion-items",
                     level: 1,
-                    content:
-                      `
+                    content: `
 ## 🧠 Saberes Previos
 Antes de profundizar en este tema, se recomienda conocer:
 - Qué es el **Product Backlog** y cómo se ordena.  
@@ -5297,8 +5295,7 @@ Permite al equipo tomar decisiones responsables basadas en valor, capacidad y ob
                     title: "Plan 'cómo' y descomposición",
                     slug: "plan-como-descomposicion",
                     level: 1,
-                    content:
-                      `
+                    content: `
 📚 **Saberes previos:**  
 Conocer los conceptos de Historia de Usuario y Sprint Backlog.
 
@@ -5356,8 +5353,7 @@ El plan “cómo” describe los pasos técnicos para completar un ítem, y la d
                     title: "Actualización diaria y transparencia",
                     slug: "actualizacion-diaria-transparencia",
                     level: 1,
-                    content:
-                      `
+                    content: `
 📚 **Saberes previos:**  
 Conocer el propósito del *Daily Scrum* y el funcionamiento del Sprint Backlog.
 
@@ -5413,7 +5409,7 @@ Esto evita retrasos en los últimos días del Sprint.
 
 ### 📌 En Resumen:
 La actualización diaria asegura un Sprint Backlog real, visible y confiable, mientras que la transparencia facilita la colaboración, la toma de decisiones y la entrega de valor.
-`
+`,
                   },
                 ],
               },
@@ -5446,8 +5442,7 @@ La actualización diaria asegura un Sprint Backlog real, visible y confiable, mi
                     title: "Incremento",
                     slug: "incremento",
                     level: 1,
-                    content:
-                      `📦 **¿Qué es el Incremento?**
+                    content: `📦 **¿Qué es el Incremento?**
 
 El **Incremento** es el resultado del trabajo completado durante un Sprint.  
 Representa una **pieza de producto funcional**, que aporta valor y está lista para usarse, demostrarse o liberarse.
@@ -5508,15 +5503,14 @@ Si falta alguno, **el trabajo no está Done**.
 **El Incremento refleja la calidad real del producto.  
 Un Incremento incompleto es una ilusión de progreso.**
 
-`
+`,
                   },
                   {
                     id: "a2b3c4d5-6e7f-8a9b-0c1d-2e3f4a5b6c7d",
                     title: "Definition of Done y calidad",
                     slug: "definition-of-done",
                     level: 1,
-                    content:
-                      `
+                    content: `
 
 ## 🧠 Saberes Previos
 Para comprender este tema, es útil conocer:
@@ -5642,8 +5636,7 @@ Sin la DoD, el equipo no puede garantizar que el Incremento esté realmente list
                     title: "Integración continua/automatización",
                     slug: "integracion-continua",
                     level: 1,
-                    content:
-                    `# 
+                    content: `# 
 ## 🧠 Saberes Previos
 Antes de profundizar en este tema, es recomendable tener claro:
 - Qué es un **Incremento** en Scrum y por qué debe ser potencialmente liberable.  
@@ -5800,21 +5793,224 @@ La Integración Continua **no es opcional**: es un habilitador fundamental para 
                     title: "Propósito",
                     slug: "proposito",
                     level: 1,
-                    content: "",
+                    content: `![Business Case](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPpOhlT5nR8xtptirmEIPQs5IyP2dwRMvlNA&s)
+
+## 🧠 Saberes Previos
+Antes de entrar al propósito, es importante conocer:
+- Qué es el **valor de negocio** dentro de Scrum.  
+- La responsabilidad del **Product Owner** en la maximización del valor.  
+- El concepto de **Incremento** y cómo Scrum busca entregar beneficios temprano.  
+- El enfoque iterativo y adaptativo del marco Scrum.
+
+---
+
+# 📘 ¿Qué es el Caso de Negocio?
+
+En Scrum, el **Caso de Negocio** responde a una pregunta clave:
+
+> **¿Por qué vale la pena invertir tiempo, dinero y esfuerzo en este producto?**
+
+No es un documento extenso ni rígido:  
+✔ Es **vivo**, evoluciona durante todo el proyecto.  
+✔ Es **útil**, no burocrático.  
+✔ Y sirve para **guiar decisiones de valor**.
+
+---
+
+# 🎯 Propósito del Caso de Negocio
+
+El propósito principal es asegurar que el esfuerzo del equipo esté **constantemente alineado** con lo que realmente genera valor.
+
+Sus objetivos principales incluyen:
+
+### 🔹 1. Justificar la inversión
+Permite entender por qué el producto es necesario y qué beneficios se esperan:
+- Aumento de ingresos  
+- Reducción de costos  
+- Mejora operativa  
+- Satisfacción del usuario  
+
+Mantiene claro el *por qué* detrás del trabajo del equipo.
+
+### 🔹 2. Servir como brújula estratégica
+El Caso de Negocio guía al Product Owner para decidir:
+- Qué priorizar  
+- Qué descartar  
+- Qué ajustar cuando cambian las condiciones del mercado  
+
+Es un **filtro de decisiones**, no solo un documento.
+
+### 🔹 3. Mantener la alineación con los objetivos de la organización
+Permite asegurar que el equipo no solo “hace tareas”, sino que contribuye a:
+- Objetivos comerciales  
+- Objetivos de usuario  
+- Metas estratégicas de la empresa  
+
+Sin esta alineación, un producto puede ser bien desarrollado… pero inútil.
+
+### 🔹 4. Generar transparencia para los stakeholders
+Ayuda a responder preguntas como:  
+- ¿Qué ganamos con este Sprint?  
+- ¿Por qué esta funcionalidad es más importante?  
+- ¿Sigue siendo rentable continuar?
+
+Esto refuerza la confianza entre el equipo y los interesados.
+
+### 🔹 5. Adaptarse al cambio
+El Caso de Negocio se revisa continuamente porque:
+- El mercado cambia  
+- La competencia evoluciona  
+- Las necesidades del usuario se actualizan  
+- El equipo aprende sobre el producto  
+
+Un Caso de Negocio estático no sirve en entornos ágiles.
+
+---
+
+# 📌 Ejemplo simple de un Caso de Negocio en Scrum
+
+**Producto:** App de monitoreo de gastos personales  
+**Problema:** Las personas tienen poca visibilidad sobre sus gastos diarios  
+**Solución:** Aplicación móvil con categorización automática  
+**Beneficios esperados:**  
+- Aumentar la retención de usuarios en la app principal  
+- Generar ingresos por planes premium  
+- Reducir tickets de soporte relacionados a facturación  
+
+**Razón para continuar:**  
+El primer incremento mostró 23% de interés en las funciones premium.
+
+---
+
+# 💬 En resumen
+El **propósito del Caso de Negocio** es asegurar que cada Sprint, cada incremento y cada decisión del Product Owner estén orientados a **entregar valor real y continuo al negocio**.
+
+Si no hay valor → se ajusta.  
+Si deja de justificar la inversión → se detiene.  
+Scrum integra este análisis en todo momento gracias a su enfoque adaptativo.
+
+`,
                   },
                   {
                     id: "l2-vision-metricas",
                     title: "Visión y métricas de valor",
                     slug: "vision-metricas-de-valor",
                     level: 2,
-                    content: "",
+                    content: `La visión establece el rumbo del producto y define qué valor busca generar para los usuarios y el negocio. En Scrum, esta visión debe ser clara, compartida y servir como guía para priorizar el trabajo. Para asegurar que el equipo realmente está entregando valor, se utilizan métricas que permiten medir el impacto y validar si se están alcanzando los objetivos planteados.
+
+#### 📌 Elementos clave de una buena visión
+- Define el **propósito del producto** y a quién sirve.
+- Describe el **problema principal** que se busca resolver.
+- Indica el **valor esperado** para usuarios y negocio.
+- Sirve como referencia para la toma de decisiones.
+- Debe ser simple, motivadora y fácil de comunicar.
+
+#### 📊 Métricas de valor en Scrum
+Las métricas ayudan a evaluar si lo que se entrega realmente genera impacto. No miden tareas, sino **valor creado**.
+
+Ejemplos:
+- **Satisfacción del cliente** (NPS, encuestas, retroalimentación directa).
+- **Uso del producto** (adopción, retención, engagement).
+- **Impacto en el negocio** (incremento de ingresos, ahorro de costos, reducción de tiempos).
+- **Valor entregado por Sprint** (historias completadas que aportan valor real).
+- **Cumplimiento de resultados clave** definidos en la visión.
+
+#### 🎯 ¿Por qué es importante?
+- Mantiene al equipo enfocado en resultados, no solo en completar tareas.
+- Permite validar hipótesis y ajustar rumbo rápidamente.
+- Asegura que el esfuerzo del equipo se traduzca en beneficios reales.
+- Facilita la transparencia hacia stakeholders y dirección.
+
+#### 🧭 Relación con el Product Owner
+El Product Owner guía la visión y define métricas claras que permitan evaluar el progreso hacia esa visión. También asegura que el backlog refleje lo necesario para generar valor medible.
+
+#### 💡 Buenas prácticas
+- Revisar la visión periódicamente con el equipo y stakeholders.
+- Mantener un conjunto pequeño de métricas realmente relevantes.
+- Basar decisiones de priorización en datos, no en suposiciones.
+- Usar métricas para aprender, no para controlar o culpar.
+
+En resumen, una visión clara combinada con métricas de valor permite que Scrum funcione como un marco orientado a resultados, asegurando que cada incremento aporte un beneficio real y verificable.
+`,
                   },
                   {
                     id: "l3-viabilidad-seguimiento",
                     title: "Viabilidad y seguimiento del caso",
                     slug: "viabilidad-seguimiento-del-caso",
                     level: 3,
-                    content: "",
+                    content: `La viabilidad del caso de negocio busca determinar si el proyecto realmente tiene sentido desde una perspectiva de valor, costos, riesgos y beneficios esperados. En Scrum, esta evaluación no se hace una sola vez, sino que se revisa de forma continua para asegurar que el producto sigue siendo rentable y aporta impacto real.
+
+El seguimiento del caso garantiza que las decisiones se tomen con datos actualizados y que el equipo mantenga la alineación con los objetivos estratégicos del negocio.
+
+---
+
+### 🧩 ¿Qué es la viabilidad del caso de negocio?
+La viabilidad responde a la pregunta: **“¿Vale la pena seguir invirtiendo en este producto?”**
+
+Para evaluarla se consideran:
+- **Beneficios esperados** (valor para usuarios y negocio).
+- **Costos estimados** (desarrollo, operación, mantenimiento).
+- **Riesgos identificados** (técnicos, financieros, de mercado).
+- **Suposiciones clave** que deben validarse durante el proyecto.
+
+La viabilidad no es estática; cambia según:
+- Resultados de cada Sprint.
+- Retroalimentación de usuarios.
+- Costos reales vs costos previstos.
+- Cambios en el entorno o mercado.
+
+---
+
+### 📊 Seguimiento continuo del caso de negocio
+Scrum permite monitorear el avance del valor de forma incremental. Algunas prácticas importantes son:
+
+#### ✔ Evaluar resultados por Sprint
+Cada incremento del producto permite:
+- Validar si lo construido genera valor real.
+- Ajustar o descartar elementos que no aporten impacto.
+- Alinear la inversión con los beneficios observados.
+
+#### ✔ Retroalimentación directa del cliente
+La opinión real del usuario permite verificar:
+- Si las funcionalidades son útiles.
+- Si se debe cambiar la dirección del producto.
+- Si la visión sigue siendo relevante.
+
+#### ✔ Revisión de métricas clave
+Algunas métricas utilizadas:
+- Costo por Sprint vs valor generado.
+- Nivel de adopción del producto.
+- Riesgos que han surgido o aumentado.
+- Satisfacción de stakeholders.
+
+---
+
+### 🛠 Herramientas comunes utilizadas
+- **Canvas de modelo de negocio**
+- **Matriz de riesgos**
+- **Roadmaps basados en valor**
+- **OKRs (Objectives and Key Results)**
+- **KPI de producto**
+
+---
+
+### 🎯 ¿Por qué es tan importante en Scrum?
+- Evita invertir tiempo en algo que ya no aporta valor.
+- Permite ajustar o replantear el producto antes de que sea demasiado tarde.
+- Aumenta la transparencia con stakeholders.
+- Garantiza que los recursos se utilicen de forma eficiente.
+
+---
+
+### 💡 Buenas prácticas
+- Revisar el caso de negocio en cada **Sprint Review**.
+- Mantener las métricas visibles para todo el equipo.
+- Ajustar el backlog según lo aprendido.
+- Validar hipótesis con experimentos antes de invertir más recursos.
+- Ser flexible: cambiar o cancelar un proyecto también es una decisión válida si ya no es viable.
+
+En resumen, la viabilidad y el seguimiento del caso garantizan que el producto siga teniendo sentido, que genere el valor esperado y que las decisiones se basen en datos reales, no en suposiciones.
+`,
                   },
                 ],
               },
