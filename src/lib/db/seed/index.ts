@@ -6043,21 +6043,220 @@ En resumen, la viabilidad y el seguimiento del caso garantizan que el producto s
                     title: "Propósito",
                     slug: "proposito-sprint-backlog",
                     level: 1,
-                    content: "",
+                    content: `
+La calidad integrada asegura que cada elemento trabajado durante el Sprint cumple estándares definidos desde el inicio, evitando retrabajos y garantizando que el Incremento logrado sea funcional, estable y alineado con el Sprint Goal.  
+En Scrum, la calidad no se revisa al final: **se construye desde el principio en cada tarea, en cada línea de código, en cada decisión**.
+
+---
+
+### 📚 Saberes Previos
+Antes de comprender este tema, es importante conocer:
+- Cómo funciona un Sprint y su objetivo principal.
+- Qué es el Incremento y por qué debe ser potencialmente liberable.
+- La importancia del Definition of Done (DoD).
+- Diferencia entre *calidad interna* (estructura, mantenibilidad) y *calidad externa* (experiencia del usuario).
+- Principios de inspección y adaptación dentro del marco Scrum.
+
+---
+
+### 🧩 ¿Qué significa integrar calidad?
+Integrar calidad implica que no es una fase, sino un **comportamiento constante** del equipo.  
+La calidad es parte del flujo normal de trabajo y no una etapa final del proyecto.
+
+Esto se traduce en:
+- Cumplir criterios de aceptación desde el inicio.
+- Seguir estándares técnicos acordados (convenciones, buenas prácticas).
+- Prevenir errores en lugar de detectarlos tarde.
+- Mantener artefactos actualizados (código, documentación mínima necesaria, pruebas).
+- Asegurar que lo hecho hoy no compromete la capacidad de entregar mañana.
+
+---
+
+### 🛠 Prácticas clave para asegurar la calidad integrada
+- **Revisión continua del trabajo** (pair programming, peer review, testing temprano).
+- **Automatizar pruebas** cuando sea posible (unitarias, integración, regresión).
+- **Refinamiento constante del Product Backlog** para eliminar ambigüedades.
+- **Definition of Done claro y aplicado siempre**, sin excepciones.
+- **Diseño simple y mantenible** desde el inicio.
+- **Cultura de responsabilidad compartida:** todos son responsables de la calidad, no solo QA.
+
+---
+
+### 📊 Beneficios de integrar calidad en el proceso
+- Menos defectos acumulados a largo plazo.
+- Menor costo de mantenimiento.
+- Incrementos más consistentes y confiables.
+- Mayor velocidad sostenible (no se trabaja más rápido, se retrabaja menos).
+- Equipos más autónomos y clientes más satisfechos.
+
+---
+
+### 💡 Buenas prácticas recomendadas
+- Hacer pruebas desde el primer día del Sprint, no al final.
+- Revisar que cada Product Backlog Item tenga criterios de aceptación claros.
+- Crear normas de equipo sobre calidad (definition of ready, estándares técnicos).
+- Asegurar que el equipo tenga herramientas adecuadas: CI/CD, linters, test runners.
+- Priorizar la calidad interna tanto como la entrega de nuevas funcionalidades.
+
+---
+
+### 🧠 Idea clave
+> La calidad no se agrega más adelante:  
+> **se construye dentro del proceso, en cada Sprint y en cada Incremento.**
+
+El propósito final es garantizar que cada entrega aporte valor real, evite deuda técnica y contribuya a que el equipo avance con consistencia y confianza.
+`,
                   },
                   {
                     id: "l2-prevencion-deteccion",
                     title: "Prevención > Detección",
                     slug: "prevencion-deteccion",
                     level: 2,
-                    content: "",
+                    content: ` 
+En Scrum, la calidad se construye desde el inicio. Esto significa que el equipo debe enfocarse más en **prevenir errores** que en simplemente **detectarlos** al final.  
+La prevención reduce retrabajos, evita acumulación de defectos y permite avanzar con mayor velocidad sostenible durante los Sprints.
+
+---
+
+### 📚 Saberes Previos  
+Para comprender este tema, es importante tener claro:
+- Cómo funciona el flujo de trabajo dentro de un Sprint.  
+- La importancia del Definition of Done (DoD).  
+- Qué son los criterios de aceptación y por qué guían la construcción de calidad.  
+- Diferencia entre pruebas preventivas (unitarias, integración, revisión continua) y pruebas tardías.  
+- Qué es la deuda técnica y cómo afecta el avance del equipo.
+
+---
+
+### 🔍 ¿Qué significa prevenir en lugar de detectar?
+La prevención busca **evitar que los errores aparezcan**, mientras que la detección solo los encuentra después de que ya existen.
+
+En Scrum, la prevención es prioritaria porque:
+- Mantiene la estabilidad del Incremento.
+- Reduce costos y tiempos de corrección.
+- Asegura que lo que se entrega cada Sprint sea realmente potencialmente liberable.
+- Permite planificaciones más realistas y estables.
+
+Ejemplos comunes de acciones preventivas:
+- Revisiones de código frecuentes (peer review).
+- Pair programming.
+- Refinamiento del Product Backlog para eliminar ambigüedades.
+- Criterios de aceptación detallados y claros.
+- Diseño simple y mantenible desde el inicio.
+- Automatización de pruebas unitarias y de integración.
+
+---
+
+### 🧪 La detección sigue existiendo, pero no domina  
+Scrum no elimina la detección, pero esta **no debe ser la principal estrategia de calidad**.  
+Las pruebas manuales, automatizadas o revisiones finales siguen siendo importantes, pero deben actuar como validación, no como un escáner de errores frecuentes del proceso.
+
+El objetivo es que:
+- La detección confirme que el proceso de prevención funciona.
+- No se descubran grandes defectos al final del Sprint.
+- El DoD sea alcanzado de forma natural y sostenida.
+
+---
+
+### 📊 Beneficios de priorizar la prevención  
+- Menor deuda técnica acumulada.  
+- Proyectos más predecibles.  
+- Incrementos más estables y seguros.  
+- Equipos más rápidos a largo plazo.  
+- Menos estrés y menos trabajo apresurado al final del Sprint.  
+- Mejor experiencia del usuario final.
+
+---
+
+### 🧠 Idea clave  
+> La prevención es el motor de la calidad sostenible en Scrum.  
+> Cuanto mejor sea la prevención, menos dependencia habrá de la detección tardía.
+
+`,
                   },
                   {
                     id: "l3-medidas-calidad",
                     title: "Medidas de calidad",
                     slug: "medidas-de-calidad",
                     level: 3,
-                    content: "",
+                    content: `
+Las medidas de calidad permiten evaluar qué tan bien el equipo está construyendo el producto dentro del Sprint. No se trata solo de encontrar defectos, sino de entender la **salud del proceso**, la **consistencia del Incremento** y la **capacidad del equipo para entregar valor sin comprometer la sostenibilidad**.
+
+---
+
+### 📚 Saberes Previos  
+Antes de ver las métricas de calidad, es importante tener claro:
+- Qué es el Incremento y por qué debe ser potencialmente liberable.  
+- Cómo se utiliza el Definition of Done (DoD) para asegurar calidad.  
+- Qué son los criterios de aceptación y cómo guían la validación del trabajo.  
+- Diferencia entre *calidad del proceso* y *calidad del producto*.  
+- Conceptos básicos de pruebas: unitarias, integración, end-to-end.  
+- Qué es la deuda técnica y cómo se acumula.
+
+---
+
+### 🧪 ¿Qué son las medidas de calidad?  
+Son indicadores que ayudan a entender si el equipo está entregando trabajo:
+- funcional,  
+- estable,  
+- mantenible,  
+- bien probado,  
+- sin generar retrabajos innecesarios.
+
+Permiten una inspección objetiva del Incremento, mostrando si la calidad mejora, se mantiene o deteriora.
+
+---
+
+### 📊 Medidas comunes de calidad en Scrum  
+
+#### ✔️ 1. **Defectos encontrados durante el Sprint**  
+- Cantidad de bugs detectados mientras se construye el Incremento.  
+- Un aumento indica problemas en prevención o en claridad de requisitos.  
+- Deben ser discutidos en la Retrospectiva.
+
+#### ✔️ 2. **Defectos post-entrega (fuga de defectos)**  
+- Bugs encontrados después de una liberación o validación externa.  
+- Se mide como “defectos que escaparon del DoD”.  
+- Ayuda a evaluar si el DoD es suficientemente robusto.
+
+#### ✔️ 3. **Cobertura de pruebas automatizadas**  
+- Porcentaje del código cubierto por pruebas unitarias/integración.  
+- No se busca 100%, sino una cobertura que proteja los componentes críticos.  
+- Ayuda a prevenir errores sin aumentar la carga de pruebas manuales.
+
+#### ✔️ 4. **Cumplimiento del Definition of Done**  
+- Qué tan seguido el equipo completa ítems sin excepciones.  
+- Si el DoD se incumple frecuentemente, hay falta de calidad integrada.
+
+#### ✔️ 5. **Tiempo de corrección de defectos**  
+- Cuánto tarda el equipo en resolver un bug.  
+- Tiempos largos indican deuda técnica o procesos frágiles.
+
+#### ✔️ 6. **Estabilidad del Incremento durante el Sprint**  
+- Número de regresiones, fallos o refactorizaciones necesarias.  
+- Mide si la base del producto es estable o se rompe fácilmente.
+
+#### ✔️ 7. **Deuda técnica acumulada**  
+- Trabajo pendiente necesario para normalizar o mejorar el sistema.  
+- Aumenta cuando se prioriza velocidad sobre calidad.  
+- Se mide por tareas pendientes, complejidad creciente o áreas frágiles del producto.
+
+---
+
+### 🎯 ¿Para qué sirven estas medidas?  
+- Detectar tendencias negativas antes de que afecten el avance.  
+- Mejorar el DoD y los criterios de aceptación.  
+- Evaluar impacto de prácticas como integración continua o pair programming.  
+- Tomar decisiones informadas sobre refactorización o mejoras técnicas.  
+- Fortalecer una velocidad sostenible sin comprometer el producto.
+
+---
+
+### 🧠 Idea clave  
+> Medir calidad no es buscar culpables, sino **medir salud del proceso**.  
+> Lo que se mide, se puede mejorar; lo que no se mide, se degrada con el tiempo.
+
+`,
                   },
                 ],
               },
@@ -6090,21 +6289,249 @@ En resumen, la viabilidad y el seguimiento del caso garantizan que el producto s
                     title: "Propósito",
                     slug: "proposito-incremento",
                     level: 1,
-                    content: "",
+                    content: `### 🎯 Propósito  
+El propósito de la gestión del cambio en Scrum es asegurar que el producto pueda adaptarse de manera rápida, ordenada y continua conforme surgen nuevas necesidades, aprendizajes o cambios del mercado. Scrum no busca evitar el cambio, sino **aprovecharlo** como una ventaja para entregar más valor en cada Incremento.
+
+La gestión del cambio garantiza que:
+- El equipo actúe con flexibilidad sin perder foco.  
+- Los Incrementos sean funcionales y liberables.  
+- Los cambios se incorporen al Product Backlog y se prioricen adecuadamente.  
+- El proyecto mantenga su alineación con los objetivos del negocio.
+
+---
+
+### 📚 Saberes Previos  
+Antes de profundizar en la gestión del cambio, es útil comprender:
+- Qué es un **Incremento** y por qué debe ser potencialmente liberable.  
+- El rol del **Product Owner** como responsable de la priorización y valor.  
+- La diferencia entre cambios “dentro del Sprint” y “fuera del Sprint”.  
+- Qué es el **Product Backlog** y cómo evoluciona constantemente.  
+- Qué significa inspección y adaptación dentro del marco de Scrum.  
+- Qué es la **Definition of Done (DoD)** y cómo protege la calidad en medio del cambio.
+
+---
+
+### 🔄 ¿Por qué es importante gestionar el cambio en Scrum?  
+En un entorno ágil, el cambio no es una interrupción: es una oportunidad.  
+Los requerimientos evolucionan, el mercado se mueve y los usuarios aprenden… y Scrum está diseñado precisamente para responder a esos escenarios.
+
+La gestión del cambio permite:
+- Evitar planes rígidos que se quedan obsoletos.  
+- Asegurar que el equipo esté enfocado en lo más valioso.  
+- Adaptar prioridades sin crear caos.  
+- Mantener una cadencia de entrega estable y predecible.  
+- Tomar decisiones basadas en evidencia, no en suposiciones.
+
+---
+
+### 🔧 ¿Cómo se refleja este propósito en Scrum?  
+
+#### ✔️ 1. Cambios se gestionan **a través del Product Backlog**  
+Todas las nuevas ideas, ajustes, descubrimientos o problemas se registran como elementos del Product Backlog y se priorizan nuevamente.
+
+#### ✔️ 2. El Sprint ofrece un “espacio protegido”  
+Durante el Sprint:
+- No se cambia el Sprint Goal.  
+- No se agregan nuevos ítems sin acuerdos muy específicos.  
+- Permite al equipo trabajar con estabilidad y foco.
+
+#### ✔️ 3. El Incremento debe ser liberable  
+Esto permite:
+- Responder rápido a nuevas oportunidades.  
+- Recibir retroalimentación real del usuario.  
+- Ajustar el rumbo del producto inmediatamente.
+
+#### ✔️ 4. La transparencia habilita decisiones de cambio  
+Inspecciones como:
+- Daily Scrum  
+- Sprint Review  
+- Sprint Retrospective  
+revelan información clave para decidir ajustes.
+
+---
+
+### 🧠 Idea clave  
+> Scrum no busca controlar el cambio, sino **canalizarlo** para que siempre sume valor y no genere desorden.  
+> La gestión del cambio inicia en el Product Backlog y termina en un Incremento liberable que permite aprender y adaptar.
+
+`,
                   },
                   {
                     id: "l2-impacto-alcance-valor",
                     title: "Impacto en alcance y valor",
                     slug: "impacto-alcance-valor",
                     level: 2,
-                    content: "",
+                    content: `
+Entender el impacto del cambio en el **alcance** y el **valor** es esencial para tomar decisiones que mantengan el rumbo del producto sin comprometer la calidad ni el Sprint Goal.  
+Scrum reconoce que el alcance es variable, mientras que el valor es la prioridad central: **no se protege el alcance, se protege el propósito**.
+
+El análisis del impacto permite:
+- Mantener el enfoque en resultados valiosos.
+- Ajustar el Product Backlog de manera responsable.
+- Asegurar que el proyecto avance hacia objetivos reales del negocio.
+- Evitar sobrecarga, trabajo innecesario o pérdida de rumbo.
+
+---
+
+### 📚 Saberes Previos  
+Para comprender adecuadamente este tema es recomendable conocer:
+- Qué es el **Product Backlog** y cómo se prioriza.  
+- El rol del **Product Owner** como responsable de maximizar valor.  
+- Diferencia entre **alcance**, **valor** y **esfuerzo**.  
+- Cómo se define y protege un **Sprint Goal**.  
+- Qué significa inspección y adaptación en Scrum.  
+- Qué es un **Incremento** y por qué debe ser liberable.
+
+---
+
+### 🔎 ¿Qué significa impacto en alcance?  
+El **alcance** representa el conjunto de funcionalidades, características o trabajo planificado.  
+En Scrum el alcance:
+- **Es flexible y negociable**, no está cerrado desde el inicio.  
+- Se ajusta continuamente según lo aprendido.  
+- Puede expandirse, reducirse o transformarse.
+
+Los cambios impactan el alcance cuando:
+- Se agregan nuevos ítems al Product Backlog.
+- Se eliminan funcionalidades que ya no aportan valor.
+- Se redefine el contenido de un ítem existente.
+- Se ajusta la complejidad o profundidad de una funcionalidad.
+
+**Claves del alcance en Scrum:**  
+- Cambiar el alcance es normal, esperado y sano.  
+- El Sprint Goal **no cambia**, pero el contenido del Product Backlog sí.  
+- Ajustar el alcance evita entregar funcionalidades innecesarias.
+
+---
+
+### 💰 ¿Qué significa impacto en valor?  
+El **valor** representa el beneficio que obtiene el usuario, cliente o negocio.  
+Los cambios pueden aumentar o disminuir el valor si afectan:
+
+- La utilidad de una funcionalidad.  
+- La experiencia del usuario.  
+- Los ingresos o ahorro de costos.  
+- La satisfacción del cliente.  
+- El posicionamiento del producto.  
+- La alineación con la estrategia del negocio.
+
+**Claves del valor en Scrum:**  
+- No todo lo nuevo agrega valor; algunos cambios solo agregan trabajo.  
+- El valor guía la priorización del Product Backlog.  
+- Se evalúa continuamente mediante feedback real.  
+- Cambios que aumentan el valor deben considerarse prioritariamente.
+
+---
+
+### ⚖️ Relación entre alcance y valor  
+En Scrum, alcance y valor **no pesan igual**:
+
+- El alcance es un medio.  
+- El valor es el fin.
+
+**Por eso:**  
+Si un cambio reduce valor pero aumenta alcance → se descarta.  
+Si un cambio reduce alcance pero aumenta valor → se acepta.  
+Si un cambio aumenta alcance y valor → se evalúa su prioridad real.  
+Si un cambio afecta el Sprint Goal → se espera al siguiente Sprint.
+
+---
+
+### 🛠 ¿Cómo evalúa Scrum el impacto del cambio?  
+
+#### ✔️ 1. Revisión del Product Backlog  
+El Product Owner evalúa si el cambio:  
+- Aumenta el valor.  
+- Requiere ajustar prioridades.  
+- Reemplaza una funcionalidad existente.
+
+#### ✔️ 2. Revisión del Sprint Goal  
+El equipo determina si el cambio afecta la estabilidad del Sprint.  
+- Si afecta el Sprint Goal → NO entra en el Sprint actual.  
+- Si no afecta → puede discutirse e incorporarse.
+
+#### ✔️ 3. Estimación del esfuerzo  
+Los Developers analizan el impacto técnico y estiman nuevamente si es necesario.
+
+#### ✔️ 4. Revisión del beneficio vs costo  
+El Product Owner analiza:  
+- ¿Vale la pena para el usuario?  
+- ¿Aporta al negocio?  
+- ¿Destruye, mantiene o aumenta el valor actual?
+
+#### ✔️ 5. Ajuste o reescritura del ítem  
+Si el cambio se acepta, se actualiza o se crea un nuevo ítem en el Backlog.
+
+---
+
+### 🧠 Idea clave  
+> En Scrum, el cambio siempre se analiza desde el **valor**, no desde la cantidad de trabajo.  
+> El alcance se ajusta para maximizar el valor, no al revés.
+
+`,
                   },
                   {
                     id: "l3-integracion-continua",
                     title: "Cambios durante el Sprint",
                     slug: "cambios-durante-el-sprint",
                     level: 3,
-                    content: "",
+                    content: `
+En Scrum, los cambios pueden ocurrir incluso cuando un Sprint ya está en curso. Lo importante es manejarlos sin comprometer el objetivo del Sprint ni la estabilidad del equipo.  
+
+---
+
+## 📌 ¿Qué tipo de cambios pueden ocurrir?
+
+- Ajustes menores al alcance.
+- Mejoras identificadas durante el desarrollo.
+- Cambios necesarios para asegurar la calidad del incremento.
+- Nuevas ideas detectadas por el propio equipo.
+
+---
+
+## 🚫 ¿Qué NO debe cambiar?
+
+- **El Sprint Goal.**  
+  Es la razón de ser del Sprint; si cambia, el Sprint pierde sentido.
+
+---
+
+## 🛠 Cómo manejar cambios dentro del Sprint
+
+1. **Evaluar el impacto**  
+   El equipo analiza si el cambio afecta tiempos, esfuerzo o estabilidad.
+
+2. **Negociar con el Product Owner**  
+   Juntos deciden si el cambio se incorpora, se ajusta o se mueve al Product Backlog.
+
+3. **Priorización rápida**  
+   Si el cambio aporta alto valor y es factible, puede integrarse sin romper el foco.
+
+4. **Transparencia total**  
+   Se actualiza el Sprint Backlog reflejando los cambios acordados.
+
+---
+
+## 🤝 Reglas clave
+
+- Los cambios deben **mejorar el incremento**, no desordenar el Sprint.
+- El equipo tiene la autonomía para decidir **cómo** trabajar mejor.
+- El Product Owner valida **qué** se incorpora.
+- Si el cambio compromete el Sprint Goal, lo correcto es **no incluirlo**.
+
+---
+
+## ✔ Buenas prácticas
+
+- Mantener conversaciones cortas pero frecuentes.
+- Evitar acumular “pequeños cambios” sin evaluación.
+- Usar integración continua para detectar problemas rápido.
+- Documentar decisiones importantes para futuras mejoras.
+
+---
+
+Los cambios son parte natural del desarrollo, pero Scrum los gestiona de forma controlada para que **no afecten la entrega del valor**, sino que la potencien.
+`,
                   },
                 ],
               },
@@ -6137,21 +6564,205 @@ En resumen, la viabilidad y el seguimiento del caso garantizan que el producto s
                     title: "Propósito",
                     slug: "proposito-riesgo",
                     level: 1,
-                    content: "",
+                    content: `
+El objetivo de la gestión de riesgos en un entorno ágil es **anticipar problemas antes de que afecten el valor del producto**. No se trata de llenar documentos, sino de reconocer señales, actuar rápido y mantener la entrega estable.
+
+---
+
+## 📌 ¿Qué busca el manejo de riesgos en Ágil?
+
+- **Evitar sorpresas** durante el desarrollo.
+- **Detectar señales tempranas** de problemas técnicos, de negocio o del equipo.
+- **Tomar decisiones rápidas** antes de que el impacto crezca.
+- **Mantener la continuidad de valor** sprint tras sprint.
+
+---
+
+## ⚡ Cómo se gestionan los riesgos en un contexto ágil
+
+1. **Identificación continua**  
+   Los riesgos no se revisan una vez al mes: se observan todos los días.
+
+2. **Transparencia total**  
+   Cualquier miembro del equipo puede señalar un riesgo. Todos lo ven, todos lo entienden.
+
+3. **Acciones rápidas, no burocracia**  
+   La prioridad es actuar, no documentar.
+
+4. **Inspección y adaptación**  
+   Se revisan en Daily Scrum, Refinement y Sprint Review.
+
+---
+
+## 💬 ¿Por qué importa tanto?
+
+Porque el riesgo que no se ve **siempre explota más tarde**, y en Scrum el objetivo es entregar valor sin interrupciones. Un equipo ágil no espera el problema: lo anticipa.
+
+---
+
+## ✔ Resultado esperado
+
+- Menos bloqueos inesperados  
+- Menor retrabajo  
+- Menos sorpresas en el Sprint  
+- Mejor calidad en cada incremento  
+`,
                   },
                   {
                     id: "l2-identificacion-continua",
                     title: "Identificación continua",
                     slug: "identificacion-continua",
                     level: 2,
-                    content: "",
+                    content: `
+La identificación continua es la práctica ágil de **detectar riesgos a medida que aparecen**, sin esperar documentos formales, fases de análisis o reuniones especiales. En Scrum, el riesgo se observa **todos los días**, en cada interacción del equipo.
+
+---
+
+## 🎯 ¿Cuál es el objetivo?
+
+- Mantener los riesgos **visibles** en todo momento.
+- Evitar que pequeños problemas se conviertan en crisis.
+- Permitir **acciones tempranas** que reduzcan impacto y costos.
+- Conservar el avance estable hacia el Sprint Goal.
+
+---
+
+## 📌 ¿Cómo funciona en un equipo ágil?
+
+### 1. Observación diaria  
+Cada miembro del equipo detecta riesgos desde lo que ve en su trabajo:  
+- retrasos  
+- dependencias trabadas  
+- deuda técnica  
+- requisitos poco claros  
+- bloqueos externos  
+- problemas de calidad  
+- cambios inesperados
+
+### 2. Espacios naturales para identificar riesgos  
+Scrum crea momentos constantes donde los riesgos emergen:
+- **Daily Scrum:** se detectan impedimentos o señales de alarma.  
+- **Refinement:** se descubren riesgos futuros en historias o dependencias.  
+- **Sprint Planning:** se anticipan riesgos del trabajo a realizar.  
+- **Sprint Review:** se identifican riesgos del producto o del mercado.  
+- **Retrospective:** se abordan riesgos del proceso, equipo o calidad.
+
+### 3. Riesgos sin burocracia  
+No hace falta crear documentos complejos. Lo importante es que el equipo:  
+- los hable  
+- los entienda  
+- los visualice  
+- los priorice  
+- actúe sobre ellos  
+
+---
+
+## 📘 Saberes previos necesarios
+
+- Conocer qué es un **riesgo** en proyectos (posible evento negativo futuro).  
+- Entender cómo funciona el **flujo del Sprint**.  
+- Saber que en ágil el riesgo se maneja **todo el tiempo**, no solo al inicio del proyecto.
+
+---
+
+## 💡 ¿Por qué es clave?
+
+Porque el riesgo ignorado se transforma en:  
+- retrasos  
+- baja calidad  
+- pérdida de valor  
+- sprint inconcluso  
+
+Cuando el equipo lo detecta continuamente, puede actuar a tiempo y mantener el avance estable.
+
+---
+
+## ✔ Resultado esperado
+
+- Riesgos identificados temprano  
+- Menos sorpresas durante el Sprint  
+- Mejor toma de decisiones  
+- Mayor predictibilidad  
+`,
                   },
                   {
                     id: "l3-radiadores-riesgo",
                     title: "Radiadores de Riesgo",
                     slug: "radiadores-de-riesgo",
                     level: 3,
-                    content: "",
+                    content: `
+Los *radiadores de riesgo* son herramientas visuales que permiten que los riesgos del proyecto estén **siempre visibles**, claros y actualizados. Su objetivo es que cualquier persona —del equipo o del negocio— pueda identificar rápidamente qué riesgos existen, su gravedad y cómo están siendo gestionados.
+
+---
+
+## 🎯 ¿Para qué sirven?
+
+- Hacer que los riesgos **no se escondan** ni se olviden.
+- Facilitar decisiones rápidas del equipo.
+- Mantener al Product Owner informado sobre posibles impactos en valor.
+- Guiar la priorización, la mitigación y la planificación del Sprint.
+- Reducir incertidumbre y sorpresas durante la ejecución.
+
+---
+
+## 📌 ¿Qué es un radiador de riesgo?
+
+Es un elemento visual, simple y accesible, que muestra:
+- riesgos actuales  
+- nivel de impacto  
+- probabilidad  
+- estado o plan de mitigación  
+- responsable o dueño del riesgo  
+
+En Scrum, lo visual se vuelve más efectivo que un documento extenso.
+
+Ejemplos:
+- tablero Kanban con etiquetas de riesgo  
+- matriz de calor (rojo/amarillo/verde)  
+- lista priorizada de riesgos visibles en la pared o herramienta digital  
+- secciones dedicadas en el Sprint Backlog o en la Definition of Done  
+
+---
+
+## 📘 Saberes previos
+
+Antes de usar radiadores de riesgo, conviene conocer:
+- Qué es un **riesgo** y cómo se diferencia de un impedimento.  
+- Cómo se prioriza el trabajo en Scrum.  
+- El principio ágil de **transparencia** (todo visible, sin burocracia).  
+
+---
+
+## 🧩 ¿Cómo se aplican en Scrum?
+
+### ✔ Daily Scrum  
+Permite actualizar el estado del riesgo todos los días.
+
+### ✔ Sprint Planning  
+Se revisan radiadores para anticipar problemas y decisiones del Sprint.
+
+### ✔ Sprint Review  
+Se muestran riesgos relevantes a stakeholders para alineación.
+
+### ✔ Retrospective  
+Se analizan riesgos que se materializaron y cómo evitarlos en el futuro.
+
+---
+
+## 💡 Beneficio principal
+
+Los radiadores de riesgo **evitan que el equipo trabaje a ciegas**.  
+Todo riesgo es visible, conversado y atendido antes de que se convierta en un problema real.
+
+---
+
+## ✔ Resultado esperado
+
+- Riesgos organizados y visibles  
+- Decisiones más informadas  
+- Mejor adaptabilidad ante cambios  
+- Menos retrabajo y menos fallas inesperadas  
+`,
                   },
                 ],
               },
