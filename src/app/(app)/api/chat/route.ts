@@ -124,16 +124,7 @@ export async function POST(request: Request) {
       messages: previousMessages,
       message,
     });
-    /* 
-    const { longitude, latitude, city, country } = geolocation(request);
-
-    const requestHints: RequestHints = {
-      longitude,
-      latitude,
-      city,
-      country,
-    };
- */
+    
     await saveMessages({
       messages: [
         {
@@ -151,10 +142,21 @@ export async function POST(request: Request) {
     await createStreamId({ streamId, chatId: id });
 
     const lastMessage = messages[messages.length - 1];
-    const contextRetrieved = await getContext(lastMessage.content, "", 3000, 0.4, true); 
-
+    const contextRetrieved = await getContext(
+      lastMessage.content,
+      "",
+      3000,
+      0.4,
+      true
+    );
+    
     const stream = createDataStream({
-      execute: (dataStream) => {
+      execute: async (dataStream) => {
+
+          if (messages.length > 1) {
+          // El delay es de 0.5 ms
+          await delay(0.5); 
+        }
 
 
         const result = streamText({
@@ -252,6 +254,12 @@ export async function POST(request: Request) {
     }
   }
 }
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+
 
 export async function GET(request: Request) {
   const streamContext = getStreamContext();
