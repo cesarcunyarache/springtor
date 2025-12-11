@@ -151,14 +151,7 @@ export async function POST(request: Request) {
     );
     
     const stream = createDataStream({
-      execute: async (dataStream) => {
-
-          if (messages.length > 1) {
-          // El delay es de 0.5 ms
-          await delay(0.5); 
-        }
-
-
+      execute: (dataStream) => {
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
           system: systemPrompt({
@@ -254,12 +247,6 @@ export async function POST(request: Request) {
     }
   }
 }
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-
 
 export async function GET(request: Request) {
   const streamContext = getStreamContext();
