@@ -1,11 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+import { Target, Plus, Trash2, ArrowRight, CheckCircle, Download, X, BookOpenCheck, AlertTriangle, Loader2, OctagonAlert } from 'lucide-react';
+
 import {
-  Target, Plus, Trash2, ArrowRight, CheckCircle, Download, X, BookOpenCheck, AlertTriangle, Loader2, OctagonAlert
-} from 'lucide-react';
-import {
-  UserStory, Priority, AcceptanceCriterion, SprintGoalSMART, Task, ImpedimentStatus, Impediment, SprintReview, Retrospective, Question, Answer, ExamData,
+  UserStory,
+  Priority,
+  AcceptanceCriterion,
+  SprintGoalSMART,
+  Task,
+  ImpedimentStatus,
+  Impediment,
+  SprintReview,
+  Retrospective,
+  Question,
+  Answer,
+  ExamData,
+
 } from "./types";
 import { assesmentPractice, completePracticeCase, questions, teamMembers } from "./mocks/data";
 import { Markdown } from "@/components/markdown";
@@ -34,8 +46,8 @@ import ExamTimerDisplay from "./components/exam-timer";
 import { toast } from "sonner";
 import { useProctoring } from "./hooks/useProctoring";
 import CamaraFeed from "./components/camara-feed";
+
 import FaceMonitor from "./components/face-monitor";
-import { useExamStore } from "@/app/(before)/store/examStore";
 
 
 interface PracticeEvaluationProps {
@@ -46,15 +58,18 @@ interface PracticeEvaluationProps {
 }
 
 export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialized, keyEvaluation }: PracticeEvaluationProps) {
+
+
   const practice = assesmentPractice;
+
   const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
+
   const [isInitial, setIsInitial] = useState(false);
 
-  // Store global para exámenes
-  const { startExam, endExam, isExamInProgress, hasAnyExamActive } = useExamStore();
 
-  // Estados del producto
+  // Estado para historias de usuario
   const [newStory, setNewStory] = useState<Omit<UserStory, 'id'>>({
     title: '',
     asA: '',
@@ -67,46 +82,90 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
 
   const completationPractice = completePracticeCase;
 
-  const [productBacklog, setProductBacklog] = useState<UserStory[]>([]);
+  // Product Backlog
+  const [productBacklog, setProductBacklog] = useState<UserStory[]>(
+    /* completationPractice.productBacklog as UserStory[] */
+    []
+  );
+
+  // Sprint Planning
   const [sprintGoal, setSprintGoal] = useState<string>('');
-  const [sprintGoalSMART, setSprintGoalSMART] = useState<SprintGoalSMART>({
-    specific: '',
-    measurable: '',
-    achievable: '',
-    relevant: '',
-    timeBound: '',
-  });
+  const [sprintGoalSMART, setSprintGoalSMART] = useState<SprintGoalSMART>(
+    /* completationPractice.sprintPlanning.sprintGoalSMART */
+    {
+      specific: '',
+      measurable: '',
+      achievable: '',
+      relevant: '',
+      timeBound: '',
+    }
+  );
 
-  const [selectedStories, setSelectedStories] = useState<number[]>([]);
-  const [storyEstimations, setStoryEstimations] = useState<Record<number, number | string>>([]);
-  const [storyTasks, setStoryTasks] = useState<Record<number, Task[]>>([]);
-  const [taskEstimations, setTaskEstimations] = useState<Record<number, number>>([]);
+  const [selectedStories, setSelectedStories] = useState<number[]>(
+    /* completationPractice.sprintPlanning.selectedStoryIds */
+    []
+  );
 
-  const [impediments, setImpediments] = useState<Impediment[]>([]);
+
+  const [storyEstimations, setStoryEstimations] = useState<Record<number, number | string>>(
+
+    /* completationPractice.estimations.stories.reduce((acc, story) => ({ ...acc, [story.storyId]: story.storyPoints }), {}) */
+    []
+
+  );
+  const [storyTasks, setStoryTasks] = useState<Record<number, Task[]>>(
+
+    /* completationPractice.sprintPlanning.sprintBacklog.reduce((acc, story) => ({ ...acc, [story.storyId]: story.tasks }), {}) */
+    []
+
+  );
+
+  const [taskEstimations, setTaskEstimations] = useState<Record<number, number>>(
+
+    /* completationPractice.estimations.tasks.reduce((acc, task) => ({ ...acc, [task.taskId]: task.hours || 0 }), {}) */
+    []
+
+  );
+
+  // Impedimentos
+  const [impediments, setImpediments] = useState<Impediment[]>(
+    []
+    /* completationPractice.impediments.map(impediment => ({
+    ...impediment,
+    status: impediment.status as ImpedimentStatus
+  })) */
+
+  );
   const [newImpediment, setNewImpediment] = useState<Omit<Impediment, 'id' | 'status'>>({
     description: '',
     responsible: '',
     action: '',
     deadline: '',
+
   });
 
-  const [sprintReview, setSprintReview] = useState<SprintReview>({
-    incrementDelivered: '',
-    feedback: [''],
-    goalComparison: '',
-    dodComparison: ''
-  });
+  // Sprint Review
+  const [sprintReview, setSprintReview] = useState<SprintReview>(
+    {
+      incrementDelivered: '',
+      feedback: [''],
+      goalComparison: '',
+      dodComparison: ''
+    }
+    /*     completationPractice.sprintReview */
+  );
 
-  const [retrospective, setRetrospective] = useState<Retrospective>({
-    learnings: ['', '', '', ''],
-    improvements: ['', '']
-  });
+  // Retrospective
+  const [retrospective, setRetrospective] = useState<Retrospective>(
+    {
+      learnings: ['', '', '', ''],
+      improvements: ['', '']
+    }
+    /*  completationPractice.retrospective */
+  );
 
+  // Preguntas
   const [answers, setAnswers] = useState<Record<number, string>>({});
-  const [showInitialAlert, setShowInitialAlert] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isHideExamen, setIsHideExamen] = useState(false);
-  const [isDifferentExamInProgress, setIsDifferentExamInProgress] = useState(false);
 
   // Funciones para Sprint Planning
   const addStoryToSprint = (storyId: number): void => {
@@ -193,6 +252,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
         responsible: '',
         action: '',
         deadline: '',
+
       });
     }
   };
@@ -253,8 +313,11 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     });
   };
 
-  // Generar resultado del examen
+  // Función para generar el JSON completo del examen
   const generateResult = (): ExamData => {
+    const now = new Date().toISOString();
+
+    // Construir Sprint Backlog detallado
     const sprintBacklog = selectedStories.map(storyId => {
       const story = productBacklog.find(s => s.id === storyId);
       return {
@@ -264,20 +327,31 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
       };
     });
 
+    // Construir estimaciones de historias
     const storyEstimationsArray = Object.entries(storyEstimations).map(([storyId, points]) => ({
       storyId: parseInt(storyId),
       storyPoints: typeof points === 'number' ? points : 0
     }));
 
+    // Construir estimaciones de tareas
     const taskEstimationsArray = Object.entries(taskEstimations).map(([taskId, hours]) => ({
       taskId: parseInt(taskId),
       hours
     }));
 
+    // Construir preguntas con respuestas
+    const theoreticalQuestionsAnswered = questions.map(q => ({
+      question: q.question,
+      answer: answers[q.id] || ''
+    }));
+
+    // Calcular estadísticas de resumen
     const totalTasksCreated = Object.values(storyTasks).reduce((sum, tasks) => sum + tasks.length, 0);
+    const questionsAnswered = Object.keys(answers).length;
     const completionPercentage = Math.round(
-      ((selectedStories.length > 0 ? 100 : 0) +
-        (sprintGoal ? 100 : 0)) / 2
+      ((questionsAnswered / questions.length) * 100 +
+        (selectedStories.length > 0 ? 100 : 0) +
+        (sprintGoal ? 100 : 0)) / 3
     );
 
     const examData: ExamData = {
@@ -298,11 +372,14 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
       impediments,
       sprintReview,
       retrospective,
+      /* theoreticalQuestions: theoreticalQuestionsAnswered, */
       summary: {
         totalStoriesCreated: productBacklog.length,
         totalStoriesSelected: selectedStories.length,
         totalTasksCreated,
         totalImpediments: impediments.length,
+        /*  questionsAnswered, */
+        /*  totalQuestions: questions.length, */
         completionPercentage
       }
     };
@@ -312,15 +389,20 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
 
   const handleSubmitExam = async () => {
     setIsLoading(true);
-    setIsSubmitted(true);
-    endExam();
 
     const response = generateResult();
+
     await onSubmit(response);
+    /*  const evaluation = await evaluateScrumPractice(response);
+ 
+     await savePrestestPracticeResponses(response, evaluation.rubricScore, evaluation.checklistScore, evaluation.feedback, evaluation.justification); */
+
     setIsLoading(false);
   };
 
   const { start, pause, resume, reset, status, finish, name } = useExamTimer();
+
+  const [isHideExamen, setIsHideExamen] = useState(false);
 
   const proctoringData = useProctoring({
     forceFullScreen: true,
@@ -330,67 +412,134 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
     preventCopy: true,
   });
 
-  // Effect para manejar la lógica del examen
+  /* 
+    const [ isLoadingState, setIsLoading ] = useState(isLoading);
+    const [ isCompleted, setIsCompleted ] = useState(false);*/
+
+
+  const [showInitialAlert, setShowInitialAlert] = useState(false);
+
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSameExam, setIsSameExam] = useState(false);
+/* 
   useEffect(() => {
-    // Verificar si otro examen está en progreso
-    const otherExamActive = hasAnyExamActive() && !isExamInProgress(keyEvaluation as any);
-    setIsDifferentExamInProgress(otherExamActive);
 
-    // Mostrar alerta inicial
-    const canStartExam = !isCompleted && !isInitial && !otherExamActive;
-    setShowInitialAlert(canStartExam);
-
-    // Manejar cuando el timer termina
-    if (status === "finished" && !isCompleted && isInitial) {
-      setIsSubmitted(true);
-      endExam();
+    if (!isCompleted && !isInitial && (status != "running")) {
+      start(5400, key);
+      proctoringData.fullScreen.trigger();
+    }
+    if (status === "finished" && !isCompleted) {
+      toast.success("⏰ ¡Tiempo terminado!", {
+        description: "El examen ha finalizado automáticamente.",
+      });
       handleSubmitExam();
       reset();
+
     }
 
-    // Detectar pérdida de fullscreen o focus
-    const isHidden = proctoringData.fullScreen.status === 'off' || proctoringData.tabFocus.status === false;
-    if (isHidden && isInitial && !isCompleted) {
+    if (proctoringData.fullScreen.status == 'off'
+      || proctoringData.tabFocus.status === false
+    ) {
+      setIsHideExamen(true);
+
+    }
+
+  }, [status, isCompleted, isInitial, proctoringData.fullScreen.status, proctoringData.tabFocus.status]); */
+
+
+
+
+
+  useEffect(() => {
+
+    setIsSameExam(name !== keyEvaluation && name !== "");
+    setShowInitialAlert((name === keyEvaluation || name === "") && !isCompleted && !isInitial);
+
+    if (status === "finished" && !isCompleted) {
+
+      handleSubmitExam();
+      reset();
+
+    }
+
+    const isHidden = proctoringData.fullScreen.status == 'off' || proctoringData.tabFocus.status === false
+
+    if (isHidden && !isCompleted && isInitial) {
       setIsHideExamen(true);
     }
 
-  }, [status, isCompleted, isInitial, proctoringData.fullScreen.status, proctoringData.tabFocus.status, hasAnyExamActive, isExamInProgress, keyEvaluation]);
 
-  const handleStartExam = () => {
-    setIsInitial(true);
-    startExam(keyEvaluation as any);
-    start(5400, keyEvaluation);
-    proctoringData.fullScreen.trigger();
-  };
+  }, [
+    name,
+    keyEvaluation,
+    status,
+    isCompleted,
+    isInitial,
+    proctoringData.fullScreen.status,
+    proctoringData.tabFocus.status,
+    reset,
+    showInitialAlert,
+    isHideExamen,
+  ]);
+
+
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background"
+    >
+
+
+      {/*  <CamaraFeed /> */}
+
+      {/*  <ProctoringCamera /> */}
+
       <FaceMonitor />
 
-      <div className="bg-background border-b sticky top-0 z-10">
+
+      {/*  <HeaderPractice practice={practice} />  */}
+
+      <div className="bg-background  border-b sticky top-0 z-10 ">
         <div className="flex flex-row container mx-auto px-6 py-4 justify-between">
           <div className="flex justify-between">
             <div className="flex items-center space-x-4">
+
               <div>
-                <h1 className="text-2xl font-bold">Evaluación Práctica</h1>
+                <h1 className="text-2xl font-bold ">Evaluación Practica</h1>
               </div>
             </div>
           </div>
+
           <ExamTimerDisplay />
+
+          {/*   <Button
+            onClick={() => {
+
+              reset();
+            }}
+          >
+            Reset
+          </Button> */}
         </div>
       </div>
 
+
       <div className="container mx-auto px-6 py-8 max-w-4xl space-y-6">
+
         <ContentPractice practice={practice} />
 
+        {/* PASO 1: Crear Historias de Usuario */}
         <UserStoryForm onAddStory={(story) => {
           setProductBacklog([...productBacklog, story]);
         }} />
 
+        {/* PASO 2: Product Backlog */}
         <ProductBacklog productBacklog={productBacklog} />
 
+        {/* PASO 3: Sprint Goal SMART */}
         <SprintGoalSection sprintGoalSMART={sprintGoalSMART} onChange={setSprintGoalSMART} />
 
+        {/* PASO 4 y 5: Selección para Sprint Backlog */}
         <SprintBacklogSection
           productBacklog={productBacklog}
           selectedStories={selectedStories}
@@ -403,6 +552,7 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
           updateTaskResponsible={updateTaskResponsible}
         />
 
+        {/* PASO 6: Estimaciones */}
         <PlanningPokerSection
           selectedStories={selectedStories}
           productBacklog={productBacklog}
@@ -415,6 +565,8 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
           getTotalTaskHours={getTotalTaskHours}
         />
 
+
+        {/* PASO 7: Gestión de Impedimentos */}
         <SprintImpedimentsSection
           teamMembers={teamMembers}
           impediments={impediments}
@@ -425,6 +577,10 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
           updateImpedimentStatus={updateImpedimentStatus}
         />
 
+
+
+        {/* PASO 8: Sprint Review */}
+
         <SprintReviewSection
           sprintReview={sprintReview}
           setSprintReview={setSprintReview}
@@ -433,6 +589,8 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
           removeFeedback={removeFeedback}
         />
 
+
+        {/* PASO 9: Retrospective */}
         <SprintRetrospectiveSection
           retrospective={retrospective}
           updateLearning={updateLearning}
@@ -441,16 +599,146 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
           addImprovement={addImprovement}
         />
 
+
+
+        {/* PASO 10: Preguntas Teóricas */}
+
+        {/*  <SprintTheoreticalQuestionsSection
+          questions={questions}
+          answers={answers}
+          setAnswers={setAnswers}
+        />; */}
+
+
+        {/* Resumen Final */}
+        {/* <SprintExamSummary
+          sprintGoalCompleted={!!sprintGoal}
+          selectedStoriesCount={selectedStories.length}
+          productBacklogCount={productBacklog.length}
+          answeredQuestionsCount={Object.keys(answers).length}
+          totalQuestionsCount={questions.length}
+          onSubmitExam={handleSubmitExam}
+        /> */}
+
         <Button
           onClick={handleSubmitExam}
           disabled={isLoading}
-          className="w-full bg-primary text-white text-lg font-bold py-3 transition-colors"
+          className="w-full bg-primary text-white  text-lg font-bold py-3 transition-colors"
         >
-          {isLoading ? 'Evaluando...' : 'Enviar Examen'}
+          Enviar Examen
         </Button>
+
       </div>
 
-      {/* Alerta inicial - Comenzar examen */}
+
+      {/*   <AlertDialog open={isInitial && status !== "running"}>
+
+        <AlertDialogContent>
+          <div className="flex flex-col justify-center items-center">
+            <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center mb-4">
+              <AlertTriangle className="w-8 h-8 text-center text-amber-500" />
+            </div>
+          </div>
+
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center">¿Deseas iniciar el examen?</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              El examen tiene una duración de <strong>1 hora con 30 minutos</strong>.
+              Y evalua de manera practica tus conocimientos de Scrum.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              onClick={() => {
+                router.back();
+              }}
+            >Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setIsInitial(false);
+              }}
+            >Comenzar examen</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog> */}
+
+      {/* 
+      <AlertDialog open={isCompleted}>
+        <AlertDialogContent>
+          <div className="flex flex-col justify-center items-center">
+            <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center mb-4">
+              <BookOpenCheck className="w-8 h-8 text-center text-green-600" />
+            </div>
+          </div>
+
+          <AlertDialogHeader className="text-center">
+            <AlertDialogTitle className="text-center">¡Ya desarrollaste este examen!</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              Has completado este examen previamente.
+
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => {
+              router.back();
+            }}>Entendido</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+ */}
+
+
+      <AlertDialog open={isLoading} onOpenChange={setIsLoading} >
+        <AlertDialogContent className="flex flex-col justify-center items-center text-center space-y-4">
+          <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+          </div>
+
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center">Evaluando tus respuestas...</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              La IA está analizando y evaluando tus respuestas.
+              Este proceso puede tardar unos segundos.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+        </AlertDialogContent>
+      </AlertDialog>
+
+
+      <AlertDialog open={isHideExamen}>
+
+        <AlertDialogContent>
+          <div className="flex flex-col justify-center items-center">
+            <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center mb-w">
+              <AlertTriangle className="w-8 h-8 text-center text-amber-500" />
+            </div>
+          </div>
+
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-center"> El examen está temporalmente oculto</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              El examen ha sido bloqueado por el sistema de supervisión.
+              No podrás continuar hasta que se restablezcan las condiciones requeridas.
+
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+
+            <AlertDialogAction
+              onClick={() => {
+                setIsHideExamen(false);
+                proctoringData.fullScreen.trigger();
+              }}
+            >Continuar examen</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+
+
       <AlertDialog open={showInitialAlert}>
         <AlertDialogContent>
           <AlertDialogHeader className="items-center">
@@ -462,43 +750,58 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
             </AlertDialogTitle>
             <AlertDialogDescription className="text-[15px] text-center">
               El examen tiene una duración de <strong>1 hora con 30 minutos</strong>.
-              Evalúa de manera práctica tus conocimientos de Scrum.
+              Y evalua de manera practica tus conocimientos de Scrum.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => router.back()}>
-              Cancelar
-            </AlertDialogCancel>
-            <AlertDialogAction onClick={handleStartExam}>
-              Comenzar examen
-            </AlertDialogAction>
+          <AlertDialogFooter className="">
+            <AlertDialogCancel
+              onClick={() => {
+                router.back();
+              }}
+            >Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setIsInitial(true);
+
+                start(5400, keyEvaluation);
+                proctoringData.fullScreen.trigger();
+              }}
+            >Comenzar examen</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Alerta - Examen ya completado */}
-      <AlertDialog open={isCompleted}>
+
+
+      <AlertDialog open={isCompleted} >
         <AlertDialogContent>
           <AlertDialogHeader className="items-center">
             <AlertDialogTitle>
               <div className="mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-600/10">
                 <BookOpenCheck className="w-8 h-8 text-center text-green-600" />
               </div>
-              ¡Ya completaste este examen!
+              ¡Ya desarrollaste este examen!
             </AlertDialogTitle>
             <AlertDialogDescription className="text-[15px] text-center">
               Has completado este examen previamente.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-2 sm:justify-center">
-            <AlertDialogAction onClick={() => router.back()}>
+
+            <AlertDialogAction
+              onClick={() => {
+                router.back();
+              }}
+            >
               Entendido
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Alerta - Examen oculto por supervisión */}
+
+
+
       <AlertDialog open={isHideExamen}>
         <AlertDialogContent>
           <AlertDialogHeader className="items-center">
@@ -506,28 +809,27 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
               <div className="mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
                 <OctagonAlert className="h-7 w-7 text-destructive" />
               </div>
-              El examen está temporalmente bloqueado
+              El examen está temporalmente oculto
             </AlertDialogTitle>
             <AlertDialogDescription className="text-[15px] text-center">
               El examen ha sido bloqueado por el sistema de supervisión.
               No podrás continuar hasta que se restablezcan las condiciones requeridas.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="">
+
             <AlertDialogAction
               onClick={() => {
                 setIsHideExamen(false);
                 proctoringData.fullScreen.trigger();
               }}
-            >
-              Continuar examen
-            </AlertDialogAction>
+            >Continuar examen</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Alerta - Otro examen en progreso */}
-      <AlertDialog open={isDifferentExamInProgress}>
+
+      <AlertDialog open={isSameExam}>
         <AlertDialogContent>
           <AlertDialogHeader className="items-center">
             <AlertDialogTitle>
@@ -537,32 +839,24 @@ export default function PracticeEvaluation({ onSubmit, isCompleted, isInitialize
               Ya tienes un examen en curso
             </AlertDialogTitle>
             <AlertDialogDescription className="text-[15px] text-center">
-              Tienes otro examen activo. Finaliza o cierra ese examen antes de comenzar este.
+              Parece que tienes un examen activo. Finaliza o cierra el examen en curso antes de comenzar uno nuevo.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={() => router.back()}>
-              Entendido
-            </AlertDialogAction>
+          <AlertDialogFooter className="">
+
+            <AlertDialogAction
+              onClick={() => {
+                router.back();
+              }}
+            >Entendido</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Alerta - Cargando respuestas */}
-      <AlertDialog open={isLoading}>
-        <AlertDialogContent className="flex flex-col justify-center items-center text-center space-y-4">
-          <div className="bg-accent rounded-full w-20 h-20 flex items-center justify-center">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-          </div>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-center">Evaluando tus respuestas...</AlertDialogTitle>
-            <AlertDialogDescription className="text-center">
-              La IA está analizando y evaluando tus respuestas.
-              Este proceso puede tardar unos segundos.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+
+
+
+    </div >
   );
 }
+

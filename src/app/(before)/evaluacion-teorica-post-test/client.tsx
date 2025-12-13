@@ -6,32 +6,22 @@ import { useProctoring } from "@/app/(app)/scrum/evaluacion-practica/hooks/usePr
 import { useExamTimer } from "@/app/(app)/scrum/evaluacion-practica/store";
 import Quiz, { QuizResult } from "@/components/quizz";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { saveUserResponsePreTest } from "@/lib/db/queries/user";
+import { saveUserResponsePostTest } from "@/lib/db/queries/user";
 import { Question } from "@/type";
 import { AlertTriangle, BookOpenCheck, OctagonAlert } from "lucide-react";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useExamStore } from "../store/examStore";
+
+
+const EXAM_TYPE = 'post-test' as const;
+const EXAM_DURATION = 2700; // 45 minutos
 
 export default function ClientPage({ questions, isCompleted }: { questions: Question[], isCompleted: boolean }) {
-
-    const key = "teoria-post-test";
-
-    const handleSubmit = async (answers: QuizResult[]) => {
-        toast.promise(saveUserResponsePreTest(answers), {
-            loading: 'Enviando...',
-            success: (res: boolean) => {
-
-                return res ? 'Respuestas enviada con éxito' : 'Algo salió mal. Por favor, inténtalo de nuevo';
-            },
-            error: 'Algo salió mal. Por favor, inténtalo de nuevo.',
-            finally: () => {
-                redirect('/scrum/roadmap');
-            }
-        });
-    }
-
-    const { start, pause, resume, reset, status, finish, name } = useExamTimer();
+    const router = useRouter();
+    const { start, reset, status } = useExamTimer();
+    const { startExam, endExam, isExamInProgress } = useExamStore();
 
     const proctoringData = useProctoring({
         forceFullScreen: true,
@@ -45,58 +35,67 @@ export default function ClientPage({ questions, isCompleted }: { questions: Ques
     const [isHideExamen, setIsHideExamen] = useState(false);
     const [isInitial, setIsInitial] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [isSameExam, setIsSameExam] = useState(false);
+    const [isDifferentExamInProgress, setIsDifferentExamInProgress] = useState(false);
 
     useEffect(() => {
+        // Verificar si hay otro examen en progreso
+        const anotherExamInProgress = isExamInProgress('pre-test');
+        setIsDifferentExamInProgress(anotherExamInProgress);
 
-        setIsSameExam(name !== key && name !== "");
-        setShowInitialAlert((name === key || name === "") && !isCompleted && !isInitial);
+        // Mostrar alerta inicial si puede empezar el examen
+        const canStartExam = !isCompleted && !isInitial && !anotherExamInProgress;
+        setShowInitialAlert(canStartExam);
 
-        if (status === "finished" && !isCompleted) {
+        // Si el timer termina, marcar como enviado
+        if (status === "finished" && !isCompleted && isInitial) {
             setIsSubmitted(true);
             reset();
         }
 
-        const isHidden = proctoringData.fullScreen.status == 'off' || proctoringData.tabFocus.status === false
-
-        if (isHidden && !isCompleted && isInitial) {
+        // Detectar si se perdió fullscreen o focus
+        const isHidden = proctoringData.fullScreen.status === 'off' || proctoringData.tabFocus.status === false;
+        if (isHidden && isInitial && !isCompleted) {
             setIsHideExamen(true);
         }
 
+    }, [status, isCompleted, isInitial, proctoringData.fullScreen.status, proctoringData.tabFocus.status, reset, isExamInProgress]);
 
-    }, [
-        name,
-        key,
-        status,
-        isCompleted,
-        isInitial,
-        proctoringData.fullScreen.status,
-        proctoringData.tabFocus.status,
-        reset,
-        showInitialAlert,
-        isHideExamen,
-    ]);
+    const handleSubmit = async (answers: QuizResult[]) => {
+        setIsSubmitted(true);
+        endExam();
+        
+        toast.promise(saveUserResponsePostTest(answers), {
+            loading: 'Enviando respuestas...',
+            success: (res: boolean) => {
+                reset();
+                return res ? 'Respuestas enviadas con éxito' : 'Error al enviar las respuestas';
+            },
+            error: 'Error al enviar las respuestas',
+            finally: () => {
+                setTimeout(() => {
+                    redirect('/scrum/roadmap');
+                }, 1500);
+            }
+        });
+    };
 
-
-
-
-    const router = useRouter();
+    const handleStartExam = () => {
+        setIsInitial(true);
+        startExam(EXAM_TYPE);
+        start(EXAM_DURATION, EXAM_TYPE);
+        proctoringData.fullScreen.trigger();
+    };
 
     return (
         <div className="h-screen w-full bg-background flex justify-center items-center">
-
-            {
-                !isCompleted && isInitial && (
-                    <FaceMonitor />
-                )
-            }
+            {!isCompleted && isInitial && <FaceMonitor />}
 
             <div>
                 <ExamTimerDisplay className="fixed top-8 right-5 z-50 w-36" />
             </div>
 
             <Quiz
-                title="Evalución Final"
+                title="Evaluación Final"
                 questions={questions}
                 isViewingResults={false}
                 onSubmit={handleSubmit}
@@ -104,9 +103,7 @@ export default function ClientPage({ questions, isCompleted }: { questions: Ques
                 isTerminated={isSubmitted}
             />
 
-
-
-
+            {/* Alerta inicial - Comenzar examen */}
             <AlertDialog open={showInitialAlert}>
                 <AlertDialogContent>
                     <AlertDialogHeader className="items-center">
@@ -118,57 +115,43 @@ export default function ClientPage({ questions, isCompleted }: { questions: Ques
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-[15px] text-center">
                             El examen tiene una duración de <strong>45 minutos</strong>.
-                            Y evalua de manera teorica tus conocimientos de Scrum.
+                            Evalúa de manera teórica tus conocimientos de Scrum.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter className="">
-                        <AlertDialogCancel
-                            onClick={() => {
-                                router.back();
-                            }}
-                        >Cancelar</AlertDialogCancel>
-                        <AlertDialogAction
-                            onClick={() => {
-                                setIsInitial(true);
-                                start(2700, key);
-                                proctoringData.fullScreen.trigger();
-                            }}
-                        >Comenzar examen</AlertDialogAction>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel onClick={() => router.back()}>
+                            Cancelar
+                        </AlertDialogCancel>
+                        <AlertDialogAction onClick={handleStartExam}>
+                            Comenzar examen
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
 
-
-
-            <AlertDialog open={isCompleted} >
+            {/* Alerta - Examen ya completado */}
+            <AlertDialog open={isCompleted}>
                 <AlertDialogContent>
                     <AlertDialogHeader className="items-center">
                         <AlertDialogTitle>
                             <div className="mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-600/10">
                                 <BookOpenCheck className="w-8 h-8 text-center text-green-600" />
                             </div>
-                            ¡Ya desarrollaste este examen!
+                            ¡Ya completaste este examen!
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-[15px] text-center">
                             Has completado este examen previamente.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter className="mt-2 sm:justify-center">
-
-                        <AlertDialogAction
-                            onClick={() => {
-                                router.back();
-                            }}
-                        >
+                        <AlertDialogAction onClick={() => router.back()}>
                             Entendido
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
 
-
-
-
+            {/* Alerta - Examen oculto por supervisión */}
             <AlertDialog open={isHideExamen}>
                 <AlertDialogContent>
                     <AlertDialogHeader className="items-center">
@@ -176,27 +159,28 @@ export default function ClientPage({ questions, isCompleted }: { questions: Ques
                             <div className="mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
                                 <OctagonAlert className="h-7 w-7 text-destructive" />
                             </div>
-                            El examen está temporalmente oculto
+                            El examen está temporalmente bloqueado
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-[15px] text-center">
                             El examen ha sido bloqueado por el sistema de supervisión.
                             No podrás continuar hasta que se restablezcan las condiciones requeridas.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter className="">
-
+                    <AlertDialogFooter>
                         <AlertDialogAction
                             onClick={() => {
                                 setIsHideExamen(false);
                                 proctoringData.fullScreen.trigger();
                             }}
-                        >Continuar examen</AlertDialogAction>
+                        >
+                            Continuar examen
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
 
-
-            <AlertDialog open={isSameExam}>
+            {/* Alerta - Otro examen en progreso */}
+            <AlertDialog open={isDifferentExamInProgress}>
                 <AlertDialogContent>
                     <AlertDialogHeader className="items-center">
                         <AlertDialogTitle>
@@ -206,16 +190,13 @@ export default function ClientPage({ questions, isCompleted }: { questions: Ques
                             Ya tienes un examen en curso
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-[15px] text-center">
-                            Parece que tienes un examen activo. Finaliza o cierra el examen en curso antes de comenzar uno nuevo.
+                            Tienes el examen de pre-test activo. Finaliza o cierra ese examen antes de comenzar este.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter className="">
-
-                        <AlertDialogAction
-                            onClick={() => {
-                                router.back();
-                            }}
-                        >Entendido</AlertDialogAction>
+                    <AlertDialogFooter>
+                        <AlertDialogAction onClick={() => router.back()}>
+                            Entendido
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
