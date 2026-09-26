@@ -4,7 +4,7 @@
 
 **Springtor es un mentor inteligente para aprender Scrum.** Combina una ruta de aprendizaje guiada, evaluaciones teóricas y prácticas, y un tutor conversacional construido con **RAG (Retrieval-Augmented Generation)**, que responde a partir de una base de conocimiento curada de Scrum y no de lo que "recuerda" el modelo.
 
-> **¿Por qué "Springtor"?** Viene de **Spring**, por el *Sprint* de Scrum, y **tor**, por *Mentor*. Es un mentor que te acompaña sprint a sprint.
+> **¿Por qué "Springtor"?** Viene de **Spring**, por el _Sprint_ de Scrum, y **tor**, por _Mentor_. Es un mentor que te acompaña sprint a sprint.
 
 Lo construí hace un año, cuando RAG aún era una técnica emergente y casi ninguna plataforma educativa lo usaba para anclar un tutor de IA a su propio contenido.
 
@@ -12,14 +12,14 @@ Lo construí hace un año, cuando RAG aún era una técnica emergente y casi nin
 
 ## El producto
 
-| | |
-|---|---|
-| ![Funcionalidades](public/mock-2.png) | ![Ruta de aprendizaje](public/mock-3.png) |
-| **Funcionalidades**: ruta estructurada, material didáctico, prácticas, colaboración simulada y mentoría con IA. | **Ruta paso a paso**: Inicio → Fundamentos → Eventos → Práctica. |
-| ![Inicio de sesión](public/mock-4.png) | ![Registro](public/mock-5.png) |
-| **Autenticación** con credenciales, Google y GitHub. | **Registro** con validación de contraseña en tiempo real. |
-| ![Mi camino](public/mock-6.png) | ![Lección con tutor](public/mock-7.png) |
-| **Panel de progreso**: temas, avance global y evaluaciones. | **Lección + tutor RAG**: el chat conoce la lección abierta y responde con ejemplos de Scrum. |
+|                                                                                                                 |                                                                                              |
+| --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| ![Funcionalidades](public/mock-2.png)                                                                           | ![Ruta de aprendizaje](public/mock-3.png)                                                    |
+| **Funcionalidades**: ruta estructurada, material didáctico, prácticas, colaboración simulada y mentoría con IA. | **Ruta paso a paso**: Inicio → Fundamentos → Eventos → Práctica.                             |
+| ![Inicio de sesión](public/mock-4.png)                                                                          | ![Registro](public/mock-5.png)                                                               |
+| **Autenticación** con credenciales, Google y GitHub.                                                            | **Registro** con validación de contraseña en tiempo real.                                    |
+| ![Mi camino](public/mock-6.png)                                                                                 | ![Lección con tutor](public/mock-7.png)                                                      |
+| **Panel de progreso**: temas, avance global y evaluaciones.                                                     | **Lección + tutor RAG**: el chat conoce la lección abierta y responde con ejemplos de Scrum. |
 
 ### Qué puede hacer el estudiante
 
@@ -39,10 +39,10 @@ El tutor no responde "de memoria". Cada mensaje pasa por esta secuencia:
 1. **Embedding de la pregunta** con `text-embedding-004` de Google.
 2. **Búsqueda semántica** en un índice de **Pinecone** (top-K = 3, umbral de similitud mínimo) sobre la base de conocimiento de Scrum.
 3. **Construcción del contexto**: se unen los fragmentos relevantes (máx. ~3000 caracteres) y se inyectan junto con el **contexto de la lección** que el estudiante tiene abierta.
-4. **Generación con restricciones**: Gemini responde siguiendo un *knowledge prompt* estricto. Solo usa el contexto, prioriza la lección, reformula en vez de copiar, ilustra con casos prácticos y, si no hay información, responde *"Lo siento, no lo sé."*
+4. **Generación con restricciones**: Gemini responde siguiendo un _knowledge prompt_ estricto. Solo usa el contexto, prioriza la lección, reformula en vez de copiar, ilustra con casos prácticos y, si no hay información, responde _"Lo siento, no lo sé."_
 5. **Streaming** de la respuesta palabra a palabra, con persistencia del chat en PostgreSQL.
 
-La ingesta (`api/crawl`) recorre las fuentes, las divide en *chunks* (recursivo o Markdown), genera los embeddings, los deduplica con un hash MD5 como ID y los sube a Pinecone por lotes (`chunkedUpsert`).
+La ingesta (`api/crawl`) recorre las fuentes, las divide en _chunks_ (recursivo o Markdown), genera los embeddings, los deduplica con un hash MD5 como ID y los sube a Pinecone por lotes (`chunkedUpsert`).
 
 ---
 
@@ -50,19 +50,19 @@ La ingesta (`api/crawl`) recorre las fuentes, las divide en *chunks* (recursivo 
 
 ![Arquitectura](public/arquitectura.png)
 
-| Capa | Responsabilidad | Tecnología |
-|---|---|---|
-| **Cliente** | UI web y responsive, chat en streaming, editor, proctoring | Next.js 15 (App Router), React 19, Tailwind 4, Radix/shadcn, Zustand |
-| **Servidor** | Route handlers, server actions, middleware de sesión, rate limit por usuario | Next.js, Auth.js v5 (JWT + OAuth) |
-| **Datos** | Usuarios, chats, mensajes, votos, documentos, ruta de aprendizaje, progreso y respuestas de evaluaciones | PostgreSQL + Drizzle ORM |
-| **Streams** | Streams reanudables: si el usuario recarga, la respuesta continúa donde iba | Redis + `resumable-stream` |
-| **IA / LLM** | Enrutamiento de modelos por tarea | Vercel AI SDK + Google Gemini |
-| **Retrieval** | Embeddings y búsqueda vectorial | `text-embedding-004` + Pinecone |
-| **Archivos** | Subida de adjuntos y medios | Vercel Blob, UploadThing |
+| Capa          | Responsabilidad                                                                                          | Tecnología                                                           |
+| ------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| **Cliente**   | UI web y responsive, chat en streaming, editor, proctoring                                               | Next.js 15 (App Router), React 19, Tailwind 4, Radix/shadcn, Zustand |
+| **Servidor**  | Route handlers, server actions, middleware de sesión, rate limit por usuario                             | Next.js, Auth.js v5 (JWT + OAuth)                                    |
+| **Datos**     | Usuarios, chats, mensajes, votos, documentos, ruta de aprendizaje, progreso y respuestas de evaluaciones | PostgreSQL + Drizzle ORM                                             |
+| **Streams**   | Streams reanudables: si el usuario recarga, la respuesta continúa donde iba                              | Redis + `resumable-stream`                                           |
+| **IA / LLM**  | Enrutamiento de modelos por tarea                                                                        | Vercel AI SDK + Google Gemini                                        |
+| **Retrieval** | Embeddings y búsqueda vectorial                                                                          | `text-embedding-004` + Pinecone                                      |
+| **Archivos**  | Subida de adjuntos y medios                                                                              | Vercel Blob, UploadThing                                             |
 
 ### Detalles de diseño
 
-- **Un modelo por tarea**: `gemini-2.5-flash` para el chat, `gemini-2.0-flash-lite` con *reasoning middleware* para razonamiento y artifacts, y `gemini-2.5-flash-lite` para generar títulos. Se configura en [`src/lib/ai/providers.ts`](src/lib/ai/providers.ts).
+- **Un modelo por tarea**: `gemini-2.5-flash` para el chat, `gemini-2.0-flash-lite` con _reasoning middleware_ para razonamiento y artifacts, y `gemini-2.5-flash-lite` para generar títulos. Se configura en [`src/lib/ai/providers.ts`](src/lib/ai/providers.ts).
 - **Doble contexto**: el prompt de sistema combina el contexto de la lección con el contexto recuperado, así el tutor responde a la clase que el estudiante está viendo.
 - **Grounding estricto**: se prefiere un "no lo sé" antes que una alucinación. Es un tutor limitado deliberadamente a Scrum.
 - **Tool calling**: el modelo puede crear o actualizar documentos y proponer sugerencias (`createDocument`, `updateDocument`, `requestSuggestions`).
@@ -107,16 +107,14 @@ npm run dev               # http://localhost:3000
 
 Variables principales en `.env`:
 
-| Variable | Uso |
-|---|---|
-| `AUTH_SECRET` | Firma de sesiones (Auth.js) |
-| `POSTGRES_URL` | Base de datos |
-| `GOOGLE_GENERATIVE_AI_API_KEY` | Gemini + embeddings |
-| `PINECONE_API_KEY`, `PINECONE_INDEX`, `PINECONE_CLOUD`, `PINECONE_REGION` | Base vectorial |
-| `REDIS_URL` | Streams reanudables |
-| `BLOB_READ_WRITE_TOKEN` | Subida de archivos |
-| `AUTH_GOOGLE_*`, `AUTH_GITHUB_*` | OAuth |
+| Variable                                                                  | Uso                         |
+| ------------------------------------------------------------------------- | --------------------------- |
+| `AUTH_SECRET`                                                             | Firma de sesiones (Auth.js) |
+| `POSTGRES_URL`                                                            | Base de datos               |
+| `GOOGLE_GENERATIVE_AI_API_KEY`                                            | Gemini + embeddings         |
+| `PINECONE_API_KEY`, `PINECONE_INDEX`, `PINECONE_CLOUD`, `PINECONE_REGION` | Base vectorial              |
+| `REDIS_URL`                                                               | Streams reanudables         |
+| `BLOB_READ_WRITE_TOKEN`                                                   | Subida de archivos          |
+| `AUTH_GOOGLE_*`, `AUTH_GITHUB_*`                                          | OAuth                       |
 
 ---
-
-Desarrollado por **César Cunyarache**.
