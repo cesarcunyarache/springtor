@@ -21,9 +21,9 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
-import { signIn } from "next-auth/react"
+/* import { signIn } from "next-auth/react" */
 import { useRouter } from "next/navigation"
-import { useTransition } from "react"
+import { useState, useTransition } from "react"
 
 /* import { HttpStatusCode } from "@/core/common/http/HttpStatusCode"
 import { DostmenLogoNegro } from "@/components/icons/DostmenLogo" */
@@ -32,6 +32,8 @@ import { Github, Google, OpenAI } from "../icons/SocialIcons";
 /* import { HttpStatusCode } from "@/core/common/http/HttpStatusCode"; */
 import { AuthError } from "next-auth";
 import { loginAction, /* signInGoogle */ } from "@/actions/auth-action";
+import ButtonSocial from "../botton-social";
+import Link from "next/link";
 
 
 
@@ -61,9 +63,10 @@ const SignInForm = () => {
                 if (response.error) {
                     toast.error(response.error);
                 } else {
-                    router.push("/dashboard");
+                   /*  router.push("/"); */
                 }
 
+               /*  router.push("/"); */
                 /*  const res = await signIn("credentials", {
                      email: formData.email,
                      password: formData.password,
@@ -90,6 +93,9 @@ const SignInForm = () => {
         })
 
     }
+
+    const [isLoadingState] = useState(false);
+    const isLoading = isLoadingState || isPending;
 
     return (
         <div className={cn("flex flex-col gap-6")}>
@@ -120,7 +126,7 @@ const SignInForm = () => {
                                     <FormLabel required>E-mail</FormLabel>
                                     <FormControl>
                                         <div className="relative">
-                                            <Input className="peer ps-9" placeholder="E-mail" {...field} type="email" disabled={isPending} />
+                                            <Input className="peer ps-9" placeholder="E-mail" {...field} type="email" disabled={isLoading} />
                                             <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80">
                                                 <Mail size={16} strokeWidth={2} />
                                             </div>
@@ -148,7 +154,7 @@ const SignInForm = () => {
 
                                     <FormControl>
                                         <div className="relative">
-                                            <InputPassword className="peer ps-9" placeholder="Contraseña" {...field} disabled={isPending} />
+                                            <InputPassword className="peer ps-9" placeholder="Contraseña" {...field} disabled={isLoading} />
                                             <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80">
                                                 <Lock size={16} strokeWidth={2} />
                                             </div>
@@ -159,8 +165,8 @@ const SignInForm = () => {
                             )}
                         />
 
-                        <Button type="submit" disabled={isPending}>
-                            {isPending ? (
+                        <Button type="submit" disabled={isLoading}>
+                            {isLoading ? (
                                 <Loader className="animate-spin" />
                             ) : (
                                 <span className="flex items-center gap-2">
@@ -176,31 +182,23 @@ const SignInForm = () => {
                             </span>
                         </div>
                         <div className="grid grid-cols-3 gap-4">
-                            <Button variant="outline" type="button" className="w-full" onClick={async () => {
-                                await signIn("google")
-                            }}>
+                            <ButtonSocial provider="google">
                                 <Google />
-                                {/*  <span className="sr-only">Login with Apple</span> */}
-                            </Button>
-                            <Button variant="outline" type="button" className="w-full"
-                                onClick={async () => {
-                                    await signIn("github")
-                                }}
-
-                            >
+                                <span className="sr-only">Login with Google</span>
+                            </ButtonSocial>
+                            <ButtonSocial provider="github">
                                 <Github />
-                                {/*   <span className="sr-only">Login with Google</span> */}
-                            </Button>
-                            <Button variant="outline" type="button" className="w-full">
+                            </ButtonSocial>
+                            <ButtonSocial provider="openai" disabled={true}>
                                 <OpenAI />
-                                {/*   <span className="sr-only">Login with Meta</span> */}
-                            </Button>
+                            </ButtonSocial>
+
                         </div>
                         <div className="text-center text-sm">
                             ¿Aún no tienes una cuenta?{" "}
-                            <a href="#" className="underline underline-offset-4 text-primary">
+                            <Link href="/sign-up" className="underline underline-offset-4 text-primary">
                                 Regístrate
-                            </a>
+                            </Link>
                         </div>
 
 

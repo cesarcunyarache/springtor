@@ -23,7 +23,7 @@ import { useForm } from "react-hook-form"
 
 /* import { signIn } from "next-auth/react" */
 import { useRouter } from "next/navigation"
-import { useMemo, useTransition } from "react"
+import { useEffect, useMemo, useState, useTransition } from "react"
 
 /* import { HttpStatusCode } from "@/core/common/http/HttpStatusCode"
 import { DostmenLogoNegro } from "@/components/icons/DostmenLogo" */
@@ -34,6 +34,10 @@ import { AuthError } from "next-auth";
 import { registerAction } from "@/actions/auth-action";
 import { signUpSchema } from "@/features/auth/domain/schema/SignUpSchema";
 import { Checkbox } from "@/components/ui/checkbox";
+import ButtonSocial from "../botton-social";
+import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
+import { register } from "@/actions/user-action";
 
 
 export function checkStrength(pass: string) {
@@ -63,7 +67,7 @@ const SignUpForm = () => {
             email: "",
             password: "",
             confirmPassword: "",
-            check: true,
+            check: false,
         },
     });
 
@@ -74,12 +78,12 @@ const SignUpForm = () => {
             try {
 
 
-                const response = await registerAction(formData);
-                if (response.error) {
+                const response = await register(formData);
+               /*  if (response.error) {
                     toast.error(response.error);
                 } else {
                     router.push("/sign-in");
-                }
+                } */
 
                 /*  const res = await signIn("credentials", {
                      email: formData.email,
@@ -176,7 +180,7 @@ const SignUpForm = () => {
 
                                             </div>
 
-                                            {field.value && (
+                                            {/*  {field.value && (
                                                 <>
                                                     <div
                                                         className="mt-3 h-1 w-full overflow-hidden rounded-full bg-border"
@@ -233,7 +237,71 @@ const SignUpForm = () => {
                                                         ))}
                                                     </ul>
                                                 </>
-                                            )}
+                                            )} */}
+
+                                            
+                                                <>
+                                                    <AnimatePresence>
+                                                        {field.value && (
+                                                            <>
+                                                                {/* Barra de progreso animada con entrada y salida */}
+                                                                {/* <motion.div
+                                                                    key="progress-bar"
+                                                                    initial={{ width: 0 }}
+                                                                    animate={{ width: `${(strengthScore / 4) * 100}%` }}
+                                                                    exit={{ width: 0 }}
+                                                                    transition={{ duration: 0.7, ease: "easeOut" }}
+                                                                    className="mt-3 h-1 rounded-full bg-border overflow-hidden"
+                                                                    role="progressbar"
+                                                                    aria-valuemin={0}
+                                                                    aria-valuemax={4}
+                                                                    style={{ position: "relative" }}
+                                                                >
+                                                                    <div
+                                                                        className={`h-full ${strengthScore <= 1
+                                                                                ? "bg-red-500"
+                                                                                : strengthScore <= 2
+                                                                                    ? "bg-orange-500"
+                                                                                    : strengthScore === 3
+                                                                                        ? "bg-amber-500"
+                                                                                        : "bg-emerald-500"
+                                                                            }`}
+                                                                        style={{ width: "100%" }}
+                                                                    />
+                                                                </motion.div> */}
+
+{/* <ProgressBar strengthScore={strengthScore} /> */}
+
+                                                                {/* Lista animada con entrada y salida */}
+                                                                <motion.ul
+                                                                    key="strength-list"
+                                                                    initial={{ opacity: 0, height: 0 }}
+                                                                    animate={{ opacity: 1, height: "auto" }}
+                                                                    exit={{ opacity: 0, height: 0 }}
+                                                                    transition={{ duration: 0.5, ease: "easeOut" }}
+                                                                    className="space-y-3.5 overflow-hidden space-x-1"
+                                                                >
+                                                                    <ProgressBar strengthScore={strengthScore} />
+                                                                    {strength.map((req, index) => (
+                                                                        <li key={index} className="flex items-center gap-2">
+                                                                            {req.met ? (
+                                                                                <Check size={16} className="text-emerald-500" aria-hidden="true" />
+                                                                            ) : (
+                                                                                <X size={16} className="text-muted-foreground/80" aria-hidden="true" />
+                                                                            )}
+                                                                            <span className={`text-xs ${req.met ? "text-emerald-600" : "text-muted-foreground"}`}>
+                                                                                {req.text}
+                                                                            </span>
+                                                                        </li>
+                                                                    ))}
+                                                                </motion.ul>
+                                                            </>
+                                                        )}
+                                                    </AnimatePresence>
+
+                                              
+                                                </>
+                                            
                                         </div>
 
                                     </FormControl>
@@ -266,27 +334,30 @@ const SignUpForm = () => {
                             control={form.control}
                             name="check"
                             render={({ field }) => (
-                                <FormItem className="flex flex-row items-start space-x-1 space-y-0 ">
-                                    <FormControl>
-                                        <Checkbox
-                                     
-                                       
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <div className="">
-                                        <FormLabel>
-                                        <div className="text-balance text-xs text-muted-foreground ">
-                Acepto los <a href="#" className="text-primary">Términos de Servicio</a> y la{" "}
-                <a href="#" className="text-primary">Política de Privacidad</a>.
-            </div>
-                                        </FormLabel>
-                                       {/*  <FormDescription>
+                                <FormItem className="">
+                                    <div className="flex flex-row items-start space-x-1 space-y-0 ">
+
+
+                                        <FormControl>
+                                            <Checkbox
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <div className="">
+                                            <FormLabel>
+                                                <div className="text-balance text-xs text-muted-foreground ">
+                                                    Acepto los <a href="#" className="text-primary">Términos de Servicio</a> y la{" "}
+                                                    <a href="#" className="text-primary">Política de Privacidad</a>.
+                                                </div>
+                                            </FormLabel>
+                                            {/*  <FormDescription>
                                             You can manage your mobile notifications in the{" "}
                                             <Link href="/examples/forms">mobile settings</Link> page.
                                         </FormDescription> */}
+                                        </div>
                                     </div>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
@@ -308,34 +379,91 @@ const SignUpForm = () => {
                             </span>
                         </div>
                         <div className="grid grid-cols-3 gap-4">
-                            <Button variant="outline" type="button" className="w-full">
+                            <ButtonSocial provider="google">
                                 <Google />
-                                {/*  <span className="sr-only">Login with Apple</span> */}
-                            </Button>
-                            <Button variant="outline" type="button" className="w-full">
+                                <span className="sr-only">Login with Google</span>
+                            </ButtonSocial>
+                            <ButtonSocial provider="github">
                                 <Github />
-                                {/*   <span className="sr-only">Login with Google</span> */}
-                            </Button>
-                            <Button variant="outline" type="button" className="w-full">
+                            </ButtonSocial>
+                            <ButtonSocial provider="openai" disabled={true}>
                                 <OpenAI />
-                                {/*   <span className="sr-only">Login with Meta</span> */}
-                            </Button>
+                            </ButtonSocial>
+
                         </div>
                         <div className="text-center text-sm">
                             ¿Ya tienes una cuenta?{" "}
-                            <a href="#" className="underline underline-offset-4 text-primary">
+                            <Link href="/sign-in" className="underline underline-offset-4 text-primary">
                                 Inicia sesión
-                            </a>
+                            </Link>
                         </div>
 
 
                     </div>
                 </form>
             </Form>
-        
+
 
         </div>
     )
 }
 
 export default SignUpForm
+
+
+
+const ProgressBar = ({ strengthScore }: { strengthScore: number }) => {
+    const [visible, setVisible] = useState(strengthScore > 0);
+  
+    useEffect(() => {
+      if (strengthScore > 0) {
+        setVisible(true);
+      } else {
+        const timeout = setTimeout(() => setVisible(false), 700);
+        return () => clearTimeout(timeout);
+      }
+    }, [strengthScore]);
+  
+    const widthPercent = (strengthScore / 4) * 100;
+    const getColor = (score: number) => {
+      if (score <= 1) return "#ef4444"; // red-500
+      if (score <= 2) return "#f97316"; // orange-500
+      if (score === 3) return "#f59e0b"; // amber-500
+      return "#22c55e"; // emerald-500
+    };
+  
+    return (
+      <AnimatePresence mode="wait">
+        {visible && (
+          <motion.div
+            key="progress-bar"
+            initial={{ width: 0, opacity: 0, y: 10, height: 0 }}
+            animate={{
+              width: `${widthPercent}%`,
+              opacity: 1,
+              y: 0,
+              height: 4,       // altura expandida (ajusta si quieres)
+              backgroundColor: getColor(strengthScore),
+            }}
+            exit={{
+              width: 0,
+              opacity: 0,
+              y: -20,
+              height: 0,       // altura contraída al salir
+            }}
+            transition={{
+              width: { duration: 0.7, ease: "easeOut" },
+              opacity: { duration: 0.5 },
+              y: { duration: 0.5 },
+              height: { duration: 0.5 },
+            }}
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={4}
+            className="mt-3 rounded-full"
+            style={{ backgroundColor: getColor(strengthScore), overflow: "hidden", height: 4 }}
+          />
+        )}
+      </AnimatePresence>
+    );
+  };

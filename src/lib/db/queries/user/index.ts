@@ -1,0 +1,443 @@
+"use server";
+
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import {
+  learningSteps,
+  lessons,
+  modules,
+  roadmaps,
+  topics,
+  preTestResponses,
+  users,
+  theoryLessonAnswers,
+  theoryAnswers,
+  lessonCompletions,
+  topicCompletions,
+  preTestPracticeResponses,
+  postTestPracticeResponses,
+  postTestResponses,
+} from "../../schema";
+import { asc, eq, exists, sql } from "drizzle-orm";
+import {
+  LearningStep,
+  Lesson,
+  Roadmap,
+  TheoryLessonAnswer,
+  Topic,
+  User,
+} from "@/type";
+import * as schema from "../../schema";
+import { db } from "../..";
+import { QuizResult } from "@/components/quizz";
+import { auth } from "@/auth";
+
+export async function isUserResponsePreTest(userId: string): Promise<boolean> {
+  try {
+    const foundUser = await db.query.preTestResponses.findFirst({
+      where: eq(preTestResponses.userId, userId),
+    });
+
+    if (foundUser) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function isUserResponsePostTest(userId: string): Promise<boolean> {
+  try {
+    const foundUser = await db.query.postTestResponses.findFirst({
+      where: eq(postTestResponses.userId, userId),
+    });
+
+    if (foundUser) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function getUserById(userId: string): Promise<User | null> {
+  try {
+    const foundUser = await db.query.users.findFirst({
+      where: eq(users.id, userId),
+    });
+    if (foundUser) {
+      return foundUser;
+    }
+    return null;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function saveUserResponsePreTest(
+  quizzResults: QuizResult[]
+): Promise<boolean> {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return false;
+
+    const prepareDate = quizzResults.map((q) => ({
+      ...q,
+      userId,
+    }));
+
+    const results = await db
+      .insert(preTestResponses)
+      .values(prepareDate)
+      .returning();
+
+    if (results.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+export async function saveUserResponsePostTest(
+  quizzResults: QuizResult[]
+) {
+   try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return false;
+
+    const prepareDate = quizzResults.map((q) => ({
+      ...q,
+      userId,
+    }));
+
+    const results = await db
+      .insert(postTestResponses)
+      .values(prepareDate)
+      .returning();
+
+    if (results.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function saveUserPreferences(preferences: any): Promise<boolean> {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return false;
+
+    const foundUser = await db.update(users).set({
+      preferences,
+    });
+
+    if (foundUser) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function saveUserResponseLessonAnswers(
+  lessonAnswers: QuizResult[],
+  assessmentId?: string
+): Promise<boolean> {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return false;
+
+    const preparedDate = lessonAnswers.map((q) => ({
+      ...q,
+      userId,
+      assessmentId,
+    }));
+
+    const results = await db
+      .insert(theoryLessonAnswers)
+      .values(preparedDate)
+      .onConflictDoUpdate({
+        target: [
+          theoryLessonAnswers.userId,
+          theoryLessonAnswers.assessmentId,
+          theoryLessonAnswers.questionId,
+        ],
+        set: {
+          selectedOption: sql.raw(
+            `excluded.${theoryLessonAnswers.selectedOption.name}`
+          ),
+          isCorrect: sql.raw(`excluded.${theoryLessonAnswers.isCorrect.name}`),
+        },
+      })
+      .returning();
+
+    if (results.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function saveUserResponseTheoryAnswers(
+  lessonAnswers: QuizResult[],
+  assessmentId?: string
+): Promise<boolean> {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return false;
+
+    const preparedDate = lessonAnswers.map((q) => ({
+      ...q,
+      userId,
+      assessmentId,
+    }));
+
+    const results = await db
+      .insert(theoryAnswers)
+      .values(preparedDate)
+      .onConflictDoUpdate({
+        target: [
+          theoryAnswers.userId,
+          theoryAnswers.assessmentId,
+          theoryAnswers.questionId,
+        ],
+        set: {
+          selectedOption: sql.raw(
+            `excluded.${theoryAnswers.selectedOption.name}`
+          ),
+          isCorrect: sql.raw(`excluded.${theoryAnswers.isCorrect.name}`),
+        },
+      })
+      .returning();
+
+    if (results.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function completeLesson(lesson: {
+  moduleId: string;
+  lessonId: string;
+  topicId: string;
+  userId?: string;
+  chatId?: string;
+}): Promise<boolean> {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return false;
+
+    lesson.userId = userId;
+
+    const result = await db
+      .insert(lessonCompletions)
+      .values(lesson)
+      .onConflictDoUpdate({
+        target: [
+          lessonCompletions.userId,
+          lessonCompletions.moduleId,
+          lessonCompletions.lessonId,
+          lessonCompletions.topicId,
+        ],
+        set: {
+          chatId: lesson.chatId,
+        },
+      })
+      .returning();
+
+    if (result.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function updateTopicProgress(topicId: string, progress: number) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return null;
+
+    const result = await db
+      .insert(topicCompletions)
+      .values({
+        userId,
+        topicId,
+        progress,
+      })
+      .onConflictDoUpdate({
+        target: [topicCompletions.userId, topicCompletions.topicId],
+        set: { progress, updatedAt: new Date() },
+      })
+      .returning();
+
+    if (result.length > 0) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+
+export async function isUserResponsePracticePreTest(userId: string): Promise<boolean> {
+  try {
+    const foundUser = await db.query.preTestPracticeResponses.findFirst({
+      where: eq(preTestPracticeResponses.userId, userId),
+    });
+
+    if (foundUser) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function isUserResponsePracticePostTest(userId: string): Promise<boolean> {
+  try {
+    const foundUser = await db.query.postTestPracticeResponses.findFirst({
+      where: eq(postTestPracticeResponses.userId, userId),
+    });
+
+    if (foundUser) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+
+export async function savePrestestPracticeResponses(
+  answers: any,
+  rubricScore: number,
+  checklistScore: number,
+  feedback: string,
+  justification: string
+) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+   
+    if (!userId) return false;
+
+    console.log(userId);
+    const results = await db
+      .insert(preTestPracticeResponses)
+      .values({
+        userId,
+        answers,
+        rubricScore,
+        checklistScore,
+        feedback,
+        justification,
+      })
+      .onConflictDoUpdate({
+        target: [preTestPracticeResponses.userId],
+        set: {
+          answers,
+          rubricScore,
+          checklistScore,
+          feedback,
+          justification,
+        },
+      })
+      .returning();
+
+    if (results.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function savePostTestPracticeResponses(
+  answers: any,
+  rubricScore: number,
+  checklistScore: number,
+  feedback: string,
+  justification: string
+) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+   
+    if (!userId) return false;
+
+    console.log(userId);
+    const results = await db
+      .insert(postTestPracticeResponses)
+      .values({
+        userId,
+        answers,
+        rubricScore,
+        checklistScore,
+        feedback,
+        justification,
+      })
+      .onConflictDoUpdate({
+        target: [
+          postTestPracticeResponses.userId,
+        ],
+        set: {
+          answers,
+          rubricScore,
+          checklistScore,
+          feedback,
+          justification,
+        },
+      })
+      .returning(); 
+
+    if (results.length > 0) {
+      return true;
+    }
+    return false;
+  }
+  catch (error) {
+    return false;
+  }
+}

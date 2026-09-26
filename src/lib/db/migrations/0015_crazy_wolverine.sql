@@ -1,0 +1,1 @@
+ALTER TABLE "lesson" ALTER COLUMN "chatId" SET DATA TYPE uuid;

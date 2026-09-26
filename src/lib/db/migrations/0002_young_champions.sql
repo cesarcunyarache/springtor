@@ -1,0 +1,2 @@
+ALTER TABLE "learningStep" ADD COLUMN "roadmapId" text;--> statement-breakpoint
+ALTER TABLE "learningStep" ADD CONSTRAINT "learningStep_roadmapId_roadmap_id_fk" FOREIGN KEY ("roadmapId") REFERENCES "public"."roadmap"("id") ON DELETE no action ON UPDATE no action;

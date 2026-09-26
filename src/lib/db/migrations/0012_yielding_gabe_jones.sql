@@ -1,0 +1,2 @@
+ALTER TABLE "theoryAnswers" ADD COLUMN "assessment_id" text;--> statement-breakpoint
+ALTER TABLE "theoryAnswers" ADD CONSTRAINT "theoryAnswers_assessment_id_assessments_id_fk" FOREIGN KEY ("assessment_id") REFERENCES "public"."assessments"("id") ON DELETE no action ON UPDATE no action;

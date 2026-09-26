@@ -1,142 +1,92 @@
-import NextAuth, { NextAuthConfig } from "next-auth";
-import { SupabaseAdapter } from "@auth/supabase-adapter";
-import { encode as defaultEncode } from "next-auth/jwt";
-import { v4 as uuid } from "uuid";
-import Credentials from "next-auth/providers/credentials";
-import { createClient } from "@supabase/supabase-js";
-/* import {
-  AuthError,
-  AuthenticationError,
-  ValidationError,
-} from "./features/auth/domain/errors/AuthError"; */
-import bcryptjs from "bcryptjs";
-import Google from "next-auth/providers/google"
-import GitHub from "next-auth/providers/github"
-import Notion from "next-auth/providers/notion"
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { db } from "./lib/db";
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import type { NextAuthConfig } from "next-auth";
+import NextAuth, { User } from "next-auth";
+
+import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import Github from "next-auth/providers/github";
+
+import {
+  accounts,
+  authenticators,
+  sessions,
+  users,
+  verificationTokens,
+} from "./lib/db/schema";
+import { getUserFromDb } from "./actions/user-action";
+
+
+const adapter = await DrizzleAdapter(db, {
+  usersTable: users,
+  accountsTable: accounts,
+  sessionsTable: sessions,
+  verificationTokensTable: verificationTokens,
+  authenticatorsTable: authenticators,
+});
 
 export const authConfig: NextAuthConfig = {
+  adapter,
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 60, 
+  },
   providers: [
-    Google,
-    GitHub,
-    Notion,
+    Github({
+      allowDangerousEmailAccountLinking: true,
+    }),
+    Google({
+      allowDangerousEmailAccountLinking: true,
+    }),
     Credentials({
       credentials: {
         email: {},
         password: {},
       },
       async authorize(credentials) {
-        /* try { */
-          const { email, password } = credentials;
+        const { email, password } = credentials;
 
-          if (!email || !password) {
-           
-            throw new Error("Correo electrónico y contraseña son requeridos");
-            /* throw new ValidationError(
-              "Correo electrónico y contraseña son requeridos"
-            ); */
-          }
+        const res = await getUserFromDb(email as string, password as string);
+        if (res.success) {
+          return res.data as User;
+        }
 
-          const {
-            data: user,
-            error,
-          } = await supabase
-            .schema("next_auth")
-            .from("users")
-            .select()
-            .eq("email", credentials.email)
-            .single();
-
-          if (error) {
-            throw new Error("Algo salió mal");
-          }
-
-          if (!user) {
-           
-            throw new Error("Email o contraseña incorrectos");
-          }
-
-          const isPasswordMatches = await bcryptjs.compare(
-            password as string,
-            user.password
-          )
-      
-          if (!isPasswordMatches) {
-            throw new Error("Email o contraseña incorrectos");
-          }
-
-          return {
-            id: user.id,
-            email: user.email,
-          };
-
-          if (credentials.password === user.password) {
-          } else {
-            return null;
-          }
-       /*  } catch (error) {
-          if (error instanceof AuthError) {
-            throw new Error(error.message);
-          }
-          throw new Error(
-            "Parece que algo salió mal. Estamos trabajando en ello, por favor intenta nuevamente más tarde."
-          );
-        } */
+        return null;
       },
     }),
   ],
-  adapter: SupabaseAdapter({
-    url: process.env.SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  }),
   callbacks: {
-    async jwt({ token, account }) {
-      if (account?.provider === "credentials") {
-        token.credentials = true;
+   async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id as string;
       }
+
       return token;
     },
-  },
-  jwt: {
-    encode: async function (params) {
-      if (params.token?.credentials) {
-        const sessionToken = uuid();
-
-        if (!params.token.sub) {
-          throw new Error("No user ID found in token");
-        }
-
-        const createdSession = await supabase
-          .schema("next_auth")
-          .from("sessions")
-          .insert?.({
-            sessionToken: sessionToken,
-            userId: params.token.sub,
-            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-          });
-
-        if (!createdSession) {
-          throw new Error("Failed to create session");
-        }
-
-        return sessionToken;
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
       }
-      return defaultEncode(params);
+
+      return session;
+    },
+
+     async redirect({ url, baseUrl }) {
+
+      /* return baseUrl || '/'; */
+      return '/scrum/roadmap';
     },
   },
   secret: process.env.AUTH_SECRET!,
   experimental: { enableWebAuthn: true },
-  pages: {
+
+   pages: {
     signIn: "/sign-in",
     signOut: "/sign-out",
-    newUser: "/sign-up",
-    error: "/sign-in/"
+    error: "/error",
+    verifyRequest: "/roadmap",
   },
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth(authConfig);
-export default authConfig;

@@ -1,16 +1,20 @@
-import { boolean, object, string } from "zod"
- 
-export const signUpSchema = object({
-  email: string({ message: "El email electrónico es obligatorio" })
-    .min(1, "El email es obligatorio")
-    .email("email inválido"),
+import { z } from "zod";
 
-  password: string({ message: "La contraseña es obligatoria" })
-    .min(1, "La contraseña es obligatoria"),
+export const signUpSchema = z.object({
+  email: z.string({ message: "El email electrónico es obligatorio" })
+    .min(1, "El email es obligatorio"),
 
-  confirmPassword: string({ message: "La contraseña es obligatoria" })
-    .min(1, "La contraseña es obligatoria"),
-
-  check: boolean().default(false).optional(),
-
-})
+  password: z.string({ message: "La contraseña es obligatoria" }).min(
+    1,
+    "La contraseña es obligatoria"
+  ),
+  check: z.boolean({
+    required_error: "Debes aceptar los términos y condiciones",
+  }).refine((val) => val === true, {
+    message: "Debes aceptar los términos y condiciones",
+  }),
+  confirmPassword: z.string({ message: "La confirmación de la contraseña debe es obligatoria."}).min(1, "La confirmación de la contraseña debe es obligatoria."),
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Las contraseñas no coinciden.",
+  path: ["confirmPassword"]
+});
