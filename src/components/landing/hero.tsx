@@ -86,11 +86,11 @@ export function HeroSectionOne() {
                 >
                     <div className="w-full overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700">
                         <img
-                            src="https://res.cloudinary.com/dz3nzrgkm/image/upload/v1757193625/Captura_de_pantalla_2025-09-06_a_la_s_3.51.01_p._m._ub0ozb.png"
+                            src="/image.png"
                             alt="Landing page preview"
-                            className="aspect-[16/9] h-auto w-full object-cover"
-                            height={1000}
-                            width={1000}
+                            className="h-auto w-full"
+                            height={1620}
+                            width={2490}
                         />
                     </div>
                 </motion.div>
